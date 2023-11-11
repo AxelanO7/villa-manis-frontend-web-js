@@ -1,6 +1,6 @@
 import React from "react";
 import BaseLayout from "../layouts/base";
-import Breadcrumb from "../components/breadcrumb";
+import { Breadcrumb } from "../components/breadcrumb";
 
 export default function MainPage() {
   const items = ["Home", "Beranda"];

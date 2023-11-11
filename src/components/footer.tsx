@@ -10,12 +10,12 @@ export default function Footer() {
         </div>
         &copy; 2023
       </p>
-      <div className="flex-grow" />
+      {/* <div className="flex-grow" />
       <p className="flex items-center text-slate-500">
         Page rendered in
         <p className="font-semibold mx-1">0.0207</p>
         seconds.
-      </p>
+      </p> */}
     </div>
   );
 }

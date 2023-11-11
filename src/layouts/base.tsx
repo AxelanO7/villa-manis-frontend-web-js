@@ -1,4 +1,4 @@
-import React, { Children } from "react";
+import React from "react";
 import Navbar from "../components/navbar";
 import Sidebar from "../components/sidebar";
 import Footer from "../components/footer";
@@ -20,11 +20,12 @@ export default function BaseLayout({
         {withSidebar && <Sidebar />}
         <div className="grow">
           {withNavbar && <Navbar />}
-          <div className="h-20" />
           <div className="flex">
-            <div className="w-12" />
+            {withSidebar && <div className="w-12" />}
             <div className="flex flex-col w-full min-h-screen">
-              <div className="grow">{children}</div>
+              {withNavbar && <div className="h-20" />}
+              {children}
+              <div className="grow" />
               <Footer />
             </div>
           </div>

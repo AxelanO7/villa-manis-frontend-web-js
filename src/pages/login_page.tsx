@@ -12,7 +12,7 @@ export default function LoginPage() {
     });
     if (response.status === 200) {
       alert("Login berhasil");
-      // window.location.href = "/order";
+      window.location.href = "/main-page";
     } else {
       alert("Login gagal");
     }

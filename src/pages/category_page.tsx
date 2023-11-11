@@ -10,86 +10,69 @@ import {
 } from "../components/modal";
 import { Input } from "../components/input";
 
-interface UserProps {
+interface Category {
   ID: number;
-  name_user: string;
-  username: string;
-  password: string;
-  photo: string;
-  level: number;
+  name_category: string;
 }
 
-export default function UserPage() {
-  const [users, setUsers] = useState<UserProps[]>([]);
+export default function CategoryPage() {
+  const [categorys, setCategorys] = useState<Category[]>([]);
 
-  const [idUser, setIdUser] = useState<any>();
+  const [idCategory, setIdCategory] = useState<any>();
   const [name, setName] = useState<any>();
-  const [username, setUsername] = useState<any>();
-  const [password, setPassword] = useState<any>();
-  const [photo, setPhoto] = useState<any>();
-  const [level, setLevel] = useState<any>();
 
   const [showModal, setShowModal] = useState<boolean>(false);
-
   const [manage, setManage] = useState<any>(null);
 
-  const itemsBreadcrumb = ["Home", "Management User"];
+  const itemsBreadcrumb = ["Home", "Management Category"];
 
   useEffect(() => {
-    fetchUsers();
+    fetchCategorys();
   }, []);
 
-  const fetchUsers = async () => {
+  const fetchCategorys = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/user");
-      setUsers(response.data.data);
+      const response = await axios.get("http://localhost:8080/api/category");
+      setCategorys(response.data.data);
       console.log(response.data);
     } catch (error) {
       alert("Data gagal diambil");
     }
   };
 
-  const createUser = async () => {
+  const createCategory = async () => {
     try {
-      await axios.post("http://localhost:8080/api/user", {
-        name_user: name,
-        username: username,
-        password: password,
-        photo: photo,
-        level: level,
+      await axios.post("http://localhost:8080/api/category", {
+        name_category: name,
       });
       alert("Data berhasil ditambahkan");
       handleShowModal({ show: false });
-      fetchUsers();
+      fetchCategorys();
     } catch (error) {
       alert("Data gagal ditambahkan");
     }
   };
 
-  const updateUser = async (idProp: number) => {
+  const updateCategory = async (idProp: number) => {
     try {
-      await axios.put(`http://localhost:8080/api/user/${idProp}`, {
-        ID: idUser,
-        name_user: name,
-        username: username,
-        password: password,
-        photo: photo,
-        level: level,
+      await axios.put(`http://localhost:8080/api/category/${idProp}`, {
+        ID: idCategory,
+        name_category: name,
       });
       alert("Data berhasil diubah");
       handleShowModal({ show: false });
-      fetchUsers();
+      fetchCategorys();
     } catch (error) {
       alert("Data gagal diubah");
     }
   };
 
-  const deleteUser = async (idProp: number) => {
+  const deleteCategory = async (idProp: number) => {
     try {
-      await axios.delete(`http://localhost:8080/api/user/${idProp}`);
+      await axios.delete(`http://localhost:8080/api/category/${idProp}`);
       alert("Data berhasil dihapus");
       handleShowModal({ show: false });
-      fetchUsers();
+      fetchCategorys();
     } catch (error) {
       alert("Data gagal dihapus");
     }
@@ -97,11 +80,11 @@ export default function UserPage() {
 
   const handleShowModal = ({
     show = true,
-    user,
+    category,
     manageProp = "create",
   }: {
     show?: boolean;
-    user?: UserProps;
+    category?: Category;
     manageProp?: string;
   }) => {
     setShowModal(show);
@@ -109,35 +92,28 @@ export default function UserPage() {
     if (manageProp === "create") {
       clearInput();
     } else if (manageProp === "update") {
-      setIdUser(user?.ID);
-      setName(user?.name_user);
-      setUsername(user?.username);
-      setPassword(user?.password);
-      setPhoto(user?.photo);
-      setLevel(user?.level);
+      setIdCategory(category?.ID);
+      setName(category?.name_category);
     }
   };
 
   const clearInput = () => {
+    setIdCategory(null);
     setName(null);
-    setUsername(null);
-    setPassword(null);
-    setPhoto(null);
-    setLevel(null);
   };
 
   return (
     <>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <ModalHeader>Tambah User</ModalHeader>
+        <ModalHeader>Tambah Category</ModalHeader>
         <ModalBody>
           <div className="flex flex-col space-y-4">
             {/* {manage === "update" && (
               <Input
                 label="ID"
-                value={idUser}
+                value={idCategory}
                 type="number"
-                onChange={(e) => setIdUser(parseInt(e.target.value))}
+                onChange={(e) => setIdCategory(parseInt(e.target.value))}
               />
             )} */}
             <Input
@@ -146,30 +122,6 @@ export default function UserPage() {
               type="text"
               onChange={(e) => setName(e.target.value)}
             />
-            <Input
-              label="Username"
-              value={username}
-              type="text"
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <Input
-              label="Password"
-              value={password}
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Input
-              label="Photo"
-              value={photo}
-              type="text"
-              onChange={(e) => setPhoto(e.target.value)}
-            />
-            <Input
-              label="Level"
-              value={level}
-              type="number"
-              onChange={(e) => setLevel(parseInt(e.target.value))}
-            />
           </div>
         </ModalBody>
         <ModalFooter>
@@ -177,8 +129,8 @@ export default function UserPage() {
             className="bg-success rounded px-4 py-1 text-white"
             onClick={
               manage === "update"
-                ? () => updateUser(idUser)
-                : () => createUser()
+                ? () => updateCategory(idCategory)
+                : () => createCategory()
             }
           >
             Simpan
@@ -196,17 +148,17 @@ export default function UserPage() {
       <BaseLayout>
         <Breadcrumb
           items={itemsBreadcrumb}
-          title="Management User"
+          title="Management Category"
           paddingHorizontal={32}
         />
         <div className="h-8" />
         <div className="flex flex-col bg-slate-50 rounded mx-8 shadow">
           <div className="h-4" />
           <button
-            className="bg-success text-white rounded px-4 py-2 w-36 mx-6"
+            className="bg-success text-white rounded px-4 py-2 w-48 mx-6"
             onClick={() => handleShowModal({ show: true })}
           >
-            Tambah User
+            Tambah Category
           </button>
           <div className="h-4" />
           <div className="bg-white flex flex-col px-6 py-6 text-gray-500">
@@ -231,43 +183,28 @@ export default function UserPage() {
                 <tr>
                   <th className="w-12">No</th>
                   <th>Nama</th>
-                  <th>Username</th>
-                  <th>Password</th>
-                  <th>Photo</th>
-                  <th>Level</th>
                   <th className="w-44">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {users.length === 0 && (
+                {categorys.length === 0 && (
                   <tr>
                     <td className="text-center" colSpan={7}>
                       Data tidak ditemukan
                     </td>
                   </tr>
                 )}
-                {users.length === 0 && (
-                  <tr>
-                    <td className="text-center" colSpan={7}>
-                      Data tidak ditemukan
-                    </td>
-                  </tr>
-                )}
-                {users.map((user: UserProps, index: number) => (
-                  <tr key={user.ID}>
+                {categorys.map((category: Category, index: number) => (
+                  <tr key={category.ID}>
                     <td>{index + 1}</td>
-                    <td>{user.name_user}</td>
-                    <td>{user.username}</td>
-                    <td>{user.password}</td>
-                    <td>{user.photo}</td>
-                    <td>{user.level}</td>
+                    <td>{category.name_category}</td>
                     <td className="flex text-white justify-center">
                       <button
                         className="bg-success rounded px-2 py-1 flex items-center justify-center w-24"
                         onClick={() =>
                           handleShowModal({
                             show: true,
-                            user: user,
+                            category: category,
                             manageProp: "update",
                           })
                         }
@@ -287,7 +224,7 @@ export default function UserPage() {
                       <div className="w-4" />
                       <button
                         className="bg-red-500 rounded px-2 py-1 flex items-center justify-center w-24"
-                        onClick={() => deleteUser(user.ID)}
+                        onClick={() => deleteCategory(category.ID)}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
