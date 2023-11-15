@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Navbar() {
   return (
-    <div className="flex flex-col fixed top z-[1] w-full">
+    <div className="flex flex-col fixed top z-[1] w-full bg-slate-100">
       <nav className="flex p-4 items-center">
         <div className="w-16" />
         <>

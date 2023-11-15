@@ -3,7 +3,7 @@ import React from "react";
 export default function Sidebar() {
   return (
     <>
-      <div className="bg-blue-950 h-screen fixed left z-[1] px-3 space-y-6 pt-4 w-min">
+      <div className="bg-blue-950 h-screen fixed left z-[2] px-4 space-y-6 pt-4 w-min">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

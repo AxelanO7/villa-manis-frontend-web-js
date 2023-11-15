@@ -10,69 +10,75 @@ import {
 } from "../components/modal";
 import { Input } from "../components/input";
 
-interface Category {
+interface Expenditure {
   ID: number;
-  name_category: string;
+  no_output: string;
+  date_output: string;
+  status_output: number;
 }
 
-export default function CategoryPage() {
-  const [categorys, setCategorys] = useState<Category[]>([]);
+export default function IncomePage() {
+  const [expenditure, setExpenditure] = useState<Expenditure[]>([]);
 
-  const [idCategory, setIdCategory] = useState<any>();
-  const [name, setName] = useState<any>();
+  const [idOutput, setIdOutput] = useState<number>();
+  const [noOutput, setNoOutput] = useState<string>();
+  const [dateOutput, setDateOutput] = useState<string>();
+  const [statusOutput, setStatusOutput] = useState<number>();
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [manage, setManage] = useState<any>(null);
 
-  const itemsBreadcrumb = ["Home", "Management Category"];
+  const itemsBreadcrumb = ["Home", "Transaksi Pengeluaran"];
 
   useEffect(() => {
-    fetchCategorys();
+    fetchExpenditure();
   }, []);
 
-  const fetchCategorys = async () => {
+  const fetchExpenditure = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/category");
-      setCategorys(response.data.data);
-      console.log(response.data);
+      const response = await axios.get("http://localhost:8080/api/output");
+      setExpenditure(response.data.data);
     } catch (error) {
       alert("Data gagal diambil");
     }
   };
 
-  const createCategory = async () => {
+  const createExpenditure = async () => {
     try {
-      await axios.post("http://localhost:8080/api/category", {
-        name_category: name,
+      await axios.post("http://localhost:8080/api/output", {
+        no_output: noOutput,
+        date_output: dateOutput,
+        status_output: statusOutput,
       });
       alert("Data berhasil ditambahkan");
       handleShowModal({ show: false });
-      fetchCategorys();
+      fetchExpenditure();
     } catch (error) {
       alert("Data gagal ditambahkan");
     }
   };
 
-  const updateCategory = async (idProp: number) => {
+  const updateExpenditure = async (idProp: number) => {
     try {
-      await axios.put(`http://localhost:8080/api/category/${idProp}`, {
-        ID: idCategory,
-        name_category: name,
+      await axios.put(`http://localhost:8080/api/output/${idProp}`, {
+        no_output: noOutput,
+        date_output: dateOutput,
+        status_output: statusOutput,
       });
       alert("Data berhasil diubah");
       handleShowModal({ show: false });
-      fetchCategorys();
+      fetchExpenditure();
     } catch (error) {
       alert("Data gagal diubah");
     }
   };
 
-  const deleteCategory = async (idProp: number) => {
+  const deleteExpenditure = async (idProp: number) => {
     try {
-      await axios.delete(`http://localhost:8080/api/category/${idProp}`);
+      await axios.delete(`http://localhost:8080/api/output/${idProp}`);
       alert("Data berhasil dihapus");
       handleShowModal({ show: false });
-      fetchCategorys();
+      fetchExpenditure();
     } catch (error) {
       alert("Data gagal dihapus");
     }
@@ -80,32 +86,35 @@ export default function CategoryPage() {
 
   const handleShowModal = ({
     show = true,
-    category,
+    expenditure,
     manageProp = "create",
   }: {
     show?: boolean;
-    category?: Category;
+    expenditure?: Expenditure;
     manageProp?: string;
   }) => {
+    clearOutput();
     setShowModal(show);
     setManage(manageProp);
-    if (manageProp === "create") {
-      clearInput();
-    } else if (manageProp === "update") {
-      setIdCategory(category?.ID);
-      setName(category?.name_category);
+    if (manageProp === "update") {
+      setIdOutput(expenditure!.ID);
+      setNoOutput(expenditure!.no_output);
+      setDateOutput(expenditure!.date_output);
+      setStatusOutput(expenditure!.status_output);
     }
   };
 
-  const clearInput = () => {
-    setIdCategory(null);
-    setName(null);
+  const clearOutput = () => {
+    setIdOutput(undefined);
+    setNoOutput(undefined);
+    setDateOutput(undefined);
+    setStatusOutput(undefined);
   };
 
   return (
     <>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <ModalHeader>Tambah Category</ModalHeader>
+        <ModalHeader>Tambah Pengeluaran</ModalHeader>
         <ModalBody>
           <div className="flex flex-col space-y-4">
             {/* {manage === "update" && (
@@ -117,11 +126,36 @@ export default function CategoryPage() {
               />
             )} */}
             <Input
-              label="Nama"
-              value={name}
+              label="No Transaksi"
+              value={noOutput!}
               type="text"
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setNoOutput(e.target.value)}
             />
+            <Input
+              label="Tanggal Transaksi"
+              value={dateOutput!}
+              type="date"
+              onChange={(e) => setDateOutput(e.target.value)}
+            />
+            <Input
+              label="Status"
+              type="number"
+              value={statusOutput?.toString()!}
+              onChange={(e) => setStatusOutput(parseInt(e.target.value))}
+            />
+            {/* <div className="flex flex-col">
+              <label className="text-gray-600 text-sm font-medium">Sifat</label>
+              <div className="h-1" />
+              <select
+                className="border rounded px-4 py-1 bg-white"
+                onChange={(e) => setIdCategory(parseInt(e.target.value))}
+                value={idCategory!}
+              >
+                {categorys.map((category: Category) => (
+                  <option value={category.ID}>{category.name_category}</option>
+                ))}
+              </select>
+            </div> */}
           </div>
         </ModalBody>
         <ModalFooter>
@@ -129,8 +163,8 @@ export default function CategoryPage() {
             className="bg-success rounded px-4 py-1 text-white"
             onClick={
               manage === "update"
-                ? () => updateCategory(idCategory)
-                : () => createCategory()
+                ? () => updateExpenditure(idOutput!)
+                : () => createExpenditure()
             }
           >
             Simpan
@@ -148,20 +182,37 @@ export default function CategoryPage() {
       <BaseLayout>
         <Breadcrumb
           items={itemsBreadcrumb}
-          title="Management Category"
+          title="Transaksi Pengeluaran"
           paddingHorizontal={32}
         />
-        <div className="h-8" />
-        <div className="flex flex-col bg-slate-50 rounded mx-8 shadow">
-          <div className="h-4" />
-          <button
-            className="bg-success text-white rounded px-4 py-2 w-48 mx-6"
-            onClick={() => handleShowModal({ show: true })}
-          >
-            Tambah Category
-          </button>
-          <div className="h-4" />
-          <div className="bg-white flex flex-col px-6 py-6 text-gray-500">
+        <div className="flex flex-col bg-white rounded m-8 shadow">
+          <div className="pt-8 px-6">
+            <button
+              className="bg-success text-white rounded px-4 py-2 w-48 flex w-max items-center"
+              onClick={() => handleShowModal({ show: true })}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="white"
+                className="w-4 h-4"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <div className="w-2" />
+              Tambah Pengeluaran
+            </button>
+            <div className="h-2" />
+            <h3 className="text-center">Data Transaksi Pengeluaran</h3>
+            <div className="h-4" />
+          </div>
+          <hr />
+          <div className="px-8">
+            <div className="h-8" />
             <div className="flex items-center">
               <p>Show</p>
               <select className="border rounded mx-2 px-4 py-1 bg-white">
@@ -182,29 +233,24 @@ export default function CategoryPage() {
               <thead>
                 <tr>
                   <th className="w-12 border py-2">No</th>
-                  <th className="border py-2">Nama</th>
-                  <th className="w-60 border py-2">Action</th>
+                  <th className="border py-2">Bulan Transaksi</th>
+                  <th className="border py-2">Status</th>
+                  <th className="w-64 border py-2">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {categorys.length === 0 && (
+                {expenditure.map((output: Expenditure, index: number) => (
                   <tr>
-                    <td className="text-center border py-2" colSpan={7}>
-                      Data tidak ditemukan
-                    </td>
-                  </tr>
-                )}
-                {categorys.map((category: Category, index: number) => (
-                  <tr key={category.ID}>
                     <td className="border py-2">{index + 1}</td>
-                    <td className="border py-2">{category.name_category}</td>
+                    <td className="border py-2">{output.date_output}</td>
+                    <td className="border py-2">{output.status_output}</td>
                     <td className="flex text-white justify-center border py-2 px-4">
                       <button
-                        className="bg-success rounded px-2 py-1 flex items-center justify-center flex-1"
+                        className="bg-success rounded px-2 py-1 flex-1 flex items-center justify-center"
                         onClick={() =>
                           handleShowModal({
                             show: true,
-                            category: category,
+                            expenditure: output,
                             manageProp: "update",
                           })
                         }
@@ -223,8 +269,8 @@ export default function CategoryPage() {
                       </button>
                       <div className="w-4" />
                       <button
-                        className="bg-red-500 rounded px-2 py-1 flex items-center justify-center flex-1"
-                        onClick={() => deleteCategory(category.ID)}
+                        className="bg-red-500 rounded px-2 py-1 flex-1 flex items-center justify-center"
+                        onClick={() => deleteExpenditure(output.ID)}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -255,6 +301,7 @@ export default function CategoryPage() {
                 Next
               </button>
             </div>
+            <div className="h-16" />
           </div>
         </div>
       </BaseLayout>

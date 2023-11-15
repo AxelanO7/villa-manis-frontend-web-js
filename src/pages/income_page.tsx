@@ -10,69 +10,75 @@ import {
 } from "../components/modal";
 import { Input } from "../components/input";
 
-interface Category {
+interface Income {
   ID: number;
-  name_category: string;
+  no_input: string;
+  date_input: string;
+  status_input: number;
 }
 
-export default function CategoryPage() {
-  const [categorys, setCategorys] = useState<Category[]>([]);
+export default function IncomePage() {
+  const [incomes, setIncomes] = useState<Income[]>([]);
 
-  const [idCategory, setIdCategory] = useState<any>();
-  const [name, setName] = useState<any>();
+  const [idInput, setIdInput] = useState<number>();
+  const [noInput, setNoInput] = useState<string>();
+  const [dateInput, setDateInput] = useState<string>();
+  const [statusInput, setStatusInput] = useState<number>();
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [manage, setManage] = useState<any>(null);
 
-  const itemsBreadcrumb = ["Home", "Management Category"];
+  const itemsBreadcrumb = ["Home", "Transaksi Pemasukan"];
 
   useEffect(() => {
-    fetchCategorys();
+    fetchIncomes();
   }, []);
 
-  const fetchCategorys = async () => {
+  const fetchIncomes = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/category");
-      setCategorys(response.data.data);
-      console.log(response.data);
+      const response = await axios.get("http://localhost:8080/api/input");
+      setIncomes(response.data.data);
     } catch (error) {
       alert("Data gagal diambil");
     }
   };
 
-  const createCategory = async () => {
+  const createIncome = async () => {
     try {
-      await axios.post("http://localhost:8080/api/category", {
-        name_category: name,
+      await axios.post("http://localhost:8080/api/input", {
+        no_input: noInput,
+        date_input: dateInput,
+        status_input: statusInput,
       });
       alert("Data berhasil ditambahkan");
       handleShowModal({ show: false });
-      fetchCategorys();
+      fetchIncomes();
     } catch (error) {
       alert("Data gagal ditambahkan");
     }
   };
 
-  const updateCategory = async (idProp: number) => {
+  const updateIncome = async (idProp: number) => {
     try {
-      await axios.put(`http://localhost:8080/api/category/${idProp}`, {
-        ID: idCategory,
-        name_category: name,
+      await axios.put(`http://localhost:8080/api/input/${idProp}`, {
+        no_input: noInput,
+        date_input: dateInput,
+        status_input: statusInput,
       });
       alert("Data berhasil diubah");
       handleShowModal({ show: false });
-      fetchCategorys();
+      fetchIncomes();
     } catch (error) {
       alert("Data gagal diubah");
     }
   };
 
-  const deleteCategory = async (idProp: number) => {
+  const deleteAccount = async (idProp: number) => {
     try {
-      await axios.delete(`http://localhost:8080/api/category/${idProp}`);
+      await axios.delete(`http://localhost:8080/api/input/${idProp}`);
       alert("Data berhasil dihapus");
       handleShowModal({ show: false });
-      fetchCategorys();
+      fetchIncomes();
     } catch (error) {
       alert("Data gagal dihapus");
     }
@@ -80,32 +86,35 @@ export default function CategoryPage() {
 
   const handleShowModal = ({
     show = true,
-    category,
+    income,
     manageProp = "create",
   }: {
     show?: boolean;
-    category?: Category;
+    income?: Income;
     manageProp?: string;
   }) => {
+    clearInput();
     setShowModal(show);
     setManage(manageProp);
-    if (manageProp === "create") {
-      clearInput();
-    } else if (manageProp === "update") {
-      setIdCategory(category?.ID);
-      setName(category?.name_category);
+    if (manageProp === "update") {
+      setIdInput(income!.ID);
+      setNoInput(income!.no_input);
+      setDateInput(income!.date_input);
+      setStatusInput(income!.status_input);
     }
   };
 
   const clearInput = () => {
-    setIdCategory(null);
-    setName(null);
+    setIdInput(undefined);
+    setNoInput(undefined);
+    setDateInput(undefined);
+    setStatusInput(undefined);
   };
 
   return (
     <>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <ModalHeader>Tambah Category</ModalHeader>
+        <ModalHeader>Tambah Pemasukan</ModalHeader>
         <ModalBody>
           <div className="flex flex-col space-y-4">
             {/* {manage === "update" && (
@@ -117,11 +126,36 @@ export default function CategoryPage() {
               />
             )} */}
             <Input
-              label="Nama"
-              value={name}
+              label="No Transaksi"
+              value={noInput!}
               type="text"
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setNoInput(e.target.value)}
             />
+            <Input
+              label="Tanggal Transaksi"
+              value={dateInput!}
+              type="date"
+              onChange={(e) => setDateInput(e.target.value)}
+            />
+            <Input
+              label="Status"
+              type="number"
+              value={statusInput?.toString()!}
+              onChange={(e) => setStatusInput(parseInt(e.target.value))}
+            />
+            {/* <div className="flex flex-col">
+              <label className="text-gray-600 text-sm font-medium">Sifat</label>
+              <div className="h-1" />
+              <select
+                className="border rounded px-4 py-1 bg-white"
+                onChange={(e) => setIdCategory(parseInt(e.target.value))}
+                value={idCategory!}
+              >
+                {categorys.map((category: Category) => (
+                  <option value={category.ID}>{category.name_category}</option>
+                ))}
+              </select>
+            </div> */}
           </div>
         </ModalBody>
         <ModalFooter>
@@ -129,8 +163,8 @@ export default function CategoryPage() {
             className="bg-success rounded px-4 py-1 text-white"
             onClick={
               manage === "update"
-                ? () => updateCategory(idCategory)
-                : () => createCategory()
+                ? () => updateIncome(idInput!)
+                : () => createIncome()
             }
           >
             Simpan
@@ -148,20 +182,37 @@ export default function CategoryPage() {
       <BaseLayout>
         <Breadcrumb
           items={itemsBreadcrumb}
-          title="Management Category"
+          title="Transaksi Pemasukan"
           paddingHorizontal={32}
         />
-        <div className="h-8" />
-        <div className="flex flex-col bg-slate-50 rounded mx-8 shadow">
-          <div className="h-4" />
-          <button
-            className="bg-success text-white rounded px-4 py-2 w-48 mx-6"
-            onClick={() => handleShowModal({ show: true })}
-          >
-            Tambah Category
-          </button>
-          <div className="h-4" />
-          <div className="bg-white flex flex-col px-6 py-6 text-gray-500">
+        <div className="flex flex-col bg-white rounded m-8 shadow">
+          <div className="pt-8 px-6">
+            <button
+              className="bg-success text-white rounded px-4 py-2 w-48 flex w-max items-center"
+              onClick={() => handleShowModal({ show: true })}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="white"
+                className="w-4 h-4"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <div className="w-2" />
+              Tambah Pemasukan
+            </button>
+            <div className="h-2" />
+            <h3 className="text-center">Data Transaksi Pemasukan</h3>
+            <div className="h-4" />
+          </div>
+          <hr />
+          <div className="px-8">
+            <div className="h-8" />
             <div className="flex items-center">
               <p>Show</p>
               <select className="border rounded mx-2 px-4 py-1 bg-white">
@@ -182,29 +233,24 @@ export default function CategoryPage() {
               <thead>
                 <tr>
                   <th className="w-12 border py-2">No</th>
-                  <th className="border py-2">Nama</th>
-                  <th className="w-60 border py-2">Action</th>
+                  <th className="border py-2">Bulan Transaksi</th>
+                  <th className="border py-2">Status</th>
+                  <th className="w-64 border py-2">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {categorys.length === 0 && (
+                {incomes.map((income: Income, index: number) => (
                   <tr>
-                    <td className="text-center border py-2" colSpan={7}>
-                      Data tidak ditemukan
-                    </td>
-                  </tr>
-                )}
-                {categorys.map((category: Category, index: number) => (
-                  <tr key={category.ID}>
                     <td className="border py-2">{index + 1}</td>
-                    <td className="border py-2">{category.name_category}</td>
+                    <td className="border py-2">{income.date_input}</td>
+                    <td className="border py-2">{income.status_input}</td>
                     <td className="flex text-white justify-center border py-2 px-4">
                       <button
-                        className="bg-success rounded px-2 py-1 flex items-center justify-center flex-1"
+                        className="bg-success rounded px-2 py-1 flex-1 flex items-center justify-center"
                         onClick={() =>
                           handleShowModal({
                             show: true,
-                            category: category,
+                            income: income,
                             manageProp: "update",
                           })
                         }
@@ -223,8 +269,8 @@ export default function CategoryPage() {
                       </button>
                       <div className="w-4" />
                       <button
-                        className="bg-red-500 rounded px-2 py-1 flex items-center justify-center flex-1"
-                        onClick={() => deleteCategory(category.ID)}
+                        className="bg-red-500 rounded px-2 py-1 flex-1 flex items-center justify-center"
+                        onClick={() => deleteAccount(income.ID)}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -255,6 +301,7 @@ export default function CategoryPage() {
                 Next
               </button>
             </div>
+            <div className="h-16" />
           </div>
         </div>
       </BaseLayout>

@@ -22,9 +22,9 @@ export default function LoginPage() {
     <>
       <div className="flex flex-col min-h-screen bg-slate-50 justify-center items-center">
         <div className="bg-white bg-white rounded-xl shadow text-center p-8 w-96">
-          <h2 className="text-base font-bold text-gray-500">Welcome to</h2>
+          <h2 className="text-lg font-medium text-gray-500">Welcome to</h2>
           <div className="h-6" />
-          <h3 className="text-xl font-bold text-gray-500">Villa Manis</h3>
+          <h3 className="text-2xl font-medium	text-gray-500">Villa Manis</h3>
           <div className="h-6" />
           <input
             className="border border-gray-300 rounded px-4 py-1 w-full"
@@ -48,7 +48,7 @@ export default function LoginPage() {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              className="w-6 h-6"
+              className="w-5 h-5"
             >
               <path
                 fillRule="evenodd"
@@ -68,7 +68,7 @@ export default function LoginPage() {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              className="w-6 h-6"
+              className="w-5 h-5"
             >
               <path
                 fillRule="evenodd"

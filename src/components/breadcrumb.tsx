@@ -1,4 +1,3 @@
-import { title } from "process";
 import React from "react";
 
 interface BreadcrumbProps {
@@ -20,6 +19,7 @@ export function Breadcrumb({
       style={{ padding: `16px ${paddingHorizontal}px` }}
     >
       <h1 className="text-3xl text-gray-500">{title}</h1>
+      <div className="h-4" />
       <div
         className="flex w-full"
         style={{
