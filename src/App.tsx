@@ -20,6 +20,7 @@ function App() {
         <Route path="user" element={<UserPage />} />
         <Route path="account" element={<AccountPage />} />
         <Route path="category" element={<CategoryPage />} />
+        <Route path="owner" element={<OwnerPage />} />
         <Route path="income" element={<IncomePage />} />
         <Route path="expenditure" element={<ExpenditurePage />} />
         <Route path="journal" element={<JournalPage />} />
