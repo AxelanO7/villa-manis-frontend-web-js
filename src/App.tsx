@@ -14,7 +14,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<JournalPage />} />
+        <Route path="/" element={<LoginPage />} />
         <Route path="main-page" element={<MainPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="user" element={<UserPage />} />
@@ -22,6 +22,7 @@ function App() {
         <Route path="category" element={<CategoryPage />} />
         <Route path="income" element={<IncomePage />} />
         <Route path="expenditure" element={<ExpenditurePage />} />
+        <Route path="journal" element={<JournalPage />} />
       </Routes>
     </BrowserRouter>
   );
