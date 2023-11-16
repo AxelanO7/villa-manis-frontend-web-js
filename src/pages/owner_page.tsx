@@ -88,7 +88,7 @@ export default function OwnerPage() {
         </div>
       </div>
       <div className="h-8" />
-      <div className="bg-white grow mx-8 py-4 px-8">
+      <div className="bg-white grow rounded mx-8 py-4 px-8">
         <div className="flex">
           <select className="border rounded px-4 py-1 bg-white w-72 text-gray-500">
             <option>Pilih Tahun</option>
@@ -121,6 +121,17 @@ export default function OwnerPage() {
               d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
             />
           </svg>
+        </div>
+        {/* todo: grafik */}
+        <div className="h-80" />
+        <div className="flex items-center justify-center">
+          <div className="w-2 h-2 bg-blue-300 rounded-full" />
+          <div className="w-2" />
+          <p>Pendapatan Rp</p>
+          <div className="w-8" />
+          <div className="w-2 h-2 bg-purple-500 rounded-full" />
+          <div className="w-2" />
+          <p>Pengeluaran Rp</p>
         </div>
       </div>
       <div className="h-8" />
