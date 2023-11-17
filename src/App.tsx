@@ -5,6 +5,7 @@ import UserPage from "./pages/user_page";
 import AccountPage from "./pages/account_page";
 import CategoryPage from "./pages/category_page";
 import IncomePage from "./pages/income_page";
+import CreateIncomePage from "./pages/create_income";
 import ExpenditurePage from "./pages/expenditure_page";
 import OwnerPage from "./pages/owner_page";
 import JournalPage from "./pages/journal_page";
@@ -22,6 +23,7 @@ function App() {
         <Route path="category" element={<CategoryPage />} />
         <Route path="owner" element={<OwnerPage />} />
         <Route path="income" element={<IncomePage />} />
+        <Route path="add-income" element={<CreateIncomePage />} />
         <Route path="expenditure" element={<ExpenditurePage />} />
         <Route path="journal" element={<JournalPage />} />
       </Routes>
