@@ -6,16 +6,20 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
 
   const tapLogin = async () => {
-    const response = await axios.post("http://localhost:8080/api/login", {
-      username: username,
-      password: password,
-    });
-    if (response.status === 200) {
-      alert("Login berhasil");
-      window.location.href = "/main-page";
-    } else {
-      alert("Login gagal");
-    }
+    await axios
+      .post("http://localhost:8080/api/login", {
+        username: username,
+        password: password,
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          alert("Login berhasil");
+          window.location.href = "/main-page";
+        }
+      })
+      .catch(() => {
+        alert("Login gagal");
+      });
   };
 
   return (

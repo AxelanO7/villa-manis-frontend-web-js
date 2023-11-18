@@ -14,7 +14,7 @@ interface Income {
   ID: number;
   no_input: string;
   date_input: string;
-  status_input: number;
+  status_input: string;
 }
 
 export default function IncomePage() {
@@ -23,7 +23,7 @@ export default function IncomePage() {
   const [idInput, setIdInput] = useState<number>();
   const [noInput, setNoInput] = useState<string>();
   const [dateInput, setDateInput] = useState<string>();
-  const [statusInput, setStatusInput] = useState<number>();
+  const [statusInput, setStatusInput] = useState<string>();
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [manage, setManage] = useState<any>(null);
@@ -35,12 +35,16 @@ export default function IncomePage() {
   }, []);
 
   const fetchIncomes = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/api/input");
-      setIncomes(response.data.data);
-    } catch (error) {
-      alert("Data gagal diambil");
-    }
+    await axios
+      .get("http://localhost:8080/api/input")
+      .then((response) => {
+        setIncomes(response.data.data);
+      })
+      .catch((error) => {
+        if (error.response.data.message !== "Input not found") {
+          alert("Data gagal diambil");
+        }
+      });
   };
 
   const createIncome = async () => {
@@ -125,24 +129,53 @@ export default function IncomePage() {
                 onChange={(e) => setIdCategory(parseInt(e.target.value))}
               />
             )} */}
-            <Input
+            {/* <Input
               label="No Transaksi"
               value={noInput!}
               type="text"
               onChange={(e) => setNoInput(e.target.value)}
-            />
+            /> */}
+            todo: generate no transaksi
+            <div className="form-group flex flex-col">
+              <label className="text-gray-600 text-sm font-medium pb-1">
+                No Transaksi
+              </label>
+              <input
+                type="text"
+                className="form-control border rounded px-2 py-1 bg-white"
+                value={
+                  "TRX" +
+                  Math.floor(Math.random() * 10000000000000000) +
+                  1 +
+                  Math.floor(Math.random() * 10000000000000000) +
+                  1
+                }
+                disabled
+              />
+            </div>
             <Input
               label="Tanggal Transaksi"
               value={dateInput!}
               type="date"
               onChange={(e) => setDateInput(e.target.value)}
             />
-            <Input
+            <div className="form-group flex flex-col">
+              <label className="text-gray-600 text-sm font-medium pb-1">
+                Status
+              </label>
+              <input
+                type="text"
+                className="form-control border rounded px-2 py-1 bg-white"
+                value="debit"
+                disabled
+              />
+            </div>
+            {/* <Input
               label="Status"
-              type="number"
+              type="string"
               value={statusInput?.toString()!}
               onChange={(e) => setStatusInput(parseInt(e.target.value))}
-            />
+            /> */}
             {/* <div className="flex flex-col">
               <label className="text-gray-600 text-sm font-medium">Sifat</label>
               <div className="h-1" />

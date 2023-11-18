@@ -35,12 +35,16 @@ export default function IncomePage() {
   }, []);
 
   const fetchExpenditure = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/api/output");
-      setExpenditure(response.data.data);
-    } catch (error) {
-      alert("Data gagal diambil");
-    }
+    await axios
+      .get("http://localhost:8080/api/output")
+      .then((response) => {
+        setExpenditure(response.data.data);
+      })
+      .catch((error) => {
+        if (error.response.data.message !== "Outputs not found") {
+          alert("Data gagal diambil");
+        }
+      });
   };
 
   const createExpenditure = async () => {
@@ -125,24 +129,53 @@ export default function IncomePage() {
                 onChange={(e) => setIdCategory(parseInt(e.target.value))}
               />
             )} */}
-            <Input
+            {/* <Input
               label="No Transaksi"
               value={noOutput!}
               type="text"
               onChange={(e) => setNoOutput(e.target.value)}
-            />
+            /> */}
+            todo: generate no transaksi
+            <div className="form-group flex flex-col">
+              <label className="text-gray-600 text-sm font-medium pb-1">
+                No Transaksi
+              </label>
+              <input
+                type="text"
+                className="form-control border rounded px-2 py-1 bg-white"
+                value={
+                  "TRX" +
+                  Math.floor(Math.random() * 10000000000000000) +
+                  1 +
+                  Math.floor(Math.random() * 10000000000000000) +
+                  1
+                }
+                disabled
+              />
+            </div>
             <Input
               label="Tanggal Transaksi"
               value={dateOutput!}
               type="date"
               onChange={(e) => setDateOutput(e.target.value)}
             />
-            <Input
+            {/* <Input
               label="Status"
               type="number"
               value={statusOutput?.toString()!}
               onChange={(e) => setStatusOutput(parseInt(e.target.value))}
-            />
+            /> */}
+            <div className="form-group flex flex-col">
+              <label className="text-gray-600 text-sm font-medium pb-1">
+                Status
+              </label>
+              <input
+                type="text"
+                className="form-control border rounded px-2 py-1 bg-white"
+                value="kredit"
+                disabled
+              />
+            </div>
             {/* <div className="flex flex-col">
               <label className="text-gray-600 text-sm font-medium">Sifat</label>
               <div className="h-1" />
