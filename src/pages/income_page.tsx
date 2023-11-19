@@ -145,9 +145,9 @@ export default function IncomePage() {
                 className="form-control border rounded px-2 py-1 bg-white"
                 value={
                   "TRX" +
-                  Math.floor(Math.random() * 10000000000000000) +
+                  Math.floor(Math.random() * 10000) +
                   1 +
-                  Math.floor(Math.random() * 10000000000000000) +
+                  Math.floor(Math.random() * 10000) +
                   1
                 }
                 disabled
