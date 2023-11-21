@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import BaseLayout from "../layouts/base";
-import { Breadcrumb } from "../components/breadcrumb";
+import BaseLayout from "../../layouts/base";
+import { Breadcrumb } from "../../components/breadcrumb";
 import axios from "axios";
 import {
   Modal,
   ModalBody,
   ModalHeader,
   ModalFooter,
-} from "../components/modal";
-import { Input } from "../components/input";
+} from "../../components/modal";
+import { Input } from "../../components/input";
 
 interface Income {
   ID: number;
