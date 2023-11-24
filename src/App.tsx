@@ -19,11 +19,16 @@ import CreateJournalPage from "./pages/journal/create_journal_page";
 import DetailJournalPage from "./pages/journal/detail_journal_page";
 import PostLedgerPage from "./pages/journal/post_ledger_page";
 
+import ReportJournalPage from "./pages/report/report_journal_page";
+import ReportBalanceSheetPage from "./pages/report/report_balance_sheet_page";
+import ReportProfitLossPage from "./pages/report/report_profit_loss";
+import ReportCapitalChangePage from "./pages/report/report_capital_change";
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<PostLedgerPage />} />
+        <Route path="/" element={<ReportCapitalChangePage />} />
         <Route path="main-page" element={<MainPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="user" element={<UserPage />} />
@@ -41,6 +46,11 @@ function App() {
         <Route path="add-journal" element={<CreateJournalPage />} />
         <Route path="detail-journal" element={<DetailJournalPage />} />
         <Route path="post-ledger" element={<PostLedgerPage />} />
+
+        <Route path="report-journal" element={<ReportJournalPage />} />
+        <Route path="balance-sheet" element={<ReportBalanceSheetPage />} />
+        <Route path="profit-loss" element={<ReportProfitLossPage />} />
+        <Route path="capital-change" element={<ReportCapitalChangePage />} />
       </Routes>
     </BrowserRouter>
   );
