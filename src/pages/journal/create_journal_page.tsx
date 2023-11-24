@@ -10,11 +10,11 @@ import {
 } from "../../components/modal";
 import { Input } from "../../components/input";
 
-interface Expenditure {
+interface Journal {
   ID: number | null;
-  no_output: string;
-  date_output: string;
-  status_output: number;
+  no_input: string;
+  date_input: string;
+  status_input: number;
 }
 
 // interface Account {
@@ -25,24 +25,25 @@ interface Expenditure {
 //   status_account: number;
 // }
 
-interface DetalExpenditure {
+interface DetailJournal {
   ID: number | null;
-  id_cash: number;
-  output_information: string;
-  quantity: number;
-  total_price: number;
-  status_cart: number;
-  output_date: string;
-  id_output: number;
-  output: Expenditure;
+  journal_information: string;
+  ref_journal: string;
+  debit: number;
+  credit: number;
+  date_transaction: string;
+  status_post: number;
+  id_general_journal: number;
+  general_journal: Journal;
   // id_account: number;
+  // account: Account;
 }
 
-export default function CreateExpenditurePage() {
-  const [expenditure, setExpenditure] = useState<Expenditure>();
-  const [detailExpendituresTemp, setDetailExpendituresTemp] = useState<
-    DetalExpenditure[]
-  >([]);
+export default function CreateJournalPage() {
+  const [income, setIncome] = useState<Journal>();
+  const [detailIncomesTemp, setDetailIncomesTemp] = useState<DetailJournal[]>(
+    []
+  );
 
   const [idInput, setIdInput] = useState<number>();
   const [noInput, setNoInput] = useState<string>();
@@ -52,17 +53,17 @@ export default function CreateExpenditurePage() {
   // const [showModal, setShowModal] = useState<boolean>(false);
   // const [manage, setManage] = useState<any>(null);
 
-  const itemsBreadcrumb = ["Home", "Transaksi Pengeluaran"];
+  const itemsBreadcrumb = ["Home", "Tambah Jurnal"];
 
   // useEffect(() => {
-  // fetchExpenditures();
+  // fetchIncomes();
   // }, []);
 
-  // const fetchExpenditures = async () => {
+  // const fetchIncomes = async () => {
   //   await axios
   //     .get("http://localhost:8080/api/input")
   //     .then((response) => {
-  //       setExpendituresTemp(response.data.data);
+  //       setIncomesTemp(response.data.data);
   //     })
   //     .catch((error) => {
   //       console.log(error);
@@ -70,7 +71,7 @@ export default function CreateExpenditurePage() {
   //     });
   // };
 
-  // const createExpenditure = async () => {
+  // const createIncome = async () => {
   //   try {
   //     await axios.post("http://localhost:8080/api/input", {
   //       no_input: noInput,
@@ -79,13 +80,13 @@ export default function CreateExpenditurePage() {
   //     });
   //     alert("Data berhasil ditambahkan");
   //     handleShowModal({ show: false });
-  //     fetchExpenditures();
+  //     fetchIncomes();
   //   } catch (error) {
   //     alert("Data gagal ditambahkan");
   //   }
   // };
 
-  // const updateExpenditure = async (idProp: number) => {
+  // const updateIncome = async (idProp: number) => {
   //   try {
   //     await axios.put(`http://localhost:8080/api/input/${idProp}`, {
   //       no_input: noInput,
@@ -94,7 +95,7 @@ export default function CreateExpenditurePage() {
   //     });
   //     alert("Data berhasil diubah");
   //     handleShowModal({ show: false });
-  //     fetchExpenditures();
+  //     fetchIncomes();
   //   } catch (error) {
   //     alert("Data gagal diubah");
   //   }
@@ -105,7 +106,7 @@ export default function CreateExpenditurePage() {
   //     await axios.delete(`http://localhost:8080/api/input/${idProp}`);
   //     alert("Data berhasil dihapus");
   //     handleShowModal({ show: false });
-  //     fetchExpenditures();
+  //     fetchIncomes();
   //   } catch (error) {
   //     alert("Data gagal dihapus");
   //   }
@@ -113,21 +114,21 @@ export default function CreateExpenditurePage() {
 
   // const handleShowModal = ({
   //   show = true,
-  //   expenditure,
+  //   income,
   //   manageProp = "create",
   // }: {
   //   show?: boolean;
-  //   expenditure?: Expenditure;
+  //   income?: Income;
   //   manageProp?: string;
   // }) => {
   //   clearInput();
   //   setShowModal(show);
   //   setManage(manageProp);
   //   if (manageProp === "update") {
-  //     setIdInput(expenditure!.ID);
-  //     setNoInput(expenditure!.no_input);
-  //     setDateInput(expenditure!.date_input);
-  //     setStatusInput(expenditure!.status_input);
+  //     setIdInput(income!.ID);
+  //     setNoInput(income!.no_input);
+  //     setDateInput(income!.date_input);
+  //     setStatusInput(income!.status_input);
   //   }
   // };
 
@@ -138,7 +139,7 @@ export default function CreateExpenditurePage() {
   //   setStatusInput(undefined);
   // };
 
-  const validateOutput = () => {
+  const validateInput = () => {
     if (noInput === undefined || dateInput === undefined) {
       alert("Data transaksi tidak boleh kosong");
       return false;
@@ -146,47 +147,47 @@ export default function CreateExpenditurePage() {
     return true;
   };
 
-  const handleAddExpenditureList = () => {
-    if (!validateOutput()) return;
+  const handleAddIncomeList = () => {
+    if (!validateInput()) return;
 
-    setExpenditure({
+    setIncome({
       ID: null,
-      no_output: noInput!,
-      date_output: dateInput!,
-      status_output: statusInput!,
+      no_input: noInput!,
+      date_input: dateInput!,
+      status_input: statusInput!,
     });
 
-    setDetailExpendituresTemp([
-      ...detailExpendituresTemp,
+    setDetailIncomesTemp([
+      ...detailIncomesTemp,
       {
         ID: null,
-        id_cash: 0,
-        output_information: "-",
-        quantity: 0,
-        total_price: 0,
-        status_cart: 0,
-        output_date: "",
-        id_output: idInput!,
-        output: {
-          ID: expenditure?.ID || null,
-          no_output: expenditure!.no_output,
-          date_output: expenditure!.date_output,
-          status_output: expenditure!.status_output,
+        journal_information: "-",
+        status_post: 0,
+        credit: 0,
+        debit: 0,
+        ref_journal: "-",
+        date_transaction: "-",
+        id_general_journal: idInput!,
+        general_journal: {
+          ID: income?.ID || null,
+          no_input: income!.no_input,
+          date_input: income!.date_input,
+          status_input: income!.status_input,
         },
       },
     ]);
   };
 
-  const handleDeleteExpenditureList = (index: number) => {
-    const newDetailExpendituresTemp = [...detailExpendituresTemp];
-    newDetailExpendituresTemp.splice(index, 1);
-    setDetailExpendituresTemp(newDetailExpendituresTemp);
+  const handleDeleteIncomeList = (index: number) => {
+    const newDetailIncomesTemp = [...detailIncomesTemp];
+    newDetailIncomesTemp.splice(index, 1);
+    setDetailIncomesTemp(newDetailIncomesTemp);
   };
 
   return (
     <>
       {/* <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <ModalHeader>Tambah Pengeluaran</ModalHeader>
+        <ModalHeader>Tambah Pemasukan</ModalHeader>
         <ModalBody>
           <div className="flex flex-col space-y-4">
             {manage === "update" && (
@@ -235,8 +236,8 @@ export default function CreateExpenditurePage() {
             className="bg-success rounded px-4 py-1 text-white"
             onClick={
               manage === "update"
-                ? () => updateExpenditure(idInput!)
-                : () => createExpenditure()
+                ? () => updateIncome(idInput!)
+                : () => createIncome()
             }
           >
             Simpan
@@ -254,17 +255,27 @@ export default function CreateExpenditurePage() {
       <BaseLayout>
         <Breadcrumb
           items={itemsBreadcrumb}
-          title="Transaksi Pengeluaran"
+          title="Tambah Jurnal Umum"
           paddingHorizontal={32}
         />
         <div className="flex flex-col bg-white rounded m-8 shadow">
-          <h3 className="px-8 py-4">Transaksi Pengeluaran</h3>
+          <h3 className="px-4 py-4">Tambah Jurnal Umum</h3>
           <hr />
-          <div className="mt-4 px-8">
-            <button
+          <div className="mt-4 px-6">
+            <div className="border flex p-6 space-x-16 rounded">
+              <div className="flex-1 space-y-2">
+                <p>Tanggal Rekap</p>
+                <input type="date" className="border p-2 w-full" />
+              </div>
+              <div className="flex-1 space-y-2">
+                <p>No Transaksi</p>
+                <input type="text" className="border p-2 w-full" />
+              </div>
+            </div>
+            {/* <button
               className="bg-success text-white rounded px-4 py-2 w-48 flex w-max items-center"
               // onClick={() => handleShowModal({ show: true })}
-              onClick={handleAddExpenditureList}
+              onClick={handleAddIncomeList}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -280,74 +291,76 @@ export default function CreateExpenditurePage() {
               </svg>
               <div className="w-2" />
               Tambah Data
-            </button>
-            <div className="h-4" />
-            <table className="table-fixed text-center w-full">
+            </button> */}
+            <div className="h-2" />
+            <table className="table-fixed text-center w-full shadow-md">
               <thead>
                 <tr>
-                  <th className="w-12 border py-2">No</th>
+                  <th className="border py-2">Akun</th>
+                  <th className="border py-2">Tanggal Transaksi</th>
                   <th className="border py-2">Keterangan</th>
-                  <th className="border py-2 w-24">Qty</th>
-                  <th className="border py-2 w-72">Total</th>
+                  <th className="border py-2">Debit</th>
+                  <th className="border py-2">Kredit</th>
                   <th className="w-36 border py-2">Aksi</th>
                 </tr>
               </thead>
               <tbody>
-                {detailExpendituresTemp.length === 0 && (
+                {detailIncomesTemp.length === 0 && (
                   <tr>
-                    <td className="border py-2" colSpan={5}>
+                    <td className="border py-2" colSpan={6}>
                       Data tidak ditemukan, silahkan tambah data baru
                     </td>
                   </tr>
                 )}
-                {detailExpendituresTemp.map(
-                  (detailExpenditure: DetalExpenditure, index: number) => (
+                {detailIncomesTemp.map(
+                  (detailIncome: DetailJournal, index: number) => (
                     <tr>
                       <td className="border py-2">{index + 1}</td>
                       <td className="border py-2 px-4">
                         <input
                           type="text"
                           className="border rounded px-2 py-1 grow bg-slate-100 w-full text-center"
-                          value={detailExpenditure.output_information}
+                          value={detailIncome.journal_information}
                           onChange={(e) =>
-                            (detailExpendituresTemp[index].output_information =
+                            (detailIncomesTemp[index].journal_information =
                               e.target.value)
                           }
                         />
-                        {/* {detailExpenditure.input_information} */}
+                        {/* {detailIncome.input_information} */}
                       </td>
                       <td className="border py-2 px-4">
                         <input
                           type="text"
                           className="border rounded px-2 py-1 grow bg-slate-100 w-full text-center"
-                          value={detailExpenditure.quantity}
-                          onChange={(e) =>
-                            (detailExpendituresTemp[index].quantity = parseInt(
-                              e.target.value
-                            ))
-                          }
+                          // value={detailIncome.}
+                          // onChange={(e) =>
+                          //   (detailIncomesTemp[index].quantity = parseInt(
+                          //     e.target.value
+                          //   ))
+                          // }
                         />
-                        {/* {detailExpenditure.quantity} */}
+                        {/* {detailIncome.quantity} */}
                       </td>
                       <td className="border py-2 px-4">
                         <input
                           type="text"
                           className="border rounded px-2 py-1 grow bg-slate-100 w-full text-center"
-                          value={detailExpenditure.total_price}
-                          onChange={(e) =>
-                            (detailExpendituresTemp[index].total_price =
-                              parseInt(e.target.value))
-                          }
+                          // value={detailIncome.total_price}
+                          // onChange={(e) =>
+                          //   (detailIncomesTemp[index].total_price = parseInt(
+                          //     e.target.value
+                          //   ))
+                          // }
                         />
                       </td>
                       <td className="flex text-white justify-center border py-2 px-4">
                         {/* <button
                           className="bg-success rounded px-2 py-1 flex-1 flex items-center justify-center"
-                          onClick={() => handleEditExpenditureList(index)}
+                          onClick={() => handleEditIncomeList(index)}
                           // onClick={() =>
                           //   handleShowModal({
                           //     show: true,
-                          //     expenditure: expenditure,
+                          //     income: income,
                           //     manageProp: "update",
                           //   })
                           // }
@@ -367,8 +380,8 @@ export default function CreateExpenditurePage() {
                         <div className="w-4" /> */}
                         <button
                           className="bg-red-500 rounded px-2 py-1 flex-1 flex items-center justify-center"
-                          onClick={() => handleDeleteExpenditureList(index)}
-                          // onClick={() => deleteAccount(expenditure.ID)}
+                          onClick={() => handleDeleteIncomeList(index)}
+                          // onClick={() => deleteAccount(income.ID)}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -386,45 +399,36 @@ export default function CreateExpenditurePage() {
                     </tr>
                   )
                 )}
-                <tr>
-                  <td className="border py-2" colSpan={4}>
-                    Subtotal
-                  </td>
-                  <td className="border py-2">Rp 100</td>
-                </tr>
               </tbody>
             </table>
-            <div className="h-12" />
-            <div className="flex items-center">
-              <p className="w-40">No Transaksi</p>
+            <div className="flex bg-slate-50 p-4">
+              <button className="bg-success rounded px-2 py-1 flex flex items-center justify-center text-white h-max mt-2">
+                Tambah Data
+              </button>
+              <div className="w-36" />
+              <div className="space-y-2">
+                <p>Total Debet</p>
+                <input
+                  type="number"
+                  className="border rounded px-2 py-1 grow bg-slate-200"
+                />
+              </div>
               <div className="w-12" />
-              <input
-                type="text"
-                className="border rounded px-2 py-1 grow bg-slate-100"
-                onChange={(e) => setNoInput(e.target.value)}
-              />
+              <div className="space-y-2">
+                <p>Total Kredit</p>
+                <input
+                  type="number"
+                  className="border rounded px-2 py-1 grow bg-slate-200"
+                />
+              </div>
             </div>
-            <div className="h-8" />
-            <div className="flex items-center">
-              <p className="w-40">Tanggal Transaksi</p>
-              <div className="w-12" />
-              <input
-                type="date"
-                className="border rounded px-2 py-1 grow bg-slate-100"
-                onChange={(e) => setDateInput(e.target.value)}
-              />
-            </div>
-            <div className="h-12" />
             <div className="flex">
-              <button className="bg-red-500 text-white rounded px-4 py-2">
-                Back
-              </button>
-              <div className="w-2" />
-              <button className="bg-success text-white rounded px-4 py-2">
-                Save Changes
+              <div className="grow" />
+              <button className="bg-blue-500 rounded px-4 py-1 text-white mt-4">
+                Simpan
               </button>
             </div>
-            <div className="h-16" />
+            <div className="h-4" />
           </div>
         </div>
       </BaseLayout>

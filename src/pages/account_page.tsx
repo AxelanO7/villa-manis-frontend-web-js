@@ -247,7 +247,7 @@ export default function AccountPage() {
                   <th className="border py-2">Akun</th>
                   <th className="border py-2">Kategori</th>
                   <th className="border py-2">Sifat</th>
-                  <th className="w-60 border py-2">Action</th>
+                  <th className="w-60 border py-2">Aksi</th>
                 </tr>
               </thead>
               <tbody>

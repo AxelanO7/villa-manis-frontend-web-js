@@ -183,7 +183,7 @@ export default function CategoryPage() {
                 <tr>
                   <th className="w-12 border py-2">No</th>
                   <th className="border py-2">Nama</th>
-                  <th className="w-60 border py-2">Action</th>
+                  <th className="w-60 border py-2">Aksi</th>
                 </tr>
               </thead>
               <tbody>

@@ -10,6 +10,10 @@ interface Journal {
   status_journal: number;
 }
 
+const handleCreateJournal = () => {
+  window.location.href = "/add-journal";
+};
+
 export default function JournalPage() {
   const [incomes, setIncomes] = useState<Journal[]>([]);
 
@@ -40,7 +44,10 @@ export default function JournalPage() {
       />
       <div className="flex flex-col bg-white rounded m-8 shadow">
         <div className="pt-8 px-6">
-          <button className="bg-success text-white rounded px-4 py-2 w-48 flex w-max items-center">
+          <button
+            className="bg-success text-white rounded px-4 py-2 w-48 flex w-max items-center"
+            onClick={handleCreateJournal}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -91,11 +98,10 @@ export default function JournalPage() {
               <option>2023</option>
             </select>
           </div>
-
           <button className="bg-red-400 text-white px-4 h-min">Cari</button>
         </div>
       </div>
-      <div className="flex flex-col bg-white rounded m-8 shadow">
+      <div className="flex flex-col bg-white rounded mx-8 shadow">
         <div className="h-12" />
         <hr />
         <div className="m-4 bg-slate-100 px-12">
@@ -122,7 +128,7 @@ export default function JournalPage() {
                 <th className="w-12 border py-2">No</th>
                 <th className="border py-2">Tanggal Transaksi</th>
                 <th className="border py-2">Status</th>
-                <th className="w-40 border py-2">Action</th>
+                <th className="w-40 border py-2">Aksi</th>
               </tr>
             </thead>
             <tbody>

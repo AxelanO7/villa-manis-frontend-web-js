@@ -268,7 +268,7 @@ export default function IncomePage() {
                   <th className="w-12 border py-2">No</th>
                   <th className="border py-2">Bulan Transaksi</th>
                   <th className="border py-2">Status</th>
-                  <th className="w-64 border py-2">Action</th>
+                  <th className="w-64 border py-2">Aksi</th>
                 </tr>
               </thead>
               <tbody>

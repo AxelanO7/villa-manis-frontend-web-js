@@ -1,3 +1,5 @@
+import React from "react";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainPage from "./pages/main_page";
 import OwnerPage from "./pages/owner_page";
@@ -13,15 +15,15 @@ import ExpenditurePage from "./pages/expenditure/expenditure_page";
 import CreateExpenditurePage from "./pages/expenditure/create_expenditure";
 
 import JournalPage from "./pages/journal/journal_page";
-import CreateJournal from "./pages/journal/create_journal";
-
-import React from "react";
+import CreateJournalPage from "./pages/journal/create_journal_page";
+import DetailJournalPage from "./pages/journal/detail_journal_page";
+import PostLedgerPage from "./pages/journal/post_ledger_page";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<CreateJournal />} />
+        <Route path="/" element={<PostLedgerPage />} />
         <Route path="main-page" element={<MainPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="user" element={<UserPage />} />
@@ -36,6 +38,9 @@ function App() {
         <Route path="add-expenditure" element={<CreateExpenditurePage />} />
 
         <Route path="journal" element={<JournalPage />} />
+        <Route path="add-journal" element={<CreateJournalPage />} />
+        <Route path="detail-journal" element={<DetailJournalPage />} />
+        <Route path="post-ledger" element={<PostLedgerPage />} />
       </Routes>
     </BrowserRouter>
   );

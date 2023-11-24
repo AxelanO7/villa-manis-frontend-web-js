@@ -248,7 +248,7 @@ export default function UserPage() {
                   <th className="border py-2">Password</th>
                   <th className="border py-2">Photo</th>
                   <th className="border py-2">Level</th>
-                  <th className="w-60 border py-2">Action</th>
+                  <th className="w-60 border py-2">Aksi</th>
                 </tr>
               </thead>
               <tbody>

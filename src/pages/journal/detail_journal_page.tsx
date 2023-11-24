@@ -10,7 +10,7 @@ import {
 } from "../../components/modal";
 import { Input } from "../../components/input";
 
-interface Income {
+interface Journal {
   ID: number | null;
   no_input: string;
   date_input: string;
@@ -25,21 +25,25 @@ interface Income {
 //   status_account: number;
 // }
 
-interface DetalIncome {
+interface DetailJournal {
   ID: number | null;
-  input_information: string;
-  quantity: number;
-  total_price: number;
-  status_cart: number;
-  input_date: string;
-  id_input: number;
-  input: Income;
+  journal_information: string;
+  ref_journal: string;
+  debit: number;
+  credit: number;
+  date_transaction: string;
+  status_post: number;
+  id_general_journal: number;
+  general_journal: Journal;
   // id_account: number;
+  // account: Account;
 }
 
-export default function CreateIncomePage() {
-  const [income, setIncome] = useState<Income>();
-  const [detailIncomesTemp, setDetailIncomesTemp] = useState<DetalIncome[]>([]);
+export default function DetailJournalPage() {
+  const [income, setIncome] = useState<Journal>();
+  const [detailIncomesTemp, setDetailIncomesTemp] = useState<DetailJournal[]>(
+    []
+  );
 
   const [idInput, setIdInput] = useState<number>();
   const [noInput, setNoInput] = useState<string>();
@@ -49,7 +53,7 @@ export default function CreateIncomePage() {
   // const [showModal, setShowModal] = useState<boolean>(false);
   // const [manage, setManage] = useState<any>(null);
 
-  const itemsBreadcrumb = ["Home", "Transaksi Pemasukan"];
+  const itemsBreadcrumb = ["Home", "Detail Jurnal Umum"];
 
   // useEffect(() => {
   // fetchIncomes();
@@ -157,13 +161,14 @@ export default function CreateIncomePage() {
       ...detailIncomesTemp,
       {
         ID: null,
-        input_information: "-",
-        quantity: 0,
-        total_price: 0,
-        status_cart: 0,
-        input_date: "",
-        id_input: idInput!,
-        input: {
+        journal_information: "-",
+        status_post: 0,
+        credit: 0,
+        debit: 0,
+        ref_journal: "-",
+        date_transaction: "-",
+        id_general_journal: idInput!,
+        general_journal: {
           ID: income?.ID || null,
           no_input: income!.no_input,
           date_input: income!.date_input,
@@ -250,18 +255,12 @@ export default function CreateIncomePage() {
       <BaseLayout>
         <Breadcrumb
           items={itemsBreadcrumb}
-          title="Transaksi Pemasukan"
+          title="Detail Jurnal Umum"
           paddingHorizontal={32}
         />
         <div className="flex flex-col bg-white rounded m-8 shadow">
-          <h3 className="px-8 py-4">Transaksi Pemasukan</h3>
-          <hr />
-          <div className="mt-4 px-8">
-            <button
-              className="bg-success text-white rounded px-4 py-2 w-48 flex w-max items-center"
-              // onClick={() => handleShowModal({ show: true })}
-              onClick={handleAddIncomeList}
-            >
+          <div className="pt-8 px-6">
+            <button className="bg-success text-white rounded px-4 py-2 w-48 flex w-max items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -275,150 +274,63 @@ export default function CreateIncomePage() {
                 />
               </svg>
               <div className="w-2" />
-              Tambah Data
+              Tambah Detail Jurnal
             </button>
+            <div className="h-2" />
+            <h3 className="text-center">Data Jurnal Umum</h3>
             <div className="h-4" />
+          </div>
+          <hr />
+          <div className="m-4 bg-slate-100 px-12">
+            <div className="h-8" />
+            <div className="flex items-center">
+              <p>Show</p>
+              <select className="border rounded mx-2 px-4 py-1 bg-white">
+                <option>10</option>
+                <option>20</option>
+                <option>50</option>
+              </select>
+              <p>entries</p>
+              <div className="grow" />
+              <p>Search</p>
+              <div className="w-4" />
+              <input className="border rounded px-4 py-1 bg-white" />
+            </div>
+            <div className="h-4" />
+            <p className="text-gray-500">Showing 1 to 3 of 3 enteries</p>
+            <div className="h-2" />
             <table className="table-fixed text-center w-full">
               <thead>
                 <tr>
                   <th className="w-12 border py-2">No</th>
+                  <th className="border py-2">Nama Akun</th>
                   <th className="border py-2">Keterangan</th>
-                  <th className="border py-2 w-24">Qty</th>
-                  <th className="border py-2 w-72">Total</th>
-                  <th className="w-36 border py-2">Aksi</th>
+                  <th className="border py-2 w-20">Ref</th>
+                  <th className="border py-2">Debet</th>
+                  <th className="border py-2">Kredit</th>
+                  <th className="w-40 border py-2">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {detailIncomesTemp.length === 0 && (
                   <tr>
-                    <td className="border py-2" colSpan={5}>
-                      Data tidak ditemukan, silahkan tambah data baru
+                    <td colSpan={7} className="border py-2">
+                      Data tidak ditemukan
                     </td>
                   </tr>
                 )}
-                {detailIncomesTemp.map(
-                  (detailIncome: DetalIncome, index: number) => (
-                    <tr>
-                      <td className="border py-2">{index + 1}</td>
-                      <td className="border py-2 px-4">
-                        <input
-                          type="text"
-                          className="border rounded px-2 py-1 grow bg-slate-100 w-full text-center"
-                          value={detailIncome.input_information}
-                          onChange={(e) =>
-                            (detailIncomesTemp[index].input_information =
-                              e.target.value)
-                          }
-                        />
-                        {/* {detailIncome.input_information} */}
-                      </td>
-                      <td className="border py-2 px-4">
-                        <input
-                          type="text"
-                          className="border rounded px-2 py-1 grow bg-slate-100 w-full text-center"
-                          value={detailIncome.quantity}
-                          onChange={(e) =>
-                            (detailIncomesTemp[index].quantity = parseInt(
-                              e.target.value
-                            ))
-                          }
-                        />
-                        {/* {detailIncome.quantity} */}
-                      </td>
-                      <td className="border py-2 px-4">
-                        <input
-                          type="text"
-                          className="border rounded px-2 py-1 grow bg-slate-100 w-full text-center"
-                          value={detailIncome.total_price}
-                          onChange={(e) =>
-                            (detailIncomesTemp[index].total_price = parseInt(
-                              e.target.value
-                            ))
-                          }
-                        />
-                      </td>
-                      <td className="flex text-white justify-center border py-2 px-4">
-                        {/* <button
-                          className="bg-success rounded px-2 py-1 flex-1 flex items-center justify-center"
-                          onClick={() => handleEditIncomeList(index)}
-                          // onClick={() =>
-                          //   handleShowModal({
-                          //     show: true,
-                          //     income: income,
-                          //     manageProp: "update",
-                          //   })
-                          // }
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                            className="w-4 h-4"
-                          >
-                            <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
-                            <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
-                          </svg>
-                          <div className="w-1" />
-                          Edit
-                        </button>
-                        <div className="w-4" /> */}
-                        <button
-                          className="bg-red-500 rounded px-2 py-1 flex-1 flex items-center justify-center"
-                          onClick={() => handleDeleteIncomeList(index)}
-                          // onClick={() => deleteAccount(income.ID)}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                            className="w-4 h-4"
-                          >
-                            <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
-                            <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
-                          </svg>
-                          <div className="w-1" />
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  )
-                )}
-                <tr>
-                  <td className="border py-2" colSpan={4}>
-                    Subtotal
-                  </td>
-                  <td className="border py-2">Rp 100</td>
-                </tr>
               </tbody>
             </table>
-            <div className="h-12" />
-            <div className="flex items-center">
-              <p className="w-40">No Transaksi</p>
-              <div className="w-12" />
-              <input
-                type="text"
-                className="border rounded px-2 py-1 grow bg-slate-100"
-                onChange={(e) => setNoInput(e.target.value)}
-              />
-            </div>
-            <div className="h-8" />
-            <div className="flex items-center">
-              <p className="w-40">Tanggal Transaksi</p>
-              <div className="w-12" />
-              <input
-                type="date"
-                className="border rounded px-2 py-1 grow bg-slate-100"
-                onChange={(e) => setDateInput(e.target.value)}
-              />
-            </div>
-            <div className="h-12" />
+            <div className="h-2" />
             <div className="flex">
-              <button className="bg-red-500 text-white rounded px-4 py-2">
-                Back
+              <button className="bg-white border border-gray-300 rounded px-4 py-1 text-gray-500 w-24">
+                Previous
               </button>
-              <div className="w-2" />
-              <button className="bg-success text-white rounded px-4 py-2">
-                Save Changes
+              <button className="bg-success rounded px-4 py-1 text-white">
+                1
+              </button>
+              <button className="bg-white border border-gray-300 rounded px-4 py-1 text-gray-500 w-24">
+                Next
               </button>
             </div>
             <div className="h-16" />

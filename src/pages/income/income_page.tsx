@@ -115,6 +115,10 @@ export default function IncomePage() {
     setStatusInput(undefined);
   };
 
+  const handleAddIncome = () => {
+    window.location.href = "/add-income";
+  };
+
   return (
     <>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
@@ -194,11 +198,12 @@ export default function IncomePage() {
         <ModalFooter>
           <button
             className="bg-success rounded px-4 py-1 text-white"
-            onClick={
-              manage === "update"
-                ? () => updateIncome(idInput!)
-                : () => createIncome()
-            }
+            onClick={handleAddIncome}
+            // onClick={
+            //   manage === "update"
+            //     ? () => updateIncome(idInput!)
+            //     : () => createIncome()
+            // }
           >
             Simpan
           </button>
@@ -268,7 +273,7 @@ export default function IncomePage() {
                   <th className="w-12 border py-2">No</th>
                   <th className="border py-2">Bulan Transaksi</th>
                   <th className="border py-2">Status</th>
-                  <th className="w-64 border py-2">Action</th>
+                  <th className="w-64 border py-2">Aksi</th>
                 </tr>
               </thead>
               <tbody>

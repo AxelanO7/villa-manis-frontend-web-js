@@ -39,7 +39,7 @@ interface DetailJournal {
   // account: Account;
 }
 
-export default function CreateIncomePage() {
+export default function PostLedgerPage() {
   const [income, setIncome] = useState<Journal>();
   const [detailIncomesTemp, setDetailIncomesTemp] = useState<DetailJournal[]>(
     []
@@ -53,7 +53,7 @@ export default function CreateIncomePage() {
   // const [showModal, setShowModal] = useState<boolean>(false);
   // const [manage, setManage] = useState<any>(null);
 
-  const itemsBreadcrumb = ["Home", "Tambah Jurnal"];
+  const itemsBreadcrumb = ["Home", "Posting Ke Buku Besar"];
 
   // useEffect(() => {
   // fetchIncomes();
@@ -255,23 +255,16 @@ export default function CreateIncomePage() {
       <BaseLayout>
         <Breadcrumb
           items={itemsBreadcrumb}
-          title="Tambah Jurnal Umum"
+          title="Posting Ke Buku Besar"
           paddingHorizontal={32}
         />
         <div className="flex flex-col bg-white rounded m-8 shadow">
-          <h3 className="px-8 py-4">Tamabah Jurnal Umum</h3>
+          <h3 className="px-4 py-4">Generate Jurnal Umum</h3>
           <hr />
-          <div className="mt-4 px-8">
-            <div className="border flex p-6 space-x-16">
-              <div className="flex-1 space-y-2">
-                <p>Tanggal Rekap</p>
-                <input type="date" className="border p-2 w-full" />
-              </div>
-              <div className="flex-1 space-y-2">
-                <p>No Transaksi</p>
-                <input type="text" className="border p-2 w-full" />
-              </div>
-            </div>
+          <div className="mt-4 px-6">
+            <button className="bg-success rounded px-2 py-1 flex flex items-center justify-center text-white h-max mt-2 mb-4">
+              Tambah Data
+            </button>
             {/* <button
               className="bg-success text-white rounded px-4 py-2 w-48 flex w-max items-center"
               // onClick={() => handleShowModal({ show: true })}
@@ -292,22 +285,21 @@ export default function CreateIncomePage() {
               <div className="w-2" />
               Tambah Data
             </button> */}
-            <div className="h-4" />
-            <table className="table-fixed text-center w-full">
+            <div className="h-2" />
+            <table className="table-fixed text-center w-full shadow-md">
               <thead>
                 <tr>
-                  <th className="border py-2">Akun</th>
-                  <th className="border py-2">Tanggal Transaksi</th>
+                  <th className="border py-2 w-16">No</th>
                   <th className="border py-2">Keterangan</th>
-                  <th className="border py-2">Debit</th>
+                  <th className="border py-2">Debet</th>
                   <th className="border py-2">Kredit</th>
-                  <th className="w-36 border py-2">Action</th>
+                  <th className="w-36 border py-2">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {detailIncomesTemp.length === 0 && (
                   <tr>
-                    <td className="border py-2" colSpan={6}>
+                    <td className="border py-2" colSpan={5}>
                       Data tidak ditemukan, silahkan tambah data baru
                     </td>
                   </tr>
@@ -399,45 +391,9 @@ export default function CreateIncomePage() {
                     </tr>
                   )
                 )}
-                <tr>
-                  <td className="border py-2" colSpan={4}>
-                    Subtotal
-                  </td>
-                  <td className="border py-2">Rp 100</td>
-                </tr>
               </tbody>
             </table>
-            <div className="h-12" />
-            <div className="flex items-center">
-              <p className="w-40">No Transaksi</p>
-              <div className="w-12" />
-              <input
-                type="text"
-                className="border rounded px-2 py-1 grow bg-slate-100"
-                onChange={(e) => setNoInput(e.target.value)}
-              />
-            </div>
-            <div className="h-8" />
-            <div className="flex items-center">
-              <p className="w-40">Tanggal Transaksi</p>
-              <div className="w-12" />
-              <input
-                type="date"
-                className="border rounded px-2 py-1 grow bg-slate-100"
-                onChange={(e) => setDateInput(e.target.value)}
-              />
-            </div>
-            <div className="h-12" />
-            <div className="flex">
-              <button className="bg-red-500 text-white rounded px-4 py-2">
-                Back
-              </button>
-              <div className="w-2" />
-              <button className="bg-success text-white rounded px-4 py-2">
-                Save Changes
-              </button>
-            </div>
-            <div className="h-16" />
+            <div className="h-4" />
           </div>
         </div>
       </BaseLayout>
