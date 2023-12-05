@@ -41,7 +41,7 @@ interface DetailJournal {
 
 export default function DetailJournalPage() {
   const [income, setIncome] = useState<Journal>();
-  const [detailIncomesTemp, setDetailIncomesTemp] = useState<DetailJournal[]>(
+const [detailIncomesTemp, setDetailIncomesTemp] = useState<DetailJournal[]>(
     []
   );
 

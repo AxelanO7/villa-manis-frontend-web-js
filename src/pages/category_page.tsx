@@ -24,7 +24,7 @@ export default function CategoryPage() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [manage, setManage] = useState<any>(null);
 
-  const itemsBreadcrumb = ["Home", "Management Category"];
+  const itemsBreadcrumb = ["Home", "Management Kategori"];
 
   useEffect(() => {
     fetchCategorys();
@@ -36,7 +36,7 @@ export default function CategoryPage() {
       setCategorys(response.data.data);
       console.log(response.data);
     } catch (error) {
-      alert("Data gagal diambil");
+      console.log(error);
     }
   };
 
@@ -105,7 +105,10 @@ export default function CategoryPage() {
   return (
     <>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <ModalHeader>Tambah Category</ModalHeader>
+        <ModalHeader>
+          {manage === "update" ? "Ubah " : "Tambah "}
+          Kategori
+        </ModalHeader>
         <ModalBody>
           <div className="flex flex-col space-y-4">
             {/* {manage === "update" && (
@@ -148,7 +151,7 @@ export default function CategoryPage() {
       <BaseLayout>
         <Breadcrumb
           items={itemsBreadcrumb}
-          title="Management Category"
+          title="Management Kategori"
           paddingHorizontal={32}
         />
         <div className="h-8" />
@@ -158,7 +161,7 @@ export default function CategoryPage() {
             className="bg-success text-white rounded px-4 py-2 w-48 mx-6"
             onClick={() => handleShowModal({ show: true })}
           >
-            Tambah Category
+            Tambah Kategori
           </button>
           <div className="h-4" />
           <div className="bg-white flex flex-col px-6 py-6 text-gray-500">

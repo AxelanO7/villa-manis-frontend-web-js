@@ -12,8 +12,9 @@ import { Input } from "../components/input";
 
 interface Account {
   ID: number;
+  code: string;
   name_account: string;
-  type: string;
+  character: string;
   id_category: number;
   category: Category;
 }
@@ -25,12 +26,13 @@ interface Category {
 
 export default function AccountPage() {
   const [accounts, setAccounts] = useState<Account[]>([]);
-  const [categorys, setCategorys] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
-  const [idAccount, setIdAccount] = useState<number | null>(null);
-  const [nameAccount, setNameAccount] = useState<string | null>(null);
-  const [typeAccount, setTypeAccount] = useState<string | null>(null);
-  const [idCategory, setIdCategory] = useState<number | null>(null);
+  const [idAccount, setIdAccount] = useState<number>();
+  const [codeAccount, setCodeAccount] = useState<string>();
+  const [nameAccount, setNameAccount] = useState<string>();
+  const [characterAccount, setCharacterAccount] = useState<string>();
+  const [idCategory, setIdCategory] = useState<number>();
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [manage, setManage] = useState<any>(null);
@@ -38,34 +40,45 @@ export default function AccountPage() {
   const itemsBreadcrumb = ["Home", "Coa"];
 
   useEffect(() => {
-    fetchAccounts();
-    fetchCategorys();
+    fetchData();
   }, []);
 
+  const fetchData = async () => {
+    await fetchAccounts();
+    await fetchCategorys();
+  };
+
   const fetchCategorys = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/api/category");
-      setCategorys(response.data.data);
-    } catch (error) {
-      alert("Data gagal diambil");
-    }
+    await axios
+      .get("http://localhost:8080/api/category")
+      .then((response) => {
+        setCategories(response.data.data);
+        console.log(categories.length);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const fetchAccounts = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/api/account");
-      setAccounts(response.data.data);
-    } catch (error) {
-      alert("Data gagal diambil");
-    }
+    await axios
+      .get("http://localhost:8080/api/account")
+      .then((response) => {
+        setAccounts(response.data.data);
+        console.log(accounts.length);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const createAccount = async () => {
     try {
       await axios.post("http://localhost:8080/api/account", {
+        code: codeAccount,
         name_account: nameAccount,
-        type: typeAccount,
-        id_category: idCategory,
+        character: characterAccount,
+        id_category: idCategory || categories[0].ID,
       });
       alert("Data berhasil ditambahkan");
       handleShowModal({ show: false });
@@ -79,10 +92,10 @@ export default function AccountPage() {
   const updateAccount = async (idProp: number) => {
     try {
       await axios.put(`http://localhost:8080/api/account/${idProp}`, {
-        ID: idAccount,
+        code: codeAccount,
         name_account: nameAccount,
-        type: typeAccount,
-        id_category: idCategory,
+        character: characterAccount,
+        id_category: idCategory || categories[0].ID,
       });
       alert("Data berhasil diubah");
       handleShowModal({ show: false });
@@ -114,64 +127,95 @@ export default function AccountPage() {
     account?: Account;
     manageProp?: string;
   }) => {
-    clearInput();
+    handleResetInput();
     setShowModal(show);
     setManage(manageProp);
     if (manageProp === "update") {
       setIdAccount(account!.ID);
       setNameAccount(account!.name_account);
-      setTypeAccount(account!.type);
+      setCharacterAccount(account!.character);
       setIdCategory(account!.id_category);
     }
   };
 
-  const clearInput = () => {};
+  const handleResetInput = () => {
+    setIdAccount(undefined);
+    setNameAccount("");
+    setCharacterAccount("");
+    setIdCategory(undefined);
+  };
+
+  const validateInput = () => {
+    if (
+      nameAccount === "" ||
+      characterAccount === "" ||
+      idCategory === undefined
+    ) {
+      console.log(
+        "nameAccount",
+        nameAccount,
+        "characterAccount",
+        characterAccount,
+        "idCategory",
+        idCategory
+      );
+      return false;
+    }
+    return true;
+  };
 
   return (
     <>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <ModalHeader>Tambah Coa</ModalHeader>
+        <ModalHeader>
+          {manage === "update" ? "Ubah " : "Tambah "} Coa
+        </ModalHeader>
         <ModalBody>
           <div className="flex flex-col space-y-4">
             {/* {manage === "update" && (
               <Input
-                label="ID"
+                label="ID"xam
                 value={idCategory}
                 type="number"
                 onChange={(e) => setIdCategory(parseInt(e.target.value))}
               />
             )} */}
             <Input
-              label="Name"
+              label="Kode Coa"
+              value={codeAccount!}
+              type="text"
+              onChange={(e) => setCodeAccount(e.target.value)}
+            />
+
+            <Input
+              label="Nama"
               value={nameAccount!}
               type="text"
               onChange={(e) => setNameAccount(e.target.value)}
             />
-            <Input
-              label="Kategori Coa"
-              value={typeAccount!}
-              type="text"
-              onChange={(e) => setTypeAccount(e.target.value)}
-            />
-            {/* <Input
-              label="Category"
-              type="number"
-              value={idCategory!.toString()}
-              onChange={(e) => setIdCategory(parseInt(e.target.value))}
-            /> */}
             <div className="flex flex-col">
-              <label className="text-gray-600 text-sm font-medium">Sifat</label>
+              <label className="text-gray-600 text-sm font-medium">
+                Kategori Coa
+              </label>
               <div className="h-1" />
               <select
                 className="border rounded px-4 py-1 bg-white"
-                onChange={(e) => setIdCategory(parseInt(e.target.value))}
-                value={idCategory!}
+                onChange={(e) => {
+                  setIdCategory(parseInt(e.target.value));
+                }}
+                value={idCategory}
               >
-                {categorys.map((category: Category) => (
+                {categories.map((category: Category) => (
                   <option value={category.ID}>{category.name_category}</option>
                 ))}
               </select>
             </div>
+            <Input
+              label="Sifat"
+              value={characterAccount!}
+              type="text"
+              onChange={(e) => setCharacterAccount(e.target.value)}
+            />
           </div>
         </ModalBody>
         <ModalFooter>
@@ -251,11 +295,18 @@ export default function AccountPage() {
                 </tr>
               </thead>
               <tbody>
+                {accounts.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className="border py-2">
+                      Tidak Ada Data
+                    </td>
+                  </tr>
+                )}
                 {accounts.map((account: Account, index: number) => (
                   <tr>
                     <td className="border py-2">{index + 1}</td>
                     <td className="border py-2">{account.name_account}</td>
-                    <td className="border py-2">{account.type}</td>
+                    <td className="border py-2">{account.character}</td>
                     <td className="border py-2">
                       {account.category.name_category}
                     </td>

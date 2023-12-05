@@ -47,20 +47,20 @@ export default function IncomePage() {
       });
   };
 
-  const createIncome = async () => {
-    try {
-      await axios.post("http://localhost:8080/api/input", {
-        no_input: noInput,
-        date_input: dateInput,
-        status_input: statusInput,
-      });
-      alert("Data berhasil ditambahkan");
-      handleShowModal({ show: false });
-      fetchIncomes();
-    } catch (error) {
-      alert("Data gagal ditambahkan");
-    }
-  };
+  // const createIncome = async () => {
+  //   try {
+  //     await axios.post("http://localhost:8080/api/input", {
+  //       no_input: noInput,
+  //       date_input: dateInput,
+  //       status_input: statusInput,
+  //     });
+  //     alert("Data berhasil ditambahkan");
+  //     handleShowModal({ show: false });
+  //     fetchIncomes();
+  //   } catch (error) {
+  //     alert("Data gagal ditambahkan");
+  //   }
+  // };
 
   const updateIncome = async (idProp: number) => {
     try {
@@ -115,7 +115,7 @@ export default function IncomePage() {
     setStatusInput(undefined);
   };
 
-  const handleAddIncome = () => {
+  const handleCreateIncome = () => {
     window.location.href = "/add-income";
   };
 
@@ -133,53 +133,18 @@ export default function IncomePage() {
                 onChange={(e) => setIdCategory(parseInt(e.target.value))}
               />
             )} */}
-            {/* <Input
-              label="No Transaksi"
-              value={noInput!}
-              type="text"
-              onChange={(e) => setNoInput(e.target.value)}
-            /> */}
-            todo: generate no transaksi
-            <div className="form-group flex flex-col">
-              <label className="text-gray-600 text-sm font-medium pb-1">
-                No Transaksi
-              </label>
-              <input
-                type="text"
-                className="form-control border rounded px-2 py-1 bg-white"
-                value={
-                  "TRX" +
-                  Math.floor(Math.random() * 10000) +
-                  1 +
-                  Math.floor(Math.random() * 10000) +
-                  1
-                }
-                disabled
-              />
-            </div>
             <Input
-              label="Tanggal Transaksi"
+              label="Bulan Transaksi"
               value={dateInput!}
-              type="date"
+              type="text"
               onChange={(e) => setDateInput(e.target.value)}
             />
-            <div className="form-group flex flex-col">
-              <label className="text-gray-600 text-sm font-medium pb-1">
-                Status
-              </label>
-              <input
-                type="text"
-                className="form-control border rounded px-2 py-1 bg-white"
-                value="debit"
-                disabled
-              />
-            </div>
-            {/* <Input
+            <Input
               label="Status"
+              value={statusInput!}
               type="string"
-              value={statusInput?.toString()!}
-              onChange={(e) => setStatusInput(parseInt(e.target.value))}
-            /> */}
+              onChange={(e) => setStatusInput(e.target.value)}
+            />
             {/* <div className="flex flex-col">
               <label className="text-gray-600 text-sm font-medium">Sifat</label>
               <div className="h-1" />
@@ -198,7 +163,9 @@ export default function IncomePage() {
         <ModalFooter>
           <button
             className="bg-success rounded px-4 py-1 text-white"
-            onClick={handleAddIncome}
+            onClick={() => {
+              updateIncome(idInput!);
+            }}
             // onClick={
             //   manage === "update"
             //     ? () => updateIncome(idInput!)
@@ -227,7 +194,8 @@ export default function IncomePage() {
           <div className="pt-8 px-6">
             <button
               className="bg-success text-white rounded px-4 py-2 w-48 flex w-max items-center"
-              onClick={() => handleShowModal({ show: true })}
+              // onClick={() => handleShowModal({ show: true })}
+              onClick={handleCreateIncome}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
