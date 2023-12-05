@@ -10,7 +10,7 @@ interface Income {
   status_input: string;
 }
 
-interface DetalIncome {
+interface DetailIncome {
   ID: number | null;
   input_information: string;
   quantity: number;
@@ -19,6 +19,8 @@ interface DetalIncome {
   input_date: string;
   id_input: number;
   input: Income;
+  id_account: number;
+  account: Account;
 }
 
 interface Account {
@@ -37,43 +39,28 @@ interface Category {
 
 export default function CreateIncomePage() {
   const [income, setIncome] = useState<Income>();
-  const [detailIncomesTemp, setDetailIncomesTemp] = useState<DetalIncome[]>([]);
+  const [detailIncomesTemp, setDetailIncomesTemp] = useState<DetailIncome[]>(
+    []
+  );
 
   const [noInput, setNoInput] = useState<string>();
   const [dateInput, setDateInput] = useState<string>();
 
-  const [subTotal, setSubTotal] = useState<number>();
+  const [subTotal, setSubTotal] = useState<number>(0);
 
   const itemsBreadcrumb = ["Home", "Transaksi Pemasukan"];
 
   const [accounts, setAccounts] = useState<Account[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    fetchData();
+    fetchAccounts();
   }, []);
 
-  const fetchData = async () => {
-    await fetchAccount();
-    await fetchCategory();
-  };
-
-  const fetchAccount = async () => {
+  const fetchAccounts = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/account");
       if (response.data) {
         setAccounts(response.data.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const fetchCategory = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/api/category");
-      if (response.data) {
-        setCategories(response.data.data);
       }
     } catch (error) {
       console.log(error);
@@ -110,10 +97,21 @@ export default function CreateIncomePage() {
         id_input: 0,
         input: {
           ID: income?.ID || null,
-
           no_input: noInput!,
           date_input: dateInput!,
           status_input: "Draft",
+        },
+        id_account: 0,
+        account: {
+          ID: null,
+          code: "",
+          name_account: "",
+          character: "",
+          id_category: 0,
+          category: {
+            ID: null,
+            name_category: "",
+          },
         },
       },
     ]);
@@ -143,10 +141,7 @@ export default function CreateIncomePage() {
 
     try {
       const res = await axios.post("http://localhost:8080/api/input", {
-        ID: null,
-        no_input: masterIncome.no_input,
-        date_input: masterIncome.date_input,
-        status_input: masterIncome.status_input,
+        masterIncome,
       });
       if (res.data) {
         masterIncome.ID = res.data.data.ID;
@@ -156,33 +151,33 @@ export default function CreateIncomePage() {
       alert("Terjadi kesalahan saat menyimpan master data pemasukan");
     }
 
-    const newAccount = accounts[0];
+    const newAccount: Account = accounts[0];
 
-    const detailIncomes = detailIncomesTemp.map((detailIncome) => {
-      return {
-        ID: null,
-        input_information: detailIncome.input_information,
-        quantity: detailIncome.quantity,
-        total_price: detailIncome.total_price,
-        status_cart: 0,
-        input_date: "",
-        id_input: masterIncome.ID,
-        input: {
-          ID: masterIncome.ID,
-          no_input: masterIncome.no_input,
-          date_input: masterIncome.date_input,
-          status_input: masterIncome.status_input,
-        },
-        id_account: newAccount.ID,
-        account: newAccount,
-      };
-    });
+    const detailIncomes: DetailIncome[] = detailIncomesTemp.map(
+      (detailIncome) => {
+        return {
+          ID: null,
+          input_information: detailIncome.input_information,
+          quantity: detailIncome.quantity,
+          total_price: detailIncome.total_price,
+          status_cart: 0,
+          input_date: "",
+          id_input: masterIncome.ID || 0,
+          input: masterIncome,
+          id_account: newAccount.ID || 0,
+          account: newAccount,
+        };
+      }
+    );
 
     try {
-      await axios.post(
+      const res = await axios.post(
         "http://localhost:8080/api/detail-inputs",
         detailIncomes
       );
+      if (res.data) {
+        alert("Data pemasukan berhasil disimpan");
+      }
     } catch (error) {
       console.log(error);
       alert("Terjadi kesalahan saat menyimpan detail data pemasukan");
@@ -239,7 +234,7 @@ export default function CreateIncomePage() {
                 </tr>
               )}
               {detailIncomesTemp.map(
-                (detailIncome: DetalIncome, index: number) => (
+                (detailIncome: DetailIncome, index: number) => (
                   <tr>
                     <td className="border py-2">{index + 1}</td>
                     <td className="border py-2 px-4">
