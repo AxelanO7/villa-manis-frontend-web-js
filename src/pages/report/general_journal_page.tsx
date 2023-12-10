@@ -14,7 +14,7 @@ const handleCreateJournal = () => {
   window.location.href = "/add-journal";
 };
 
-export default function ReportJournalPage() {
+export default function GeneralJournalPage() {
   const [incomes, setIncomes] = useState<Journal[]>([]);
 
   const itemsBreadcrumb = ["Home", "Laporan Jurnal Umum"];

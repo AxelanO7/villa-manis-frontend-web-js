@@ -14,7 +14,7 @@ const handleCreateJournal = () => {
   window.location.href = "/add-journal";
 };
 
-export default function ReportBalanceSheetPage() {
+export default function TrialBalancePage() {
   const [incomes, setIncomes] = useState<Journal[]>([]);
 
   const itemsBreadcrumb = ["Home", "Laporan Neraca Saldo"];

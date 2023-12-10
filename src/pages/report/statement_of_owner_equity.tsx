@@ -14,7 +14,7 @@ const handleCreateJournal = () => {
   window.location.href = "/add-journal";
 };
 
-export default function ReportCapitalChangePage() {
+export default function StatementOfOwnerEquityPage() {
   const [incomes, setIncomes] = useState<Journal[]>([]);
 
   const itemsBreadcrumb = ["Home", "Laporan Perubahan Modal"];
