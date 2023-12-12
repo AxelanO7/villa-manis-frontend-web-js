@@ -31,7 +31,6 @@ export default function GeneralJournalPage() {
       setIncomes(response.data.data);
     } catch (error) {
       console.log(error);
-      // alert("Data gagal diambil");
     }
   };
 
@@ -78,8 +77,8 @@ export default function GeneralJournalPage() {
           <tbody>
             {incomes.length === 0 && (
               <tr>
-                <td colSpan={4} className="border py-2">
-                  Data tidak ditemukan
+                <td colSpan={5} className="border py-2">
+                  Data tidak ada
                 </td>
               </tr>
             )}

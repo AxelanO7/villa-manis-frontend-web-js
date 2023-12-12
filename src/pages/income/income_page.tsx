@@ -41,7 +41,7 @@ export default function IncomePage() {
         setIncomes(response.data.data);
       })
       .catch((error) => {
-        if (error.response.data.message !== "Input not found") {
+        if (error.response.data.message !== "Inputs not found") {
           alert("Data gagal diambil");
         }
       });
@@ -245,6 +245,13 @@ export default function IncomePage() {
                 </tr>
               </thead>
               <tbody>
+                {incomes.length === 0 && (
+                  <tr>
+                    <td colSpan={4} className="border py-2">
+                      Data tidak ada
+                    </td>
+                  </tr>
+                )}
                 {incomes.map((income: Income, index: number) => (
                   <tr>
                     <td className="border py-2">{index + 1}</td>

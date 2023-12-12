@@ -20,6 +20,8 @@ interface DetalExpenditure {
   output_date: string;
   id_account: number;
   account: Account;
+  id_category: number;
+  category: Category;
   id_output: number;
   output: Expenditure;
 }
@@ -115,6 +117,11 @@ export default function CreateExpenditurePage() {
             name_category: "",
           },
         },
+        id_category: 0,
+        category: {
+          ID: null,
+          name_category: "",
+        },
       },
     ]);
   };
@@ -169,6 +176,8 @@ export default function CreateExpenditurePage() {
           output: masterExpanditure,
           id_account: newAccount.ID!,
           account: newAccount,
+          id_category: newAccount.id_category,
+          category: newAccount.category,
         };
       }
     );

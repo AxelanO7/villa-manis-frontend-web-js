@@ -21,6 +21,8 @@ interface DetailIncome {
   input: Income;
   id_account: number;
   account: Account;
+  id_category: number;
+  category: Category;
 }
 
 interface Account {
@@ -113,6 +115,11 @@ export default function CreateIncomePage() {
             name_category: "",
           },
         },
+        id_category: 0,
+        category: {
+          ID: null,
+          name_category: "",
+        },
       },
     ]);
   };
@@ -166,6 +173,8 @@ export default function CreateIncomePage() {
           input: masterIncome,
           id_account: newAccount.ID || 0,
           account: newAccount,
+          id_category: newAccount.id_category,
+          category: newAccount.category,
         };
       }
     );

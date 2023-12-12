@@ -272,6 +272,13 @@ export default function IncomePage() {
                 </tr>
               </thead>
               <tbody>
+                {expenditure.length === 0 && (
+                  <tr>
+                    <td className="border py-2 text-center" colSpan={4}>
+                      Data tidak ada
+                    </td>
+                  </tr>
+                )}
                 {expenditure.map((output: Expenditure, index: number) => (
                   <tr>
                     <td className="border py-2">{index + 1}</td>

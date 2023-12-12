@@ -19,6 +19,7 @@ import CreateJournalPage from "./pages/journal/create_journal_page";
 import DetailJournalPage from "./pages/journal/detail_journal_page";
 import PostLedgerPage from "./pages/journal/post_ledger_page";
 
+import CashFlowPage from "./pages/report/cash_flow_page";
 import GeneralJournalPage from "./pages/report/general_journal_page";
 import TrialBalancePage from "./pages/report/trial balance_page";
 import IncomeStatementPage from "./pages/report/income_statement";
@@ -48,6 +49,7 @@ function App() {
         <Route path="detail-journal" element={<DetailJournalPage />} />
         <Route path="post-ledger" element={<PostLedgerPage />} />
 
+        <Route path="cash-flow" element={<CashFlowPage />} />
         <Route path="report-journal" element={<GeneralJournalPage />} />
         <Route path="balance-sheet" element={<TrialBalancePage />} />
         <Route path="profit-loss" element={<IncomeStatementPage />} />
