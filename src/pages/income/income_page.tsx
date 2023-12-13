@@ -116,6 +116,7 @@ export default function IncomePage() {
   };
 
   const handleCreateIncome = () => {
+    clearInput();
     window.location.href = "/add-income";
   };
 

@@ -115,6 +115,11 @@ export default function IncomePage() {
     setStatusOutput(undefined);
   };
 
+  const handleCreateExpanditure = () => {
+    clearOutput();
+    window.location.href = "/add-expenditure";
+  };
+
   return (
     <>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
@@ -222,7 +227,8 @@ export default function IncomePage() {
           <div className="pt-8 px-6">
             <button
               className="bg-success text-white rounded px-4 py-2 w-48 flex w-max items-center"
-              onClick={() => handleShowModal({ show: true })}
+              // onClick={() => handleShowModal({ show: true })}
+              onClick={handleCreateExpanditure}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
