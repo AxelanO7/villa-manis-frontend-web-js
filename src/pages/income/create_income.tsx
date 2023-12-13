@@ -146,10 +146,13 @@ export default function CreateIncomePage() {
       status_input: "Draft",
     };
 
+    console.log(masterIncome);
+
     try {
-      const res = await axios.post("http://localhost:8080/api/input", {
-        masterIncome,
-      });
+      const res = await axios.post(
+        "http://localhost:8080/api/input",
+        masterIncome
+      );
       if (res.data) {
         masterIncome.ID = res.data.data.ID;
       }
