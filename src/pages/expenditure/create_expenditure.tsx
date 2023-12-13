@@ -149,9 +149,10 @@ export default function CreateExpenditurePage() {
     };
 
     try {
-      const res = await axios.post("http://localhost:8080/api/output", {
-        masterExpanditure,
-      });
+      const res = await axios.post(
+        "http://localhost:8080/api/output",
+        masterExpanditure
+      );
       if (res.data) {
         masterExpanditure.ID = res.data.data.ID;
       }
