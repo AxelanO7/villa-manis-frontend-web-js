@@ -17,10 +17,12 @@ interface DetailIncome {
   total_price: number;
   status_cart: number;
   input_date: string;
-  id_input: number;
-  input: Income;
+  id_category: number;
+  category: Category;
   id_account: number;
   account: Account;
+  id_input: number;
+  input: Income;
 }
 
 interface Expenditure {
@@ -38,6 +40,8 @@ interface DetalExpenditure {
   total_price: number;
   status_cart: number;
   output_date: string;
+  id_category: number;
+  category: Category;
   id_account: number;
   account: Account;
   id_output: number;
@@ -58,59 +62,67 @@ interface Category {
   name_category: string;
 }
 
+interface GroupCategory {
+  ID: number | null;
+  name_category: string;
+  accounts: GroupAccount[];
+  total_debit: number;
+  total_credit: number;
+}
+
+interface GroupAccount {
+  ID: number | null;
+  name_account: string;
+  debit: number;
+  credit: number;
+  detail_input: DetailIncome[];
+  detail_output: DetalExpenditure[];
+}
+
 export default function CashFlowPage() {
   const itemsBreadcrumb = ["Home", "Laporan Arus Kas"];
-
-  const [detailIncome, setDetailIncome] = useState<DetailIncome[]>([]);
-  const [detailExpenditure, setDetailExpenditure] = useState<
-    DetalExpenditure[]
-  >([]);
 
   const [startDate, setStartDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
 
-  const [typeCategory, setTypeCategory] = useState<string>();
-  const [typeAccount, setTypeAccount] = useState<string>();
+  const [groupByCategory, setGroupByCategory] = useState<GroupCategory[]>([]);
 
   useEffect(() => {
-    fetchTransaction();
+    fetchGroupByCategory();
   }, []);
 
-  const fetchTransaction = async () => {
+  const fetchGroupByCategory = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/transactions"
+        `http://localhost:8080/api/transactions/group`
       );
-      if (response.data.data.detail_input) {
-        setDetailIncome(response.data.data.detail_input);
-      }
-      if (response.data.data.detail_output) {
-        setDetailExpenditure(response.data.data.detail_output);
+      if (response.data.data.group_category) {
+        setGroupByCategory(response.data.data.group_category);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleSearchByDate = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8080/api/transactions?start_date=${startDate}&end_date=${endDate}`
-      );
-      if (response.data.data.detail_input) {
-        setDetailIncome(response.data.data.detail_input);
-      }
-      if (response.data.data.detail_output) {
-        setDetailExpenditure(response.data.data.detail_output);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleSearchByDate = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `http://localhost:8080/api/transactions?start_date=${startDate}&end_date=${endDate}`
+  //     );
+  //     if (response.data.data.detail_input) {
+  //       setDetailIncome(response.data.data.detail_input);
+  //     }
+  //     if (response.data.data.detail_output) {
+  //       setDetailExpenditure(response.data.data.detail_output);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  const filterIncome = detailIncome.filter((item) => {
-    return item.input.status_input === "Lunas";
-  });
+  // const filterIncome = detailIncome.filter((item) => {
+  //   return item.input.status_input === "Lunas";
+  // });
 
   return (
     <BaseLayout>
@@ -146,7 +158,7 @@ export default function CashFlowPage() {
           </div>
           <button
             className="bg-red-400 text-white px-4 h-min"
-            onClick={handleSearchByDate}
+            // onClick={handleSearchByDate}
           >
             Cari
           </button>
@@ -160,6 +172,37 @@ export default function CashFlowPage() {
           Periode Juni 2023
         </p>
         <div className="text-start">
+          {groupByCategory.map((item) => {
+            return (
+              <div>
+                <p className="border py-1 w-full px-4 font-semibold">
+                  {item.name_category}
+                </p>
+                {item.accounts.map((account) => {
+                  return (
+                    <div className="flex w-full">
+                      <p className="border py-1 w-full px-4">
+                        {account.name_account}
+                      </p>
+                      <p className="border py-1 w-full px-4">{account.debit}</p>
+                      <p className="border py-1 w-full px-4">
+                        {account.credit}
+                      </p>
+                    </div>
+                  );
+                })}
+                <div className="flex w-full">
+                  <p className="border py-1 w-full px-4">
+                    Jumlah {item.name_category}
+                  </p>
+                  <p className="border py-1 w-full px-4">{item.total_debit}</p>
+                  <p className="border py-1 w-full px-4">{item.total_credit}</p>
+                </div>
+              </div>
+            );
+          })}
+
+          {/* <div className="h-20"></div>
           <h6 className="border py-1 font-medium px-4">Akitivia Lancar</h6>
           <div className="flex">
             <p className="border py-1 w-full px-4">Kas</p>
@@ -254,7 +297,8 @@ export default function CashFlowPage() {
               <p className="border py-1 w-full px-4"></p>
               <p className="border py-1 w-full px-4">Rp.1.118.500</p>
             </div>
-          </div>
+          </div> */}
+
           <div className="h-4" />
         </div>
       </div>
