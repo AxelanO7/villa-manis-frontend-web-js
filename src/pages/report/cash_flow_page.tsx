@@ -94,7 +94,7 @@ export default function CashFlowPage() {
   const fetchGroupByCategory = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/transactions/group`
+        `http://localhost:8080/api/transaction/group`
       );
       if (response.data.data.group_category) {
         setGroupByCategory(response.data.data.group_category);
