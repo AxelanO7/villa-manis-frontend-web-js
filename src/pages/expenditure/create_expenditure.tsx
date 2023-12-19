@@ -57,6 +57,7 @@ export default function CreateExpenditurePage() {
 
   useEffect(() => {
     fetchAccounts();
+    fetchExpanditures();
   }, []);
 
   const fetchAccounts = async () => {
@@ -66,6 +67,25 @@ export default function CreateExpenditurePage() {
         setAccounts(response.data.data);
       }
     } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchExpanditures = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/output");
+      const data: Expenditure[] = response.data.data;
+      const listNoOutput: number[] = data.map((expenditure: Expenditure) =>
+        parseFloat(expenditure.no_output.substring(2))
+      );
+      const lastId = (Math.max(...listNoOutput) + 1)
+        .toString()
+        .padStart(4, "0");
+      setNoOutput(lastId);
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        setNoOutput("OUT0001");
+      }
       console.log(error);
     }
   };
@@ -317,7 +337,8 @@ export default function CreateExpenditurePage() {
             <input
               type="text"
               className="border rounded px-2 py-1 grow bg-slate-100"
-              onChange={(e) => setNoOutput(e.target.value)}
+              value={noOutput}
+              disabled
             />
           </div>
           <div className="h-8" />

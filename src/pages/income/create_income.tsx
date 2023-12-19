@@ -56,15 +56,34 @@ export default function CreateIncomePage() {
 
   useEffect(() => {
     fetchAccounts();
+    fetchIncomes();
   }, []);
 
   const fetchAccounts = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/account");
-      if (response.data) {
-        setAccounts(response.data.data);
+      const data = response.data.data;
+      if (data) {
+        setAccounts(data);
       }
     } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchIncomes = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/input");
+      const data: Income[] = response.data.data;
+      const listNoInput: number[] = data.map((income: Income) =>
+        parseFloat(income.no_input.substring(2))
+      );
+      const lastId = (Math.max(...listNoInput) + 1).toString().padStart(4, "0");
+      setNoInput(lastId);
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        setNoInput("IN0001");
+      }
       console.log(error);
     }
   };
@@ -146,8 +165,6 @@ export default function CreateIncomePage() {
       status_input: "Draft",
     };
 
-    console.log(masterIncome);
-
     try {
       const res = await axios.post(
         "http://localhost:8080/api/input",
@@ -208,7 +225,7 @@ export default function CreateIncomePage() {
         <hr />
         <div className="mt-4 px-8">
           <button
-            className="bg-success text-white rounded px-4 py-2 w-48 flex w-max items-center"
+            className="bg-success text-white rounded px-4 py-2 flex w-max items-center"
             onClick={handleAddIncomeList}
           >
             <svg
@@ -314,7 +331,8 @@ export default function CreateIncomePage() {
             <input
               type="text"
               className="border rounded px-2 py-1 grow bg-slate-100"
-              onChange={(e) => setNoInput(e.target.value)}
+              value={"IN" + noInput}
+              disabled
             />
           </div>
           <div className="h-8" />
