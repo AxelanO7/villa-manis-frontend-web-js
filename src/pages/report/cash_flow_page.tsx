@@ -94,7 +94,9 @@ export default function CashFlowPage() {
   const fetchGroupByCategory = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/transaction/group`
+        `http://localhost:8080/api/transaction/group${
+          startDate ? `?start_date=${startDate}` : ""
+        }${endDate ? `&end_date=${endDate}` : ""}`
       );
       if (response.data.data.group_category) {
         setGroupByCategory(response.data.data.group_category);
@@ -104,25 +106,11 @@ export default function CashFlowPage() {
     }
   };
 
-  // const handleSearchByDate = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:8080/api/transactions?start_date=${startDate}&end_date=${endDate}`
-  //     );
-  //     if (response.data.data.detail_input) {
-  //       setDetailIncome(response.data.data.detail_input);
-  //     }
-  //     if (response.data.data.detail_output) {
-  //       setDetailExpenditure(response.data.data.detail_output);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const filterIncome = detailIncome.filter((item) => {
-  //   return item.input.status_input === "Lunas";
-  // });
+  const handleFilterByDate = async () => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+    fetchGroupByCategory();
+  };
 
   return (
     <BaseLayout>
@@ -158,7 +146,7 @@ export default function CashFlowPage() {
           </div>
           <button
             className="bg-red-400 text-white px-4 h-min"
-            // onClick={handleSearchByDate}
+            onClick={handleFilterByDate}
           >
             Cari
           </button>
