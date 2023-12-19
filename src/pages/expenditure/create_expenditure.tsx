@@ -76,7 +76,7 @@ export default function CreateExpenditurePage() {
       const response = await axios.get("http://localhost:8080/api/output");
       const data: Expenditure[] = response.data.data;
       const listNoOutput: number[] = data.map((expenditure: Expenditure) =>
-        parseFloat(expenditure.no_output.substring(2))
+        parseFloat(expenditure.no_output.substring(3))
       );
       const lastId = (Math.max(...listNoOutput) + 1)
         .toString()
@@ -337,7 +337,7 @@ export default function CreateExpenditurePage() {
             <input
               type="text"
               className="border rounded px-2 py-1 grow bg-slate-100"
-              value={noOutput}
+              value={"OUT" + noOutput}
               disabled
             />
           </div>
