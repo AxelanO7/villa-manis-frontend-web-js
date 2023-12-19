@@ -70,7 +70,7 @@ interface Category {
   name_category: string;
 }
 
-export default function GeneralJournalPage() {
+export default function ReportJournalPage() {
   const [transactions, setTransactions] = useState<Transactions[]>([]);
   const itemsBreadcrumb = ["Home", "Laporan Jurnal Umum"];
   const [startDate, setStartDate] = useState<string>("");
@@ -167,7 +167,7 @@ export default function GeneralJournalPage() {
             {transactions.map((transaction, index) => {
               return (
                 <>
-                  <tr key={index}>
+                  {/* <tr key={index}>
                     <td
                       className="border py-2"
                       rowSpan={
@@ -178,10 +178,11 @@ export default function GeneralJournalPage() {
                     >
                       {transaction.date}
                     </td>
-                  </tr>
+                  </tr> */}
                   {transaction.detail_input.map((detail, index) => {
                     return (
                       <tr key={index}>
+                        <td className="border py-2">{transaction.date}</td>
                         <td className="border py-2">
                           {detail.account.name_account}
                         </td>
@@ -205,12 +206,12 @@ export default function GeneralJournalPage() {
                       </tr>
                     );
                   })}
-                  <tr>
+                  {/* <tr>
                     <td className="border py-2">Total</td>
                     <td className="border py-2">-</td>
                     <td className="border py-2">{transaction.total_debit}</td>
                     <td className="border py-2">{transaction.total_credit}</td>
-                  </tr>
+                  </tr> */}
                 </>
               );
             })}

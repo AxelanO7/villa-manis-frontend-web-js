@@ -20,7 +20,7 @@ import DetailJournalPage from "./pages/journal/detail_journal_page";
 import PostLedgerPage from "./pages/journal/post_ledger_page";
 
 import CashFlowPage from "./pages/report/cash_flow_page";
-import GeneralJournalPage from "./pages/report/general_journal_page";
+import ReportJournalPage from "./pages/report/general_journal_page";
 import TrialBalancePage from "./pages/report/trial balance_page";
 import IncomeStatementPage from "./pages/report/income_statement";
 import StatementOfOwnerEquityPage from "./pages/report/statement_of_owner_equity";
@@ -47,12 +47,18 @@ function App() {
         <Route path="journal" element={<JournalPage />} />
         <Route path="add-journal" element={<CreateJournalPage />} />
         <Route path="detail-journal" element={<DetailJournalPage />} />
+        {/* posting buku besar */}
         <Route path="post-ledger" element={<PostLedgerPage />} />
 
+        {/* arus kas */}
         <Route path="cash-flow" element={<CashFlowPage />} />
-        <Route path="report-journal" element={<GeneralJournalPage />} />
+        {/* laporan jurnal umum */}
+        <Route path="report-journal" element={<ReportJournalPage />} />
+        {/* laporan neraca saldo */}
         <Route path="balance-sheet" element={<TrialBalancePage />} />
+        {/* laporan laba rugi */}
         <Route path="profit-loss" element={<IncomeStatementPage />} />
+        {/* laporan perubahan modal */}
         <Route path="capital-change" element={<StatementOfOwnerEquityPage />} />
       </Routes>
     </BrowserRouter>
