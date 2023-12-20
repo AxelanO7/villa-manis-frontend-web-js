@@ -3,6 +3,14 @@ import BaseLayout from "../../layouts/base";
 import { Breadcrumb } from "../../components/breadcrumb";
 import axios from "axios";
 
+interface Transactions {
+  date: string;
+  total_debit: number;
+  total_credit: number;
+  detail_input: DetailIncome[];
+  detail_output: DetalExpenditure[];
+}
+
 interface Income {
   ID: number | null;
   no_input: string;
@@ -17,12 +25,12 @@ interface DetailIncome {
   total_price: number;
   status_cart: number;
   input_date: string;
-  id_category: number;
-  category: Category;
-  id_account: number;
-  account: Account;
   id_input: number;
   input: Income;
+  id_account: number;
+  account: Account;
+  id_category: number;
+  category: Category;
 }
 
 interface Expenditure {
@@ -40,10 +48,10 @@ interface DetalExpenditure {
   total_price: number;
   status_cart: number;
   output_date: string;
-  id_category: number;
-  category: Category;
   id_account: number;
   account: Account;
+  id_category: number;
+  category: Category;
   id_output: number;
   output: Expenditure;
 }
@@ -62,54 +70,37 @@ interface Category {
   name_category: string;
 }
 
-interface GroupCategory {
-  ID: number | null;
-  name_category: string;
-  accounts: GroupAccount[];
-  total_debit: number;
-  total_credit: number;
-}
-
-interface GroupAccount {
-  ID: number | null;
-  name_account: string;
-  debit: number;
-  credit: number;
-  detail_input: DetailIncome[];
-  detail_output: DetalExpenditure[];
-}
-
 export default function CashFlowPage() {
+  const [transactions, setTransactions] = useState<Transactions[]>([]);
   const itemsBreadcrumb = ["Home", "Laporan Arus Kas"];
-
-  const [startDate, setStartDate] = useState<string>();
-  const [endDate, setEndDate] = useState<string>();
-
-  const [groupByCategory, setGroupByCategory] = useState<GroupCategory[]>([]);
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
 
   useEffect(() => {
-    fetchGroupByCategory();
+    fetchTransactions();
   }, []);
 
-  const fetchGroupByCategory = async () => {
+  const fetchTransactions = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/transaction/group${
+        `http://localhost:8080/api/transaction/date/group${
           startDate ? `?start_date=${startDate}` : ""
         }${endDate ? `&end_date=${endDate}` : ""}`
       );
-      if (response.data.data.group_category) {
-        setGroupByCategory(response.data.data.group_category);
+      if (response.status === 200) {
+        const data = response.data.data.group_date;
+        setTransactions(data);
       }
     } catch (error) {
+      setTransactions([]);
       console.log(error);
     }
   };
 
-  const handleFilterByDate = async () => {
+  const handleFilterByDate = () => {
     setStartDate(startDate);
     setEndDate(endDate);
-    fetchGroupByCategory();
+    fetchTransactions();
   };
 
   return (
@@ -127,9 +118,7 @@ export default function CashFlowPage() {
             <input
               type="date"
               className="border bg-white px-4"
-              onChange={(e) => {
-                setStartDate(e.target.value);
-              }}
+              onChange={(e) => setStartDate(e.target.value)}
             />
           </div>
 
@@ -139,9 +128,7 @@ export default function CashFlowPage() {
             <input
               type="date"
               className="border bg-white px-4"
-              onChange={(e) => {
-                setEndDate(e.target.value);
-              }}
+              onChange={(e) => setEndDate(e.target.value)}
             />
           </div>
           <button
@@ -159,135 +146,87 @@ export default function CashFlowPage() {
         <p className="border py-1 bg-slate-100 font-semibold">
           Periode Juni 2023
         </p>
-        <div className="text-start">
-          {groupByCategory.map((item) => {
-            return (
-              <div>
-                <p className="border py-1 w-full px-4 font-semibold">
-                  {item.name_category}
-                </p>
-                {item.accounts.map((account) => {
-                  return (
-                    <div className="flex w-full">
-                      <p className="border py-1 w-full px-4">
-                        {account.name_account}
-                      </p>
-                      <p className="border py-1 w-full px-4">{account.debit}</p>
-                      <p className="border py-1 w-full px-4">
-                        {account.credit}
-                      </p>
-                    </div>
-                  );
-                })}
-                <div className="flex w-full">
-                  <p className="border py-1 w-full px-4">
-                    Jumlah {item.name_category}
-                  </p>
-                  <p className="border py-1 w-full px-4">{item.total_debit}</p>
-                  <p className="border py-1 w-full px-4">{item.total_credit}</p>
-                </div>
-              </div>
-            );
-          })}
-
-          {/* <div className="h-20"></div>
-          <h6 className="border py-1 font-medium px-4">Akitivia Lancar</h6>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Kas</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4">Rp.109.400.000</p>
-              <p className="border py-1 w-full px-4"></p>
-            </div>
-          </div>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Peluang Usaha</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4">Rp.4.000.000</p>
-              <p className="border py-1 w-full px-4"></p>
-            </div>
-          </div>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Perlengkapan</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4">Rp.1.000.000</p>
-              <p className="border py-1 w-full px-4"></p>
-            </div>
-          </div>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Sewa dibayar muka</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4">Rp.10.000.000</p>
-              <p className="border py-1 w-full px-4"></p>
-            </div>
-          </div>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Jumlah Aktivia Lancar</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4"></p>
-              <p className="border py-1 w-full px-4">Rp.124.400.000</p>
-            </div>
-          </div>
-          <h6 className="border py-1 font-medium px-4">Akitivia Tetap</h6>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Peralatan</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4">Rp.3.000.000</p>
-              <p className="border py-1 w-full px-4"></p>
-            </div>
-          </div>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Peluang Usaha</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4">Rp.-700.000</p>
-              <p className="border py-1 w-full px-4"></p>
-            </div>
-          </div>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Perlengkapan</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4"></p>
-              <p className="border py-1 w-full px-4">Rp.2.300.000</p>
-            </div>
-          </div>
-          <h6 className="border py-1 font-medium px-4">Kewajiban</h6>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Utang Usaha</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4">Rp.1.000.000</p>
-              <p className="border py-1 w-full px-4"></p>
-            </div>
-          </div>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Jumlah Kewajiban</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4"></p>
-              <p className="border py-1 w-full px-4">Rp.1.000.000</p>
-            </div>
-          </div>
-          <h6 className="border py-1 font-medium px-4">Modal/Ekualitas</h6>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Modal</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4">Rp.120.000.000</p>
-              <p className="border py-1 w-full px-4"></p>
-            </div>
-          </div>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Prive</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4">Rp.-1.500.000</p>
-              <p className="border py-1 w-full px-4"></p>
-            </div>
-          </div>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Jumlah Modal/Ekulitas</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4"></p>
-              <p className="border py-1 w-full px-4">Rp.1.118.500</p>
-            </div>
-          </div> */}
-
-          <div className="h-4" />
+        <table className="table-fixed text-center w-full">
+          <thead>
+            <tr>
+              <th className="border py-2">Tanggal</th>
+              <th className="border py-2">Nama Akun</th>
+              <th className="border py-2 w-32">REF</th>
+              <th className="border py-2">Debet</th>
+              <th className="border py-2">Kredit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {transactions.length === 0 && (
+              <tr>
+                <td className="border py-2" colSpan={5}>
+                  Data tidak ada
+                </td>
+              </tr>
+            )}
+            {transactions.map((transaction, index) => {
+              return (
+                <>
+                  {/* <tr key={index}>
+                    <td
+                      className="border py-2"
+                      rowSpan={
+                        transaction.detail_input.length +
+                        transaction.detail_output.length +
+                        2
+                      }
+                    >
+                      {transaction.date}
+                    </td>
+                  </tr> */}
+                  {transaction.detail_input.map((detail, index) => {
+                    return (
+                      <tr key={index}>
+                        <td className="border py-2">{transaction.date}</td>
+                        <td className="border py-2">
+                          {detail.account.name_account}
+                        </td>
+                        <td className="border py-2">{detail.input.no_input}</td>
+                        <td className="border py-2">{detail.total_price}</td>
+                        <td className="border py-2">-</td>
+                      </tr>
+                    );
+                  })}
+                  {transaction.detail_output.map((detail, index) => {
+                    return (
+                      <tr key={index}>
+                        <td className="border py-2">{transaction.date}</td>
+                        <td className="border py-2">
+                          {detail.account.name_account}
+                        </td>
+                        <td className="border py-2">
+                          {detail.output.no_output}
+                        </td>
+                        <td className="border py-2">-</td>
+                        <td className="border py-2">{detail.total_price}</td>
+                      </tr>
+                    );
+                  })}
+                  {/* <tr>
+                    <td className="border py-2">Total</td>
+                    <td className="border py-2">-</td>
+                    <td className="border py-2">{transaction.total_debit}</td>
+                    <td className="border py-2">{transaction.total_credit}</td>
+                  </tr> */}
+                </>
+              );
+            })}
+          </tbody>
+        </table>
+        <div className="h-2" />
+        <div className="flex">
+          <button className="bg-white border border-gray-300 rounded px-4 py-1 text-gray-500 w-24">
+            Previous
+          </button>
+          <button className="bg-success rounded px-4 py-1 text-white">1</button>
+          <button className="bg-white border border-gray-300 rounded px-4 py-1 text-gray-500 w-24">
+            Next
+          </button>
         </div>
       </div>
       <div className="h-8" />

@@ -14,13 +14,13 @@ import CreateIncomePage from "./pages/income/create_income";
 import ExpenditurePage from "./pages/expenditure/expenditure_page";
 import CreateExpenditurePage from "./pages/expenditure/create_expenditure";
 
-import JournalPage from "./pages/journal/journal_page";
-import CreateJournalPage from "./pages/journal/create_journal_page";
-import DetailJournalPage from "./pages/journal/detail_journal_page";
-import PostLedgerPage from "./pages/journal/post_ledger_page";
+// import JournalPage from "./pages/journal/journal_page";
+// import CreateJournalPage from "./pages/journal/create_journal_page";
+// import DetailJournalPage from "./pages/journal/detail_journal_page";
+// import PostLedgerPage from "./pages/journal/post_ledger_page";
 
 import CashFlowPage from "./pages/report/cash_flow_page";
-import ReportJournalPage from "./pages/report/general_journal_page";
+import ReportJournalPage from "./pages/report/report_journal_page";
 import TrialBalancePage from "./pages/report/trial balance_page";
 import IncomeStatementPage from "./pages/report/income_statement";
 import StatementOfOwnerEquityPage from "./pages/report/statement_of_owner_equity";
@@ -44,11 +44,10 @@ function App() {
         <Route path="expenditure" element={<ExpenditurePage />} />
         <Route path="add-expenditure" element={<CreateExpenditurePage />} />
 
-        <Route path="journal" element={<JournalPage />} />
+        {/* <Route path="journal" element={<JournalPage />} />
         <Route path="add-journal" element={<CreateJournalPage />} />
         <Route path="detail-journal" element={<DetailJournalPage />} />
-        {/* posting buku besar */}
-        <Route path="post-ledger" element={<PostLedgerPage />} />
+        <Route path="post-ledger" element={<PostLedgerPage />} /> */}
 
         {/* arus kas */}
         <Route path="cash-flow" element={<CashFlowPage />} />

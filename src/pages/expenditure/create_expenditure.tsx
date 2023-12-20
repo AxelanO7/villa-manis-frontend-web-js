@@ -210,6 +210,7 @@ export default function CreateExpenditurePage() {
       );
       if (res.data) {
         alert("Data pengeluaran berhasil disimpan");
+        window.location.href = "/expenditure";
       }
     } catch (error) {
       console.log(error);
@@ -229,7 +230,7 @@ export default function CreateExpenditurePage() {
         <hr />
         <div className="mt-4 px-8">
           <button
-            className="bg-success text-white rounded px-4 py-2 w-48 flex w-max items-center"
+            className="bg-success text-white rounded px-4 py-2 w-48 flex items-center"
             onClick={handleAddExpenditureList}
           >
             <svg

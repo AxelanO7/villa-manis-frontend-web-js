@@ -132,6 +132,7 @@ export default function AccountPage() {
     setManage(manageProp);
     if (manageProp === "update") {
       setIdAccount(account!.ID);
+      setCodeAccount(account!.code);
       setNameAccount(account!.name_account);
       setCharacterAccount(account!.character);
       setIdCategory(account!.id_category);
@@ -139,6 +140,7 @@ export default function AccountPage() {
   };
 
   const handleResetInput = () => {
+    setCodeAccount("");
     setIdAccount(undefined);
     setNameAccount("");
     setCharacterAccount("");
@@ -174,7 +176,7 @@ export default function AccountPage() {
           <div className="flex flex-col space-y-4">
             {/* {manage === "update" && (
               <Input
-                label="ID"xam
+                label="ID"
                 value={idCategory}
                 type="number"
                 onChange={(e) => setIdCategory(parseInt(e.target.value))}

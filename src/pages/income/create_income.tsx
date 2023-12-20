@@ -206,6 +206,7 @@ export default function CreateIncomePage() {
       );
       if (res.data) {
         alert("Data pemasukan berhasil disimpan");
+        window.location.href = "/income";
       }
     } catch (error) {
       console.log(error);
