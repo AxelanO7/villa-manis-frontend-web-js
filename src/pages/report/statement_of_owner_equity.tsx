@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import BaseLayout from "../../layouts/base";
 import { Breadcrumb } from "../../components/breadcrumb";
 import axios from "axios";
+import { useReactToPrint } from "react-to-print";
 
 interface Journal {
   ID: number;
@@ -18,6 +19,7 @@ export default function StatementOfOwnerEquityPage() {
   const [incomes, setIncomes] = useState<Journal[]>([]);
 
   const itemsBreadcrumb = ["Home", "Laporan Perubahan Modal"];
+  const conponentPDF = React.useRef<HTMLTableElement>(null);
 
   useEffect(() => {
     fetchJournals();
@@ -34,6 +36,24 @@ export default function StatementOfOwnerEquityPage() {
       // alert("Data gagal diambil");
     }
   };
+
+  const handlePrint = useReactToPrint({
+    content: () => conponentPDF.current,
+    pageStyle: `
+      @page {
+        size: A4;
+        margin: 12mm 12mm 12mm 12mm;
+      }
+      @media print {
+        body {
+          margin: 0;
+          padding: 0;
+        }
+      }
+    `,
+    documentTitle: "Laporan Barang Masuk",
+    onAfterPrint: () => alert("Data tersimpan"),
+  });
 
   return (
     <BaseLayout>
@@ -56,54 +76,61 @@ export default function StatementOfOwnerEquityPage() {
             <input type="date" className="border bg-white px-4" />
           </div>
           <button className="bg-red-400 text-white px-4 h-min">Cari</button>
-          <button className="bg-success text-white px-4 h-min">Print</button>
+          <button
+            className="bg-success text-white px-4 h-min"
+            onClick={() => handlePrint()}
+          >
+            Print
+          </button>
         </div>
       </div>
       <div className="flex flex-col bg-white rounded shadow mx-8 p-6 text-center">
-        <p className="border py-1 bg-slate-100 font-semibold">Villa Manis</p>
-        <p className="border py-1 bg-slate-100 font-semibold">
-          Laporan Perubahan Modal
-        </p>
-        <p className="border py-1 bg-slate-100 font-semibold">
-          Periode Juni 2023
-        </p>
-        <div className="text-start">
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Modal Awal</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4">Rp.1.020.000</p>
-              <p className="border py-1 w-full px-4"></p>
+        <div ref={conponentPDF} className="text-center">
+          <p className="border py-1 bg-slate-100 font-semibold">Villa Manis</p>
+          <p className="border py-1 bg-slate-100 font-semibold">
+            Laporan Perubahan Modal
+          </p>
+          <p className="border py-1 bg-slate-100 font-semibold">
+            Periode Juni 2023
+          </p>
+          <div className="text-start">
+            <div className="flex">
+              <p className="border py-1 w-full px-4">Modal Awal</p>
+              <div className="flex w-full">
+                <p className="border py-1 w-full px-4">Rp.1.020.000</p>
+                <p className="border py-1 w-full px-4"></p>
+              </div>
             </div>
-          </div>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Laba Bersih</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4">Rp.9.200.000</p>
-              <p className="border py-1 w-full px-4"></p>
+            <div className="flex">
+              <p className="border py-1 w-full px-4">Laba Bersih</p>
+              <div className="flex w-full">
+                <p className="border py-1 w-full px-4">Rp.9.200.000</p>
+                <p className="border py-1 w-full px-4"></p>
+              </div>
             </div>
-          </div>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Pengambilan Prive</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4">Rp.1.500.000</p>
-              <p className="border py-1 w-full px-4"></p>
+            <div className="flex">
+              <p className="border py-1 w-full px-4">Pengambilan Prive</p>
+              <div className="flex w-full">
+                <p className="border py-1 w-full px-4">Rp.1.500.000</p>
+                <p className="border py-1 w-full px-4"></p>
+              </div>
             </div>
-          </div>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Penambahan Modal</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4"></p>
-              <p className="border py-1 w-full px-4">Rp.0</p>
+            <div className="flex">
+              <p className="border py-1 w-full px-4">Penambahan Modal</p>
+              <div className="flex w-full">
+                <p className="border py-1 w-full px-4"></p>
+                <p className="border py-1 w-full px-4">Rp.0</p>
+              </div>
             </div>
-          </div>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Modal Akhir</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4"></p>
-              <p className="border py-1 w-full px-4">Rp.1.027.700.000</p>
+            <div className="flex">
+              <p className="border py-1 w-full px-4">Modal Akhir</p>
+              <div className="flex w-full">
+                <p className="border py-1 w-full px-4"></p>
+                <p className="border py-1 w-full px-4">Rp.1.027.700.000</p>
+              </div>
             </div>
+            <div className="h-4" />
           </div>
-          <div className="h-4" />
         </div>
       </div>
       <div className="h-8" />

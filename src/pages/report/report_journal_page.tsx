@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import BaseLayout from "../../layouts/base";
 import { Breadcrumb } from "../../components/breadcrumb";
 import axios from "axios";
+import { useReactToPrint } from "react-to-print";
 
 interface Income {
   ID: number | null;
@@ -87,6 +88,8 @@ export default function ReportJournalPage() {
 
   const [groupByCategory, setGroupByCategory] = useState<GroupCategory[]>([]);
 
+  const conponentPDF = React.useRef<HTMLTableElement>(null);
+
   useEffect(() => {
     fetchGroupByCategory();
   }, []);
@@ -112,6 +115,24 @@ export default function ReportJournalPage() {
     setEndDate(endDate);
     fetchGroupByCategory();
   };
+
+  const handlePrint = useReactToPrint({
+    content: () => conponentPDF.current,
+    pageStyle: `
+      @page {
+        size: A4;
+        margin: 12mm 12mm 12mm 12mm;
+      }
+      @media print {
+        body {
+          margin: 0;
+          padding: 0;
+        }
+      }
+    `,
+    documentTitle: "Laporan Barang Masuk",
+    onAfterPrint: () => alert("Data tersimpan"),
+  });
 
   return (
     <BaseLayout>
@@ -151,64 +172,70 @@ export default function ReportJournalPage() {
           >
             Cari
           </button>
-          <button className="bg-success text-white px-4 h-min">Print</button>
+          <button
+            className="bg-success text-white px-4 h-min"
+            onClick={() => handlePrint()}
+          >
+            Print
+          </button>
         </div>
       </div>
       <div className="flex flex-col bg-white rounded shadow mx-8 p-6 text-center">
-        <p className="border py-1 bg-slate-100 font-semibold">Villa Manis</p>
-        <p className="border py-1 bg-slate-100 font-semibold">Jurnal Umum</p>
-        <p className="border py-1 bg-slate-100 font-semibold">
-          Periode Juni 2023
-        </p>
-        <div className="text-start">
-          {/* {groupByCategory.length === 0 && (
+        <div ref={conponentPDF} className="text-center">
+          <p className="border py-1 bg-slate-100 font-semibold">Villa Manis</p>
+          <p className="border py-1 bg-slate-100 font-semibold">Jurnal Umum</p>
+          <p className="border py-1 bg-slate-100 font-semibold">
+            Periode Juni 2023
+          </p>
+          <div className="text-start">
+            {/* {groupByCategory.length === 0 && (
             <tr>
               <td className="border py-2" colSpan={5}>
                 Data tidak ada
               </td>
             </tr>
           )} */}
-          {groupByCategory.map((item) => {
-            return (
-              <div>
-                <p className="border py-1 w-full px-4 font-semibold">
-                  {item.name_category}
-                </p>
-                {item.accounts.map((account) => {
-                  return (
-                    <div className="flex">
-                      <p className="border py-1 w-full px-4">
-                        {account.name_account}
-                      </p>
-                      <div className="flex w-full">
-                        <p className="border py-1 w-full px-4">
-                          {account.debit}
-                        </p>
-                        <p className="border py-1 w-full px-4">
-                          {account.credit}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-                <div className="flex w-full">
-                  <p className="border py-1 w-full px-4">
-                    Jumlah {item.name_category}
+            {groupByCategory.map((item) => {
+              return (
+                <div>
+                  <p className="border py-1 w-full px-4 font-semibold">
+                    {item.name_category}
                   </p>
+                  {item.accounts.map((account) => {
+                    return (
+                      <div className="flex">
+                        <p className="border py-1 w-full px-4">
+                          {account.name_account}
+                        </p>
+                        <div className="flex w-full">
+                          <p className="border py-1 w-full px-4">
+                            {account.debit}
+                          </p>
+                          <p className="border py-1 w-full px-4">
+                            {account.credit}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
                   <div className="flex w-full">
                     <p className="border py-1 w-full px-4">
-                      {item.total_debit}
+                      Jumlah {item.name_category}
                     </p>
-                    <p className="border py-1 w-full px-4">
-                      {item.total_credit}
-                    </p>
+                    <div className="flex w-full">
+                      <p className="border py-1 w-full px-4">
+                        {item.total_debit}
+                      </p>
+                      <p className="border py-1 w-full px-4">
+                        {item.total_credit}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
 
-          {/* <div className="h-20"></div>
+            {/* <div className="h-20"></div>
           <h6 className="border py-1 font-medium px-4">Akitivia Lancar</h6>
           <div className="flex">
             <p className="border py-1 w-full px-4">Kas</p>
@@ -304,7 +331,7 @@ export default function ReportJournalPage() {
               <p className="border py-1 w-full px-4">Rp.1.118.500</p>
             </div>
           </div> */}
-
+          </div>
           <div className="h-4" />
         </div>
       </div>

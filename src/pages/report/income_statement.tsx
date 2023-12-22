@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import BaseLayout from "../../layouts/base";
 import { Breadcrumb } from "../../components/breadcrumb";
 import axios from "axios";
+import { useReactToPrint } from "react-to-print";
 
 interface Journal {
   ID: number;
@@ -19,6 +20,8 @@ export default function IncomeStatementPage() {
 
   const itemsBreadcrumb = ["Home", "Laporan Laba Rugi"];
 
+  const conponentPDF = React.useRef<HTMLTableElement>(null);
+
   useEffect(() => {
     fetchJournals();
   }, []);
@@ -34,6 +37,24 @@ export default function IncomeStatementPage() {
       // alert("Data gagal diambil");
     }
   };
+
+  const handlePrint = useReactToPrint({
+    content: () => conponentPDF.current,
+    pageStyle: `
+      @page {
+        size: A4;
+        margin: 12mm 12mm 12mm 12mm;
+      }
+      @media print {
+        body {
+          margin: 0;
+          padding: 0;
+        }
+      }
+    `,
+    documentTitle: "Laporan Barang Masuk",
+    onAfterPrint: () => alert("Data tersimpan"),
+  });
 
   return (
     <BaseLayout>
@@ -56,63 +77,70 @@ export default function IncomeStatementPage() {
             <input type="date" className="border bg-white px-4" />
           </div>
           <button className="bg-red-400 text-white px-4 h-min">Cari</button>
-          <button className="bg-success text-white px-4 h-min">Print</button>
+          <button
+            className="bg-success text-white px-4 h-min"
+            onClick={() => handlePrint()}
+          >
+            Print
+          </button>
         </div>
       </div>
       <div className="flex flex-col bg-white rounded shadow mx-8 p-6 text-center">
-        <p className="border py-1 bg-slate-100 font-semibold">Villa Manis</p>
-        <p className="border py-1 bg-slate-100 font-semibold">
-          Laporan Laba Rugi
-        </p>
-        <p className="border py-1 bg-slate-100 font-semibold">
-          Periode Juni 2023
-        </p>
-        <div className="text-start">
-          <h6 className="border py-1 px-4">Pendapatan</h6>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Pendapatan Usaha</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4">Rp.14.000.000</p>
-              <p className="border py-1 w-full px-4"></p>
+        <div ref={conponentPDF} className="text-center">
+          <p className="border py-1 bg-slate-100 font-semibold">Villa Manis</p>
+          <p className="border py-1 bg-slate-100 font-semibold">
+            Laporan Laba Rugi
+          </p>
+          <p className="border py-1 bg-slate-100 font-semibold">
+            Periode Juni 2023
+          </p>
+          <div className="text-start">
+            <h6 className="border py-1 px-4">Pendapatan</h6>
+            <div className="flex">
+              <p className="border py-1 w-full px-4">Pendapatan Usaha</p>
+              <div className="flex w-full">
+                <p className="border py-1 w-full px-4">Rp.14.000.000</p>
+                <p className="border py-1 w-full px-4"></p>
+              </div>
             </div>
-          </div>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Pendapatan Lain-lain</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4">Rp.5.000.000</p>
-              <p className="border py-1 w-full px-4"></p>
+            <div className="flex">
+              <p className="border py-1 w-full px-4">Pendapatan Lain-lain</p>
+              <div className="flex w-full">
+                <p className="border py-1 w-full px-4">Rp.5.000.000</p>
+                <p className="border py-1 w-full px-4"></p>
+              </div>
             </div>
-          </div>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Pendapatan dibayar muka</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4">Rp.2.000.000</p>
-              <p className="border py-1 w-full px-4"></p>
+            <div className="flex">
+              <p className="border py-1 w-full px-4">Pendapatan dibayar muka</p>
+              <div className="flex w-full">
+                <p className="border py-1 w-full px-4">Rp.2.000.000</p>
+                <p className="border py-1 w-full px-4"></p>
+              </div>
             </div>
-          </div>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Jumlah Pendapatan</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4"></p>
-              <p className="border py-1 w-full px-4">Rp.21.000.000</p>
+            <div className="flex">
+              <p className="border py-1 w-full px-4">Jumlah Pendapatan</p>
+              <div className="flex w-full">
+                <p className="border py-1 w-full px-4"></p>
+                <p className="border py-1 w-full px-4">Rp.21.000.000</p>
+              </div>
             </div>
-          </div>
-          <p className="border py-1 w-full px-4">Beban</p>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Beban Gaji</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4">Rp.10.400.000</p>
-              <p className="border py-1 w-full px-4"></p>
+            <p className="border py-1 w-full px-4">Beban</p>
+            <div className="flex">
+              <p className="border py-1 w-full px-4">Beban Gaji</p>
+              <div className="flex w-full">
+                <p className="border py-1 w-full px-4">Rp.10.400.000</p>
+                <p className="border py-1 w-full px-4"></p>
+              </div>
             </div>
-          </div>
-          <div className="flex">
-            <p className="border py-1 w-full px-4">Beban Iklan</p>
-            <div className="flex w-full">
-              <p className="border py-1 w-full px-4">Rp.100.000</p>
-              <p className="border py-1 w-full px-4"></p>
+            <div className="flex">
+              <p className="border py-1 w-full px-4">Beban Iklan</p>
+              <div className="flex w-full">
+                <p className="border py-1 w-full px-4">Rp.100.000</p>
+                <p className="border py-1 w-full px-4"></p>
+              </div>
             </div>
+            <div className="h-4" />
           </div>
-          <div className="h-4" />
         </div>
       </div>
       <div className="h-8" />

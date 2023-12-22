@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import BaseLayout from "../../layouts/base";
 import { Breadcrumb } from "../../components/breadcrumb";
 import axios from "axios";
+import { useReactToPrint } from "react-to-print";
 
 interface Transactions {
   date: string;
@@ -75,6 +76,7 @@ export default function CashFlowPage() {
   const itemsBreadcrumb = ["Home", "Laporan Arus Kas"];
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
+  const conponentPDF = React.useRef<HTMLTableElement>(null);
 
   useEffect(() => {
     fetchTransactions();
@@ -102,6 +104,24 @@ export default function CashFlowPage() {
     setEndDate(endDate);
     fetchTransactions();
   };
+
+  const handlePrint = useReactToPrint({
+    content: () => conponentPDF.current,
+    pageStyle: `
+      @page {
+        size: A4;
+        margin: 12mm 12mm 12mm 12mm;
+      }
+      @media print {
+        body {
+          margin: 0;
+          padding: 0;
+        }
+      }
+    `,
+    documentTitle: "Laporan Barang Masuk",
+    onAfterPrint: () => alert("Data tersimpan"),
+  });
 
   return (
     <BaseLayout>
@@ -137,37 +157,44 @@ export default function CashFlowPage() {
           >
             Cari
           </button>
-          <button className="bg-success text-white px-4 h-min">Print</button>
+          <button
+            className="bg-success text-white px-4 h-min"
+            onClick={() => handlePrint()}
+          >
+            Print
+          </button>
         </div>
       </div>
       <div className="flex flex-col bg-white rounded shadow mx-8 p-6 text-center">
-        <p className="border py-1 bg-slate-100 font-semibold">Villa Manis</p>
-        <p className="border py-1 bg-slate-100 font-semibold">ARUS KAS</p>
-        <p className="border py-1 bg-slate-100 font-semibold">
-          Periode Juni 2023
-        </p>
-        <table className="table-fixed text-center w-full">
-          <thead>
-            <tr>
-              <th className="border py-2">Tanggal</th>
-              <th className="border py-2">Nama Akun</th>
-              <th className="border py-2 w-32">REF</th>
-              <th className="border py-2">Debet</th>
-              <th className="border py-2">Kredit</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.length === 0 && (
+        <div ref={conponentPDF} className="text-center">
+          <p className="border py-1 bg-slate-100 font-semibold">Villa Manis</p>
+          <p className="border py-1 bg-slate-100 font-semibold">ARUS KAS</p>
+          <p className="border py-1 bg-slate-100 font-semibold">
+            Periode Juni 2023
+          </p>
+          <table className="table-fixed text-center w-full">
+            <thead>
               <tr>
-                <td className="border py-2" colSpan={5}>
-                  Data tidak ada
-                </td>
+                <th className="border py-2">Tanggal</th>
+                <th className="border py-2">Nama Akun</th>
+                <th className="border py-2">Keterangan</th>
+                <th className="border py-2 w-32">REF</th>
+                <th className="border py-2">Debet</th>
+                <th className="border py-2">Kredit</th>
               </tr>
-            )}
-            {transactions.map((transaction, index) => {
-              return (
-                <>
-                  {/* <tr key={index}>
+            </thead>
+            <tbody>
+              {transactions.length === 0 && (
+                <tr>
+                  <td className="border py-2" colSpan={6}>
+                    Data tidak ada
+                  </td>
+                </tr>
+              )}
+              {transactions.map((transaction, index) => {
+                return (
+                  <>
+                    {/* <tr key={index}>
                     <td
                       className="border py-2"
                       rowSpan={
@@ -179,45 +206,51 @@ export default function CashFlowPage() {
                       {transaction.date}
                     </td>
                   </tr> */}
-                  {transaction.detail_input.map((detail, index) => {
-                    return (
-                      <tr key={index}>
-                        <td className="border py-2">{transaction.date}</td>
-                        <td className="border py-2">
-                          {detail.account.name_account}
-                        </td>
-                        <td className="border py-2">{detail.input.no_input}</td>
-                        <td className="border py-2">{detail.total_price}</td>
-                        <td className="border py-2">-</td>
-                      </tr>
-                    );
-                  })}
-                  {transaction.detail_output.map((detail, index) => {
-                    return (
-                      <tr key={index}>
-                        <td className="border py-2">{transaction.date}</td>
-                        <td className="border py-2">
-                          {detail.account.name_account}
-                        </td>
-                        <td className="border py-2">
-                          {detail.output.no_output}
-                        </td>
-                        <td className="border py-2">-</td>
-                        <td className="border py-2">{detail.total_price}</td>
-                      </tr>
-                    );
-                  })}
-                  {/* <tr>
+                    {transaction.detail_input.map((detail, index) => {
+                      return (
+                        <tr key={index}>
+                          <td className="border py-2">{transaction.date}</td>
+                          <td className="border py-2">
+                            {detail.account.name_account}
+                          </td>
+                          <td className="border py-2">
+                            {detail.input_information}
+                          </td>
+                          <td className="border py-2">
+                            {detail.input.no_input}
+                          </td>
+                          <td className="border py-2">{detail.total_price}</td>
+                          <td className="border py-2">-</td>
+                        </tr>
+                      );
+                    })}
+                    {transaction.detail_output.map((detail, index) => {
+                      return (
+                        <tr key={index}>
+                          <td className="border py-2">{transaction.date}</td>
+                          <td className="border py-2">
+                            {detail.account.name_account}
+                          </td>
+                          <td className="border py-2">
+                            {detail.output.no_output}
+                          </td>
+                          <td className="border py-2">-</td>
+                          <td className="border py-2">{detail.total_price}</td>
+                        </tr>
+                      );
+                    })}
+                    {/* <tr>
                     <td className="border py-2">Total</td>
                     <td className="border py-2">-</td>
                     <td className="border py-2">{transaction.total_debit}</td>
                     <td className="border py-2">{transaction.total_credit}</td>
                   </tr> */}
-                </>
-              );
-            })}
-          </tbody>
-        </table>
+                  </>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
         <div className="h-2" />
         <div className="flex">
           <button className="bg-white border border-gray-300 rounded px-4 py-1 text-gray-500 w-24">
