@@ -3,26 +3,27 @@ import BaseLayout from "../../layouts/base";
 import { Breadcrumb } from "../../components/breadcrumb";
 import axios from "axios";
 
-interface Income {
+interface Expenditure {
   ID: number | null;
-  no_input: string;
-  date_input: string;
-  status_input: string;
+  no_output: string;
+  date_output: string;
+  status_output: string;
 }
 
-interface DetailIncome {
+interface DetalExpenditure {
   ID: number | null;
-  input_information: string;
+  id_cash: number;
+  output_information: string;
   quantity: number;
   total_price: number;
   status_cart: number;
-  input_date: string;
-  id_input: number;
-  input: Income;
+  output_date: string;
   id_account: number;
   account: Account;
   id_category: number;
   category: Category;
+  id_output: number;
+  output: Expenditure;
 }
 
 interface Account {
@@ -39,24 +40,30 @@ interface Category {
   name_category: string;
 }
 
-export default function CreateIncomePage() {
-  const [income, setIncome] = useState<Income>();
-  const [detailIncomesTemp, setDetailIncomesTemp] = useState<DetailIncome[]>(
-    []
-  );
+export default function UpdateExpenditurePage() {
+  const [expenditure, setExpenditure] = useState<Expenditure>();
+  const [detailExpenditures, setDetailExpenditures] = useState<
+    DetalExpenditure[]
+  >([]);
+  const [detailExpendituresTemp, setDetailExpendituresTemp] = useState<
+    DetalExpenditure[]
+  >([]);
 
-  const [noInput, setNoInput] = useState<string>();
-  const [dateInput, setDateInput] = useState<string>();
+  const [noOutput, setNoOutput] = useState<string>();
+  const [dateOutput, setDateOutput] = useState<string>();
 
   const [subTotal, setSubTotal] = useState<number>(0);
 
-  const itemsBreadcrumb = ["Home", "Transaksi Pemasukan"];
+  const itemsBreadcrumb = ["Home", "Transaksi Pengeluaran"];
 
   const [accounts, setAccounts] = useState<Account[]>([]);
 
+  const idd = window.location.pathname.split("/")[2];
+
   useEffect(() => {
+    fetchExpenditure(idd);
+    fetchDetailExpendituresById(idd);
     fetchAccounts();
-    fetchIncomes();
   }, []);
 
   const fetchAccounts = async () => {
@@ -71,56 +78,67 @@ export default function CreateIncomePage() {
     }
   };
 
-  const fetchIncomes = async () => {
+  const fetchDetailExpendituresById = async (id: string) => {
     try {
-      const response = await axios.get("http://localhost:8080/api/input");
-      const data: Income[] = response.data.data;
-      const listNoInput: number[] = data.map((income: Income) =>
-        parseFloat(income.no_input.substring(2))
+      const response = await axios.get(
+        `http://localhost:8080/api/detail-output/output/${id}`
       );
-      const lastId = (Math.max(...listNoInput) + 1).toString().padStart(4, "0");
-      setNoInput(lastId);
-    } catch (error: any) {
-      if (error.response.status === 404) {
-        setNoInput("IN0001");
-      }
+      const data: DetalExpenditure[] = response.data.data;
+      setDetailExpenditures(data);
+      setDetailExpendituresTemp(data);
+    } catch (error) {
       console.log(error);
     }
   };
 
-  const validateInput = () => {
-    if (noInput === undefined || dateInput === undefined) {
+  const fetchExpenditure = async (id: string) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/output/${id}`
+      );
+      const data: Expenditure = response.data.data;
+      setExpenditure(data);
+      setNoOutput(data.no_output);
+      setDateOutput(data.date_output);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const validateOutput = () => {
+    if (noOutput === undefined || dateOutput === undefined) {
       alert("Data transaksi tidak boleh kosong");
       return false;
     }
     return true;
   };
 
-  const handleAddIncomeList = async () => {
-    if (!validateInput()) return;
+  const handleAddExpenditureList = async () => {
+    if (!validateOutput()) return;
 
-    setIncome({
+    setExpenditure({
       ID: null,
-      no_input: noInput!,
-      date_input: dateInput!,
-      status_input: "Draft",
+      no_output: noOutput!,
+      date_output: dateOutput!,
+      status_output: "Draft",
     });
 
-    setDetailIncomesTemp([
-      ...detailIncomesTemp,
+    setDetailExpendituresTemp([
+      ...detailExpendituresTemp,
       {
         ID: null,
-        input_information: "-",
+        id_cash: 0,
+        output_information: "-",
         quantity: 0,
         total_price: 0,
         status_cart: 0,
-        input_date: "",
-        id_input: 0,
-        input: {
-          ID: income?.ID || null,
-          no_input: noInput!,
-          date_input: dateInput!,
-          status_input: "Draft",
+        output_date: "",
+        id_output: 0,
+        output: {
+          ID: expenditure?.ID || null,
+          no_output: noOutput!,
+          date_output: dateOutput!,
+          status_output: "Draft",
         },
         id_account: 0,
         account: {
@@ -143,54 +161,59 @@ export default function CreateIncomePage() {
     ]);
   };
 
-  const handleDeleteIncomeList = (index: number) => {
-    const newDetailIncomesTemp = [...detailIncomesTemp];
-    newDetailIncomesTemp.splice(index, 1);
-    setDetailIncomesTemp(newDetailIncomesTemp);
+  const handleDeleteExpenditureList = (index: number) => {
+    const newDetailExpendituressTemp = [...detailExpendituresTemp];
+    newDetailExpendituressTemp.splice(index, 1);
+    setDetailExpendituresTemp(newDetailExpendituressTemp);
   };
 
   const handleCountSubTotal = () => {
     let total = 0;
-    detailIncomesTemp.forEach((detailIncome) => {
-      total += detailIncome.total_price * detailIncome.quantity;
+    detailExpendituresTemp.forEach((detailExpenditure) => {
+      total += detailExpenditure.total_price * detailExpenditure.quantity;
     });
     setSubTotal(total);
   };
 
   const handleSaveChanges = async () => {
-    const masterIncome: Income = {
-      ID: null,
-      no_input: noInput!,
-      date_input: dateInput!,
-      status_input: "Draft",
+    if (noOutput?.slice(0, 3) !== "OUT") {
+      setNoOutput("OUT" + noOutput);
+    }
+
+    const masterExpenditure: Expenditure = {
+      ID: parseInt(idd) || null,
+      no_output: noOutput!,
+      date_output: dateOutput!,
+      status_output: "Draft",
     };
 
     try {
-      const res = await axios.post(
-        "http://localhost:8080/api/input",
-        masterIncome
+      const res = await axios.put(
+        `http://localhost:8080/api/output/${idd}`,
+        masterExpenditure
       );
       if (res.data) {
-        masterIncome.ID = res.data.data.ID;
+        masterExpenditure.ID = res.data.data.ID;
       }
     } catch (error) {
       console.log(error);
-      alert("Terjadi kesalahan saat menyimpan master data pemasukan");
+      alert("Terjadi kesalahan saat menyimpan master data pengeluaran");
     }
 
     const newAccount: Account = accounts[0];
 
-    const detailIncomes: DetailIncome[] = detailIncomesTemp.map(
-      (detailIncome) => {
+    const detailExpenditures: DetalExpenditure[] = detailExpendituresTemp.map(
+      (detailExpenditure) => {
         return {
           ID: null,
-          input_information: detailIncome.input_information,
-          quantity: detailIncome.quantity,
-          total_price: detailIncome.total_price,
+          id_cash: detailExpenditure.id_cash,
+          output_information: detailExpenditure.output_information,
+          quantity: detailExpenditure.quantity,
+          total_price: detailExpenditure.total_price,
           status_cart: 0,
-          input_date: "",
-          id_input: masterIncome.ID || 0,
-          input: masterIncome,
+          output_date: "",
+          id_output: masterExpenditure.ID || 0,
+          output: masterExpenditure,
           id_account: newAccount.ID || 0,
           account: newAccount,
           id_category: newAccount.id_category,
@@ -200,17 +223,17 @@ export default function CreateIncomePage() {
     );
 
     try {
-      const res = await axios.post(
-        "http://localhost:8080/api/detail-inputs",
-        detailIncomes
+      const res = await axios.put(
+        `http://localhost:8080/api/detail-outputs/${masterExpenditure.ID}`,
+        detailExpenditures
       );
       if (res.data) {
-        alert("Data pemasukan berhasil disimpan");
-        window.location.href = "/income";
+        alert("Data pengeluaran berhasil disimpan");
+        // window.location.href = "/expenditure";
       }
     } catch (error) {
       console.log(error);
-      alert("Terjadi kesalahan saat menyimpan detail data pemasukan");
+      alert("Terjadi kesalahan saat menyimpan detail data pengeluaran");
     }
   };
 
@@ -218,16 +241,16 @@ export default function CreateIncomePage() {
     <BaseLayout>
       <Breadcrumb
         items={itemsBreadcrumb}
-        title="Transaksi Pemasukan"
+        title="Transaksi Pengeluaran"
         paddingHorizontal={32}
       />
       <div className="flex flex-col bg-white rounded m-8 shadow">
-        <h3 className="px-8 py-4">Transaksi Pemasukan</h3>
+        <h3 className="px-8 py-4">Transaksi Pengeluaran</h3>
         <hr />
         <div className="mt-4 px-8">
           <button
             className="bg-success text-white rounded px-4 py-2 flex w-max items-center"
-            onClick={handleAddIncomeList}
+            onClick={handleAddExpenditureList}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -256,23 +279,24 @@ export default function CreateIncomePage() {
               </tr>
             </thead>
             <tbody>
-              {detailIncomesTemp.length === 0 && (
+              {detailExpendituresTemp.length === 0 && (
                 <tr>
                   <td className="border py-2" colSpan={5}>
                     Data tidak ditemukan, silahkan tambah data baru
                   </td>
                 </tr>
               )}
-              {detailIncomesTemp.map(
-                (detailIncome: DetailIncome, index: number) => (
+              {detailExpendituresTemp.map(
+                (detailExpenditure: DetalExpenditure, index: number) => (
                   <tr>
                     <td className="border py-2">{index + 1}</td>
                     <td className="border py-2 px-4">
                       <input
                         type="text"
                         className="border rounded px-2 py-1 grow bg-slate-100 w-full text-center"
+                        defaultValue={detailExpenditure.output_information}
                         onChange={(e) => {
-                          detailIncome.input_information = e.target.value;
+                          detailExpenditure.output_information = e.target.value;
                         }}
                       />
                     </td>
@@ -280,8 +304,9 @@ export default function CreateIncomePage() {
                       <input
                         type="number"
                         className="border rounded px-2 py-1 grow bg-slate-100 w-full text-center"
+                        defaultValue={detailExpenditure.quantity}
                         onChange={(e) => {
-                          detailIncome.quantity = parseInt(e.target.value);
+                          detailExpenditure.quantity = parseInt(e.target.value);
                           handleCountSubTotal();
                         }}
                       />
@@ -290,8 +315,11 @@ export default function CreateIncomePage() {
                       <input
                         type="number"
                         className="border rounded px-2 py-1 grow bg-slate-100 w-full text-center"
+                        defaultValue={detailExpenditure.total_price}
                         onChange={(e) => {
-                          detailIncome.total_price = parseInt(e.target.value);
+                          detailExpenditure.total_price = parseInt(
+                            e.target.value
+                          );
                           handleCountSubTotal();
                         }}
                       />
@@ -299,7 +327,7 @@ export default function CreateIncomePage() {
                     <td className="flex text-white justify-center border py-2 px-4">
                       <button
                         className="bg-red-500 rounded px-2 py-1 flex-1 flex items-center justify-center"
-                        onClick={() => handleDeleteIncomeList(index)}
+                        onClick={() => handleDeleteExpenditureList(index)}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -332,8 +360,12 @@ export default function CreateIncomePage() {
             <input
               type="text"
               className="border rounded px-2 py-1 grow bg-slate-100"
-              value={"IN" + noInput}
-              disabled
+              value={
+                noOutput?.slice(0, 3) === "OUT" ? noOutput : "OUT" + noOutput
+              }
+              onChange={(e) => {
+                setNoOutput(e.target.value);
+              }}
             />
           </div>
           <div className="h-8" />
@@ -342,8 +374,9 @@ export default function CreateIncomePage() {
             <div className="w-12" />
             <input
               type="date"
+              value={dateOutput}
               className="border rounded px-2 py-1 grow bg-slate-100"
-              onChange={(e) => setDateInput(e.target.value)}
+              onChange={(e) => setDateOutput(e.target.value)}
             />
           </div>
           <div className="h-12" />

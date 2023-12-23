@@ -47,34 +47,35 @@ export default function IncomePage() {
       });
   };
 
-  const createExpenditure = async () => {
-    try {
-      await axios.post("http://localhost:8080/api/output", {
-        no_output: noOutput,
-        date_output: dateOutput,
-        status_output: statusOutput,
-      });
-      alert("Data berhasil ditambahkan");
-      handleShowModal({ show: false });
-      fetchExpenditure();
-    } catch (error) {
-      alert("Data gagal ditambahkan");
-    }
-  };
+  // const createExpenditure = async () => {
+  //   try {
+  //     await axios.post("http://localhost:8080/api/output", {
+  //       no_output: noOutput,
+  //       date_output: dateOutput,
+  //       status_output: statusOutput,
+  //     });
+  //     alert("Data berhasil ditambahkan");
+  //     handleShowModal({ show: false });
+  //     fetchExpenditure();
+  //   } catch (error) {
+  //     alert("Data gagal ditambahkan");
+  //   }
+  // };
 
-  const updateExpenditure = async (idProp: number) => {
-    try {
-      await axios.put(`http://localhost:8080/api/output/${idProp}`, {
-        no_output: noOutput,
-        date_output: dateOutput,
-        status_output: statusOutput,
-      });
-      alert("Data berhasil diubah");
-      handleShowModal({ show: false });
-      fetchExpenditure();
-    } catch (error) {
-      alert("Data gagal diubah");
-    }
+  const handleUpdateExpenditure = async (idProp: number) => {
+    window.location.href = "/edit-expenditure/" + idProp;
+    // try {
+    //   await axios.put(`http://localhost:8080/api/output/${idProp}`, {
+    //     no_output: noOutput,
+    //     date_output: dateOutput,
+    //     status_output: statusOutput,
+    //   });
+    //   alert("Data berhasil diubah");
+    //   handleShowModal({ show: false });
+    //   fetchExpenditure();
+    // } catch (error) {
+    //   alert("Data gagal diubah");
+    // }
   };
 
   const deleteExpenditure = async (idProp: number) => {
@@ -140,7 +141,6 @@ export default function IncomePage() {
               type="text"
               onChange={(e) => setNoOutput(e.target.value)}
             /> */}
-            todo: generate no transaksi
             <div className="form-group flex flex-col">
               <label className="text-gray-600 text-sm font-medium pb-1">
                 No Transaksi
@@ -199,11 +199,12 @@ export default function IncomePage() {
         <ModalFooter>
           <button
             className="bg-success rounded px-4 py-1 text-white"
-            onClick={
-              manage === "update"
-                ? () => updateExpenditure(idOutput!)
-                : () => createExpenditure()
-            }
+
+            // onClick={
+            //   manage === "update"
+            //     ? () => handleUpdateExpenditure(idOutput!)
+            //     : () => createExpenditure()
+            // }
           >
             Simpan
           </button>
@@ -226,7 +227,7 @@ export default function IncomePage() {
         <div className="flex flex-col bg-white rounded m-8 shadow">
           <div className="pt-8 px-6">
             <button
-              className="bg-success text-white rounded px-4 py-2 w-48 flex w-max items-center"
+              className="bg-success text-white rounded px-4 py-2 w-,ax flex items-center"
               // onClick={() => handleShowModal({ show: true })}
               onClick={handleCreateExpanditure}
             >
@@ -293,12 +294,15 @@ export default function IncomePage() {
                     <td className="flex text-white justify-center border py-2 px-4">
                       <button
                         className="bg-success rounded px-2 py-1 flex-1 flex items-center justify-center"
-                        onClick={() =>
-                          handleShowModal({
-                            show: true,
-                            expenditure: output,
-                            manageProp: "update",
-                          })
+                        onClick={
+                          () => {
+                            handleUpdateExpenditure(output.ID);
+                          }
+                          // handleShowModal({
+                          //   show: true,
+                          //   expenditure: output,
+                          //   manageProp: "update",
+                          // })
                         }
                       >
                         <svg

@@ -62,19 +62,20 @@ export default function IncomePage() {
   //   }
   // };
 
-  const updateIncome = async (idProp: number) => {
-    try {
-      await axios.put(`http://localhost:8080/api/input/${idProp}`, {
-        no_input: noInput,
-        date_input: dateInput,
-        status_input: statusInput,
-      });
-      alert("Data berhasil diubah");
-      handleShowModal({ show: false });
-      fetchIncomes();
-    } catch (error) {
-      alert("Data gagal diubah");
-    }
+  const handleUpdateIncome = async (idProp: number) => {
+    window.location.href = `/edit-income/${idProp}`;
+    // try {
+    //   await axios.put(`http://localhost:8080/api/input/${idProp}`, {
+    //     no_input: noInput,
+    //     date_input: dateInput,
+    //     status_input: statusInput,
+    //   });
+    //   alert("Data berhasil diubah");
+    //   handleShowModal({ show: false });
+    //   fetchIncomes();
+    // } catch (error) {
+    //   alert("Data gagal diubah");
+    // }
   };
 
   const deleteAccount = async (idProp: number) => {
@@ -165,7 +166,7 @@ export default function IncomePage() {
           <button
             className="bg-success rounded px-4 py-1 text-white"
             onClick={() => {
-              updateIncome(idInput!);
+              handleUpdateIncome(idInput!);
             }}
             // onClick={
             //   manage === "update"
@@ -194,7 +195,7 @@ export default function IncomePage() {
         <div className="flex flex-col bg-white rounded m-8 shadow">
           <div className="pt-8 px-6">
             <button
-              className="bg-success text-white rounded px-4 py-2 w-48 flex w-max items-center"
+              className="bg-success text-white rounded px-4 py-2 w-48 flex items-center"
               // onClick={() => handleShowModal({ show: true })}
               onClick={handleCreateIncome}
             >
@@ -261,12 +262,13 @@ export default function IncomePage() {
                     <td className="flex text-white justify-center border py-2 px-4">
                       <button
                         className="bg-success rounded px-2 py-1 flex-1 flex items-center justify-center"
-                        onClick={() =>
-                          handleShowModal({
-                            show: true,
-                            income: income,
-                            manageProp: "update",
-                          })
+                        onClick={
+                          () => handleUpdateIncome(income.ID)
+                          // handleShowModal({
+                          //   show: true,
+                          //   income: income,
+                          //   manageProp: "update",
+                          // })
                         }
                       >
                         <svg

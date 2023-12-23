@@ -9,10 +9,12 @@ import AccountPage from "./pages/account_page";
 import CategoryPage from "./pages/category_page";
 
 import IncomePage from "./pages/income/income_page";
-import CreateIncomePage from "./pages/income/create_income";
+import CreateIncomePage from "./pages/income/create_income_page";
+import UpdateIncomePage from "./pages/income/update_income_page";
 
 import ExpenditurePage from "./pages/expenditure/expenditure_page";
-import CreateExpenditurePage from "./pages/expenditure/create_expenditure";
+import CreateExpenditurePage from "./pages/expenditure/create_expenditure_page";
+import UpdateExpenditurePage from "./pages/expenditure/update_expenditure_page";
 
 // import JournalPage from "./pages/journal/journal_page";
 // import CreateJournalPage from "./pages/journal/create_journal_page";
@@ -40,9 +42,14 @@ function App() {
 
         <Route path="income" element={<IncomePage />} />
         <Route path="add-income" element={<CreateIncomePage />} />
+        <Route path="edit-income/:id" element={<UpdateIncomePage />} />
 
         <Route path="expenditure" element={<ExpenditurePage />} />
         <Route path="add-expenditure" element={<CreateExpenditurePage />} />
+        <Route
+          path="edit-expenditure/:id"
+          element={<UpdateExpenditurePage />}
+        />
 
         {/* <Route path="journal" element={<JournalPage />} />
         <Route path="add-journal" element={<CreateJournalPage />} />

@@ -84,7 +84,7 @@ export default function CreateExpenditurePage() {
       setNoOutput(lastId);
     } catch (error: any) {
       if (error.response.status === 404) {
-        setNoOutput("OUT0001");
+        setNoOutput("0001");
       }
       console.log(error);
     }
@@ -161,6 +161,10 @@ export default function CreateExpenditurePage() {
   };
 
   const handleSaveChanges = async () => {
+    if (noOutput?.slice(0, 3) !== "OUT") {
+      setNoOutput("OUT" + noOutput);
+    }
+
     const masterExpanditure: Expenditure = {
       ID: null,
       no_output: noOutput!,
@@ -187,12 +191,12 @@ export default function CreateExpenditurePage() {
       (detailExpenditure) => {
         return {
           ID: null,
-          id_cash: 0,
-          output_information: "-",
-          quantity: 0,
-          total_price: 0,
+          id_cash: detailExpenditure.id_cash,
+          output_information: detailExpenditure.output_information,
+          quantity: detailExpenditure.quantity,
+          total_price: detailExpenditure.total_price,
           status_cart: 0,
-          output_date: "",
+          output_date: detailExpenditure.output_date,
           id_output: masterExpanditure.ID!,
           output: masterExpanditure,
           id_account: newAccount.ID!,
@@ -205,7 +209,7 @@ export default function CreateExpenditurePage() {
 
     try {
       const res = await axios.post(
-        "http://localhost:8080/api/detail-outputs",
+        `http://localhost:8080/api/detail-outputs/${masterExpanditure.ID}`,
         detailExpenditures
       );
       if (res.data) {
@@ -230,7 +234,7 @@ export default function CreateExpenditurePage() {
         <hr />
         <div className="mt-4 px-8">
           <button
-            className="bg-success text-white rounded px-4 py-2 w-48 flex items-center"
+            className="bg-success text-white rounded px-4 py-2 w-max flex items-center"
             onClick={handleAddExpenditureList}
           >
             <svg
