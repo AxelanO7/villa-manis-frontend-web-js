@@ -195,7 +195,7 @@ export default function IncomePage() {
         <div className="flex flex-col bg-white rounded m-8 shadow">
           <div className="pt-8 px-6">
             <button
-              className="bg-success text-white rounded px-4 py-2 w-48 flex items-center"
+              className="bg-success text-white rounded px-4 py-2 w-48 flex items-center w-max"
               // onClick={() => handleShowModal({ show: true })}
               onClick={handleCreateIncome}
             >
