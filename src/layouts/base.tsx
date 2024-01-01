@@ -450,7 +450,12 @@ export default function BaseLayout({
                         />
                       </svg>
                       <div className="w-6" />
-                      <p className="text-gray-500 cursor-pointer">Logout</p>
+                      <p
+                        className="text-gray-500 cursor-pointer"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </p>
                     </div>
                   </div>
                 </div>
