@@ -3,14 +3,15 @@ import BaseLayout from "../layouts/base";
 import { Breadcrumb } from "../components/breadcrumb";
 
 export default function MainPage() {
-  const items = ["Home", "Beranda"];
+  const itemsBreadcrumb = ["Home", "Beranda"];
 
   return (
     <BaseLayout>
-      <div className="bg-white w-full px-8 py-4">
-        <h1 className="text-3xl text-gray-500">Beranda</h1>
-        <Breadcrumb items={items} />
-      </div>
+      <Breadcrumb
+        items={itemsBreadcrumb}
+        title="Transaksi Pemasukan"
+        paddingHorizontal={32}
+      />
       <div className="h-8" />
       <div className="flex flex-col bg-success text-white justify-center items-center rounded mx-8 pt-8">
         <h4>Selamat Datang Di Villa Manis</h4>

@@ -23,6 +23,42 @@ export default function BaseLayout({
     setNavSidebar(!navSidebar);
   };
 
+  const handleMainPage = () => {
+    window.location.href = "/main-page";
+  };
+
+  const handleReportPage = () => {
+    window.location.href = "/cash-flow";
+  };
+
+  const handleIncomePage = () => {
+    window.location.href = "/income";
+  };
+
+  const handleExpenditurePage = () => {
+    window.location.href = "/expenditure";
+  };
+
+  const handleCashFlowPage = () => {
+    window.location.href = "/cash-flow";
+  };
+
+  const handleReportJournalPage = () => {
+    window.location.href = "/report-journal";
+  };
+
+  const handleBalanceSheetPage = () => {
+    window.location.href = "/balance-sheet";
+  };
+
+  const handleIncomeStatementPage = () => {
+    window.location.href = "/profit-loss";
+  };
+
+  const handleStatementOfOwnerEquityPage = () => {
+    window.location.href = "/capital-change";
+  };
+
   return (
     <div className="min-h-screen bg-slate-100">
       <div className="flex w-full">
@@ -277,9 +313,12 @@ export default function BaseLayout({
                       <p className="text-gray-500">Dashboard</p>
                     </div>
                     <div className="collapse-content">
-                      <p>Dashboard 1</p>
-                      <p>Dashboard 2</p>
-                      <p>Dashboard 3</p>
+                      <div
+                        className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
+                        onClick={handleMainPage}
+                      >
+                        <p className="text-gray-500">Dashboard</p>
+                      </div>
                     </div>
                   </div>
 
@@ -301,9 +340,36 @@ export default function BaseLayout({
                       <p className="text-gray-500">Laporan</p>
                     </div>
                     <div className="collapse-content">
-                      <p>Laporan 1</p>
-                      <p>Laporan 2</p>
-                      <p>Laporan 3</p>
+                      <div
+                        className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
+                        onClick={handleCashFlowPage}
+                      >
+                        <p>Arus Kas</p>
+                      </div>
+                      <div
+                        className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
+                        onClick={handleReportJournalPage}
+                      >
+                        <p>Jurnal Umum</p>
+                      </div>
+                      <div
+                        className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
+                        onClick={handleBalanceSheetPage}
+                      >
+                        <p>Neraca Saldo</p>
+                      </div>
+                      <div
+                        className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
+                        onClick={handleIncomeStatementPage}
+                      >
+                        <p>Laba Rugi</p>
+                      </div>
+                      <div
+                        className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
+                        onClick={handleStatementOfOwnerEquityPage}
+                      >
+                        <p>Perubahan Modal</p>
+                      </div>
                     </div>
                   </div>
 
@@ -318,16 +384,23 @@ export default function BaseLayout({
                         fill="gray"
                         className="w-6 h-6"
                       >
-                        <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
-                        <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+                        <path
+                          fillRule="evenodd"
+                          d="M5.625 1.5H9a3.75 3.75 0 0 1 3.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 0 1 3.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 0 1-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875Zm5.845 17.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V12a.75.75 0 0 0-1.5 0v4.19l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
+                          clipRule="evenodd"
+                        />
+                        <path d="M14.25 5.25a5.23 5.23 0 0 0-1.279-3.434 9.768 9.768 0 0 1 6.963 6.963A5.23 5.23 0 0 0 16.5 7.5h-1.875a.375.375 0 0 1-.375-.375V5.25Z" />
                       </svg>
                       <div className="w-6" />
                       <p className="text-gray-500">Pemasukan</p>
                     </div>
                     <div className="collapse-content">
-                      <p>Pemasukan 1</p>
-                      <p>Pemasukan 2</p>
-                      <p>Pemasukan 3</p>
+                      <div
+                        className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
+                        onClick={handleIncomePage}
+                      >
+                        <p>Pemasukan</p>
+                      </div>
                     </div>
                   </div>
 
@@ -339,22 +412,26 @@ export default function BaseLayout({
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
-                        fill="gray"
+                        fill="grey"
                         className="w-6 h-6"
                       >
                         <path
                           fillRule="evenodd"
-                          d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zm-9 13.5a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z"
+                          d="M5.625 1.5H9a3.75 3.75 0 0 1 3.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 0 1 3.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 0 1-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875Zm6.905 9.97a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72V18a.75.75 0 0 0 1.5 0v-4.19l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
                           clipRule="evenodd"
                         />
+                        <path d="M14.25 5.25a5.23 5.23 0 0 0-1.279-3.434 9.768 9.768 0 0 1 6.963 6.963A5.23 5.23 0 0 0 16.5 7.5h-1.875a.375.375 0 0 1-.375-.375V5.25Z" />
                       </svg>
                       <div className="w-6" />
-                      <p className="text-gray-500">Download</p>
+                      <p className="text-gray-500">Pengeluaran</p>
                     </div>
                     <div className="collapse-content">
-                      <p>Download 1</p>
-                      <p>Download 2</p>
-                      <p>Download 3</p>
+                      <div
+                        className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
+                        onClick={handleExpenditurePage}
+                      >
+                        <p>Pengeluaran</p>
+                      </div>
                     </div>
                   </div>
 
@@ -373,7 +450,7 @@ export default function BaseLayout({
                         />
                       </svg>
                       <div className="w-6" />
-                      <p className="text-gray-500">Logout</p>
+                      <p className="text-gray-500 cursor-pointer">Logout</p>
                     </div>
                   </div>
                 </div>
@@ -394,7 +471,8 @@ export default function BaseLayout({
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="gray"
-                    className="w-6 h-6"
+                    className="w-6 h-6 cursor-pointer"
+                    onClick={handleMainPage}
                   >
                     <path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
                     <path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
@@ -403,7 +481,8 @@ export default function BaseLayout({
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="gray"
-                    className="w-6 h-6"
+                    className="w-6 h-6 cursor-pointer"
+                    onClick={handleReportPage}
                   >
                     <path d="M7.5 3.375c0-1.036.84-1.875 1.875-1.875h.375a3.75 3.75 0 013.75 3.75v1.875C13.5 8.161 14.34 9 15.375 9h1.875A3.75 3.75 0 0121 12.75v3.375C21 17.16 20.16 18 19.125 18h-9.75A1.875 1.875 0 017.5 16.125V3.375z" />
                     <path d="M15 5.25a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963A5.23 5.23 0 0017.25 7.5h-1.875A.375.375 0 0115 7.125V5.25zM4.875 6H6v10.125A3.375 3.375 0 009.375 19.5H16.5v1.125c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V7.875C3 6.839 3.84 6 4.875 6z" />
@@ -412,28 +491,36 @@ export default function BaseLayout({
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="gray"
-                    className="w-6 h-6"
-                  >
-                    <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
-                    <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
-                  </svg>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="gray"
-                    className="w-6 h-6"
+                    className="w-6 h-6 cursor-pointer"
+                    onClick={handleIncomePage}
                   >
                     <path
                       fillRule="evenodd"
-                      d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zm-9 13.5a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z"
+                      d="M5.625 1.5H9a3.75 3.75 0 0 1 3.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 0 1 3.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 0 1-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875Zm5.845 17.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V12a.75.75 0 0 0-1.5 0v4.19l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
                       clipRule="evenodd"
                     />
+                    <path d="M14.25 5.25a5.23 5.23 0 0 0-1.279-3.434 9.768 9.768 0 0 1 6.963 6.963A5.23 5.23 0 0 0 16.5 7.5h-1.875a.375.375 0 0 1-.375-.375V5.25Z" />
+                  </svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="grey"
+                    className="w-6 h-6 cursor-pointer"
+                    onClick={handleExpenditurePage}
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.625 1.5H9a3.75 3.75 0 0 1 3.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 0 1 3.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 0 1-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875Zm6.905 9.97a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72V18a.75.75 0 0 0 1.5 0v-4.19l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z"
+                      clipRule="evenodd"
+                    />
+                    <path d="M14.25 5.25a5.23 5.23 0 0 0-1.279-3.434 9.768 9.768 0 0 1 6.963 6.963A5.23 5.23 0 0 0 16.5 7.5h-1.875a.375.375 0 0 1-.375-.375V5.25Z" />
                   </svg>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="gray"
-                    className="w-6 h-6"
+                    className="w-6 h-6 cursor-pointer"
+                    onClick={handleLogout}
                   >
                     <path
                       fillRule="evenodd"
@@ -451,6 +538,7 @@ export default function BaseLayout({
               {withNavbar && <div className="h-14" />}
               <div className="flex">
                 <div
+                  className="w-full"
                   style={{
                     marginLeft: navSidebar ? "12.5rem" : "0",
                   }}
