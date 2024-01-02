@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BaseLayout from "../layouts/base";
 import { Breadcrumb } from "../components/breadcrumb";
+import axios from "axios";
 
 export default function MainPage() {
   const itemsBreadcrumb = ["Home", "Beranda"];
+  const [totalIncome, setTotalIncome] = useState(0);
+  const [totalExpense, setTotalExpense] = useState(0);
+
+  useEffect(() => {
+    fetchTotalTransaction();
+  }, []);
+
+  const fetchTotalTransaction = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:8080/api/transaction/total-transaction"
+      );
+      const data = res.data.data;
+      setTotalIncome(data.total_debit);
+      setTotalExpense(data.total_credit);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <BaseLayout>
@@ -15,7 +35,7 @@ export default function MainPage() {
       <div className="h-8" />
       <div className="flex flex-col bg-success text-white justify-center items-center rounded mx-8 pt-8">
         <h4>Selamat Datang Di Villa Manis</h4>
-        <h6>Dina</h6>
+        <h6>Gilang</h6>
         <div className="h-2" />
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +82,9 @@ export default function MainPage() {
           <div className="grow" />
           <div className="text-white flex flex-col">
             <p className="text-sm text-end">Total Pengeluaran</p>
-            <h6 className="text-2xl font-semibold">Rp. 185.100.000</h6>
+            <h6 className="text-2xl font-semibold">
+              Rp. {totalExpense.toLocaleString("id-ID") + ",00"}
+            </h6>
           </div>
         </div>
         <div className="w-4" />
@@ -84,7 +106,9 @@ export default function MainPage() {
           <div className="grow" />
           <div className="text-white flex flex-col">
             <p className="text-sm text-end">Total Pemasukan</p>
-            <h6 className="text-2xl font-semibold">Rp. 1.041.000.000</h6>
+            <h6 className="text-2xl font-semibold">
+              Rp. {totalIncome.toLocaleString("id-ID") + ",00"}
+            </h6>
           </div>
         </div>
       </div>
