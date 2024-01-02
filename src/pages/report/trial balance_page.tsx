@@ -205,21 +205,22 @@ export default function TrialBalancePage() {
                   <p className="border py-1 w-full px-4 font-semibold">
                     {item.name_category}
                   </p>
-                  {item.accounts.map((account) => {
-                    return (
-                      <div className="flex w-full">
-                        <p className="border py-1 w-full px-4">
-                          {account.name_account}
-                        </p>
-                        <p className="border py-1 w-full px-4">
-                          {account.debit}
-                        </p>
-                        <p className="border py-1 w-full px-4">
-                          {account.credit}
-                        </p>
-                      </div>
-                    );
-                  })}
+                  {item.accounts &&
+                    item.accounts.map((account) => {
+                      return (
+                        <div className="flex w-full">
+                          <p className="border py-1 w-full px-4">
+                            {account.name_account}
+                          </p>
+                          <p className="border py-1 w-full px-4">
+                            {account.debit}
+                          </p>
+                          <p className="border py-1 w-full px-4">
+                            {account.credit}
+                          </p>
+                        </div>
+                      );
+                    })}
                   <div className="flex w-full">
                     <p className="border py-1 w-full px-4">
                       Jumlah {item.name_category}

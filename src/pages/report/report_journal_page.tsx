@@ -201,23 +201,24 @@ export default function ReportJournalPage() {
                   <p className="border py-1 w-full px-4 font-semibold">
                     {item.name_category}
                   </p>
-                  {item.accounts.map((account) => {
-                    return (
-                      <div className="flex">
-                        <p className="border py-1 w-full px-4">
-                          {account.name_account}
-                        </p>
-                        <div className="flex w-full">
+                  {item.accounts &&
+                    item.accounts.map((account) => {
+                      return (
+                        <div className="flex">
                           <p className="border py-1 w-full px-4">
-                            {account.debit}
+                            {account.name_account}
                           </p>
-                          <p className="border py-1 w-full px-4">
-                            {account.credit}
-                          </p>
+                          <div className="flex w-full">
+                            <p className="border py-1 w-full px-4">
+                              {account.debit}
+                            </p>
+                            <p className="border py-1 w-full px-4">
+                              {account.credit}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
                   <div className="flex w-full">
                     <p className="border py-1 w-full px-4">
                       Jumlah {item.name_category}
