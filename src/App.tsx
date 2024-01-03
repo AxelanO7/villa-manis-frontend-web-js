@@ -56,14 +56,15 @@ function App() {
         <Route path="detail-journal" element={<DetailJournalPage />} />
         <Route path="post-ledger" element={<PostLedgerPage />} /> */}
 
-        {/* arus kas */}
-        <Route path="cash-flow" element={<CashFlowPage />} />
         {/* laporan jurnal umum */}
-        <Route path="report-journal" element={<ReportJournalPage />} />
+        <Route path="cash-flow" element={<CashFlowPage />} />
+
         {/* laporan neraca saldo */}
         <Route path="balance-sheet" element={<BalanceSheetPage />} />
         {/* laporan laba rugi */}
         <Route path="profit-loss" element={<ProfitLossPage />} />
+        {/* arus kas */}
+        <Route path="report-journal" element={<ReportJournalPage />} />
         {/* laporan perubahan modal */}
         <Route path="capital-change" element={<CapitalChangePage />} />
       </Routes>

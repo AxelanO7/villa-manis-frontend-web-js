@@ -4,19 +4,32 @@ import { Breadcrumb } from "../../components/breadcrumb";
 import axios from "axios";
 import { useReactToPrint } from "react-to-print";
 
-interface Journal {
-  ID: number;
-  no_journal: string;
-  date_journal: string;
-  status_journal: number;
+interface Item {
+  name: string;
+  credit: number;
+  debit: number;
 }
 
-const handleCreateJournal = () => {
-  window.location.href = "/add-journal";
-};
+interface Total {
+  income: number;
+  burden: number;
+  balance: number;
+}
+
+interface ProfitLoss {
+  income: Item[];
+  burden: Item[];
+  total: Total;
+}
 
 export default function ProfitLossPage() {
-  const [incomes, setIncomes] = useState<Journal[]>([]);
+  const [profitLoss, setProfitLoss] = useState<ProfitLoss>();
+  const [income, setIncome] = useState<Item[]>([]);
+  const [burden, setBurden] = useState<Item[]>([]);
+  const [total, setTotal] = useState<Total>();
+
+  const [startDate, setStartDate] = useState<string>();
+  const [endDate, setEndDate] = useState<string>();
 
   const itemsBreadcrumb = ["Home", "Laporan Laba Rugi"];
 
@@ -29,12 +42,21 @@ export default function ProfitLossPage() {
   const fetchJournals = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/general-journal"
+        `http://localhost:8080/api/transaction/profit-loss${
+          startDate ? `?start_date=${startDate}` : ""
+        }${endDate ? `&end_date=${endDate}` : ""}`
       );
-      setIncomes(response.data.data);
+      if (response.status === 200) {
+        const data: ProfitLoss = response.data.data;
+        const income: Item[] = data.income;
+        const burden: Item[] = data.burden;
+        const total: Total = data.total;
+        setIncome(income);
+        setBurden(burden);
+        setTotal(total);
+      }
     } catch (error) {
       console.log(error);
-      // alert("Data gagal diambil");
     }
   };
 
@@ -96,47 +118,44 @@ export default function ProfitLossPage() {
           </p>
           <div className="text-start">
             <h6 className="border py-1 px-4">Pendapatan</h6>
-            <div className="flex">
-              <p className="border py-1 w-full px-4">Pendapatan Usaha</p>
-              <div className="flex w-full">
-                <p className="border py-1 w-full px-4">Rp.14.000.000</p>
-                <p className="border py-1 w-full px-4"></p>
+            {income.map((item, index) => (
+              <div className="flex" key={index}>
+                <p className="border py-1 w-full px-4">{item.name}</p>
+                <div className="flex w-full">
+                  <p className="border py-1 w-full px-4"></p>
+                  <p className="border py-1 w-full px-4">Rp.{item.credit}</p>
+                </div>
               </div>
-            </div>
-            <div className="flex">
-              <p className="border py-1 w-full px-4">Pendapatan Lain-lain</p>
-              <div className="flex w-full">
-                <p className="border py-1 w-full px-4">Rp.5.000.000</p>
-                <p className="border py-1 w-full px-4"></p>
-              </div>
-            </div>
-            <div className="flex">
-              <p className="border py-1 w-full px-4">Pendapatan dibayar muka</p>
-              <div className="flex w-full">
-                <p className="border py-1 w-full px-4">Rp.2.000.000</p>
-                <p className="border py-1 w-full px-4"></p>
-              </div>
-            </div>
+            ))}
             <div className="flex">
               <p className="border py-1 w-full px-4">Jumlah Pendapatan</p>
               <div className="flex w-full">
                 <p className="border py-1 w-full px-4"></p>
-                <p className="border py-1 w-full px-4">Rp.21.000.000</p>
+                <p className="border py-1 w-full px-4">Rp. {total?.income}</p>
               </div>
             </div>
             <p className="border py-1 w-full px-4">Beban</p>
+            {burden.map((item, index) => (
+              <div className="flex" key={index}>
+                <p className="border py-1 w-full px-4">{item.name}</p>
+                <div className="flex w-full">
+                  <p className="border py-1 w-full px-4">Rp.{item.debit}</p>
+                  <p className="border py-1 w-full px-4"></p>
+                </div>
+              </div>
+            ))}
             <div className="flex">
-              <p className="border py-1 w-full px-4">Beban Gaji</p>
+              <p className="border py-1 w-full px-4">Jumlah Beban</p>
               <div className="flex w-full">
-                <p className="border py-1 w-full px-4">Rp.10.400.000</p>
+                <p className="border py-1 w-full px-4">Rp. {total?.burden}</p>
                 <p className="border py-1 w-full px-4"></p>
               </div>
             </div>
             <div className="flex">
-              <p className="border py-1 w-full px-4">Beban Iklan</p>
+              <p className="border py-1 w-full px-4">Laba Bersih</p>
               <div className="flex w-full">
-                <p className="border py-1 w-full px-4">Rp.100.000</p>
                 <p className="border py-1 w-full px-4"></p>
+                <p className="border py-1 w-full px-4">Rp. {total?.balance}</p>
               </div>
             </div>
             <div className="h-4" />
