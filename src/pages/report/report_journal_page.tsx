@@ -130,7 +130,7 @@ export default function ReportJournalPage() {
         }
       }
     `,
-    documentTitle: "Laporan Barang Masuk",
+    documentTitle: "Laporan Jurnal Umum",
     onAfterPrint: () => alert("Data tersimpan"),
   });
 

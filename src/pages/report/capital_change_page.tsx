@@ -15,11 +15,10 @@ const handleCreateJournal = () => {
   window.location.href = "/add-journal";
 };
 
-export default function IncomeStatementPage() {
+export default function CapitalChangePage() {
   const [incomes, setIncomes] = useState<Journal[]>([]);
 
-  const itemsBreadcrumb = ["Home", "Laporan Laba Rugi"];
-
+  const itemsBreadcrumb = ["Home", "Laporan Perubahan Modal"];
   const conponentPDF = React.useRef<HTMLTableElement>(null);
 
   useEffect(() => {
@@ -52,7 +51,7 @@ export default function IncomeStatementPage() {
         }
       }
     `,
-    documentTitle: "Laporan Barang Masuk",
+    documentTitle: "Laporan Perubahan Modal",
     onAfterPrint: () => alert("Data tersimpan"),
   });
 
@@ -60,7 +59,7 @@ export default function IncomeStatementPage() {
     <BaseLayout>
       <Breadcrumb
         items={itemsBreadcrumb}
-        title="Laporan Laba Rugi"
+        title="Laporan Perubahan Modal"
         paddingHorizontal={32}
       />
       <div className="flex flex-col bg-white rounded m-8 shadow">
@@ -89,54 +88,45 @@ export default function IncomeStatementPage() {
         <div ref={conponentPDF} className="text-center">
           <p className="border py-1 bg-slate-100 font-semibold">Villa Manis</p>
           <p className="border py-1 bg-slate-100 font-semibold">
-            Laporan Laba Rugi
+            Laporan Perubahan Modal
           </p>
           <p className="border py-1 bg-slate-100 font-semibold">
             Periode Juni 2023
           </p>
           <div className="text-start">
-            <h6 className="border py-1 px-4">Pendapatan</h6>
             <div className="flex">
-              <p className="border py-1 w-full px-4">Pendapatan Usaha</p>
+              <p className="border py-1 w-full px-4">Modal Awal</p>
               <div className="flex w-full">
-                <p className="border py-1 w-full px-4">Rp.14.000.000</p>
+                <p className="border py-1 w-full px-4">Rp.1.020.000</p>
                 <p className="border py-1 w-full px-4"></p>
               </div>
             </div>
             <div className="flex">
-              <p className="border py-1 w-full px-4">Pendapatan Lain-lain</p>
+              <p className="border py-1 w-full px-4">Laba Bersih</p>
               <div className="flex w-full">
-                <p className="border py-1 w-full px-4">Rp.5.000.000</p>
+                <p className="border py-1 w-full px-4">Rp.9.200.000</p>
                 <p className="border py-1 w-full px-4"></p>
               </div>
             </div>
             <div className="flex">
-              <p className="border py-1 w-full px-4">Pendapatan dibayar muka</p>
+              <p className="border py-1 w-full px-4">Pengambilan Prive</p>
               <div className="flex w-full">
-                <p className="border py-1 w-full px-4">Rp.2.000.000</p>
+                <p className="border py-1 w-full px-4">Rp.1.500.000</p>
                 <p className="border py-1 w-full px-4"></p>
               </div>
             </div>
             <div className="flex">
-              <p className="border py-1 w-full px-4">Jumlah Pendapatan</p>
+              <p className="border py-1 w-full px-4">Penambahan Modal</p>
               <div className="flex w-full">
                 <p className="border py-1 w-full px-4"></p>
-                <p className="border py-1 w-full px-4">Rp.21.000.000</p>
-              </div>
-            </div>
-            <p className="border py-1 w-full px-4">Beban</p>
-            <div className="flex">
-              <p className="border py-1 w-full px-4">Beban Gaji</p>
-              <div className="flex w-full">
-                <p className="border py-1 w-full px-4">Rp.10.400.000</p>
-                <p className="border py-1 w-full px-4"></p>
+                <p className="border py-1 w-full px-4">Rp.0</p>
               </div>
             </div>
             <div className="flex">
-              <p className="border py-1 w-full px-4">Beban Iklan</p>
+              <p className="border py-1 w-full px-4">Modal Akhir</p>
               <div className="flex w-full">
-                <p className="border py-1 w-full px-4">Rp.100.000</p>
                 <p className="border py-1 w-full px-4"></p>
+                <p className="border py-1 w-full px-4">Rp.1.027.700.000</p>
               </div>
             </div>
             <div className="h-4" />

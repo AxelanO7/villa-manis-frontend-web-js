@@ -4,20 +4,12 @@ import { Breadcrumb } from "../../components/breadcrumb";
 import axios from "axios";
 import { useReactToPrint } from "react-to-print";
 
-interface CashFlow {
-  groups: Groups[];
-  totals: number;
-}
-
-interface Groups {
-  name_group: string;
-  accounts: Accounts[];
-  total_group: number;
-}
-
-interface Accounts {
-  name_account: string;
-  total_account: number;
+interface Transactions {
+  date: string;
+  total_debit: number;
+  total_credit: number;
+  detail_input: DetailIncome[];
+  detail_output: DetalExpenditure[];
 }
 
 interface Income {
@@ -80,11 +72,8 @@ interface Category {
 }
 
 export default function CashFlowPage() {
-  const [CashFlow, setCashFlow] = useState<CashFlow>();
-  const [Operational, setOperational] = useState<Groups[]>([]);
-  const [Investation, setInvestation] = useState<Groups[]>([]);
-  const [Financing, setFinancing] = useState<Groups[]>([]);
-  const itemsBreadcrumb = ["Home", "Laporan Arus Kas"];
+  const [transactions, setTransactions] = useState<Transactions[]>([]);
+  const itemsBreadcrumb = ["Home", "Laporan Neraca Saldo"];
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const conponentPDF = React.useRef<HTMLTableElement>(null);
@@ -96,18 +85,16 @@ export default function CashFlowPage() {
   const fetchTransactions = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/transaction/cash-flow${
+        `http://localhost:8080/api/transaction/date/group${
           startDate ? `?start_date=${startDate}` : ""
         }${endDate ? `&end_date=${endDate}` : ""}`
       );
       if (response.status === 200) {
-        const data = response.data.data;
-        setCashFlow(data);
-        setOperational(data[0].groups);
-        setInvestation(data[1].groups);
-        setFinancing(data[2].groups);
+        const data = response.data.data.group_date;
+        setTransactions(data);
       }
     } catch (error) {
+      setTransactions([]);
       console.log(error);
     }
   };
@@ -132,7 +119,7 @@ export default function CashFlowPage() {
         }
       }
     `,
-    documentTitle: "Laporan Arus Kas",
+    documentTitle: "Laporan Neraca Saldo",
     onAfterPrint: () => alert("Data tersimpan"),
   });
 
@@ -140,7 +127,7 @@ export default function CashFlowPage() {
     <BaseLayout>
       <Breadcrumb
         items={itemsBreadcrumb}
-        title="Laporan Arus Kas"
+        title="Laporan Neraca Saldo"
         paddingHorizontal={32}
       />
       <div className="flex flex-col bg-white rounded m-8 shadow">
@@ -181,131 +168,90 @@ export default function CashFlowPage() {
       <div className="flex flex-col bg-white rounded shadow mx-8 p-6 text-center">
         <div ref={conponentPDF} className="text-center">
           <p className="border py-1 bg-slate-100 font-semibold">Villa Manis</p>
-          <p className="border py-1 bg-slate-100 font-semibold">ARUS KAS</p>
+          <p className="border py-1 bg-slate-100 font-semibold">NERACA Saldo</p>
           <p className="border py-1 bg-slate-100 font-semibold">
             Periode Juni 2023
           </p>
-          <table className="table-fixed w-full text-left">
-            <tr>
-              <th className="border py-2 px-4">Akun</th>
-              <th className="border py-2 px-4">Total</th>
-            </tr>
-            <tr>
-              <th className="border py-2 px-4">SALDO AWAL KAS</th>
-              <th className="border py-2 px-4">Rp. 0</th>
-            </tr>
-            <tr>
-              <th className="border py-2 px-4" colSpan={2}>
-                A. Arus Kas Dari Kegiatan Operasional
-              </th>
-            </tr>
-            <tr>
-              {Operational.map((operational, index) => {
+          <table className="table-fixed text-center w-full">
+            <thead>
+              <tr>
+                <th className="border py-2">Tanggal</th>
+                <th className="border py-2">Nama Akun</th>
+                <th className="border py-2">Keterangan</th>
+                <th className="border py-2 w-32">REF</th>
+                <th className="border py-2">Debet</th>
+                <th className="border py-2">Kredit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {transactions.length === 0 && (
+                <tr>
+                  <td className="border py-2" colSpan={6}>
+                    Data tidak ada
+                  </td>
+                </tr>
+              )}
+              {transactions.map((transaction, index) => {
                 return (
                   <>
-                    <tr key={index}></tr>
-                    {operational.accounts.map((account, index) => {
+                    {/* <tr key={index}>
+                    <td
+                      className="border py-2"
+                      rowSpan={
+                        transaction.detail_input.length +
+                        transaction.detail_output.length +
+                        2
+                      }
+                    >
+                      {transaction.date}
+                    </td>
+                  </tr> */}
+                    {transaction.detail_input.map((detail, index) => {
                       return (
                         <tr key={index}>
-                          <td className="border py-2 px-4">
-                            {account.name_account}
+                          <td className="border py-2">{transaction.date}</td>
+                          <td className="border py-2">
+                            {detail.account.name_account}
                           </td>
-                          <td className="border py-2 px-4">
-                            Rp. {account.total_account}
+                          <td className="border py-2">
+                            {detail.input_information}
                           </td>
-                          {index === operational.accounts.length - 1 && (
-                            <tr>
-                              <th className="border py-2 px-4">
-                                Jumlah {operational.name_group}
-                              </th>
-                              <th className="border py-2 px-4">
-                                Rp. {operational.total_group}
-                              </th>
-                            </tr>
-                          )}
+                          <td className="border py-2">
+                            {detail.input.no_input}
+                          </td>
+                          <td className="border py-2">{detail.total_price}</td>
+                          <td className="border py-2">-</td>
                         </tr>
                       );
                     })}
-                  </>
-                );
-              })}
-            </tr>
-            <tr>
-              <th className="border py-2 px-4" colSpan={2}>
-                B. Arus Kas Dari Kegiatan Investasi
-              </th>
-            </tr>
-            <tr>
-              {Investation.map((investation, index) => {
-                return (
-                  <>
-                    <tr key={index}>
-                      <td className="border py-2 px-4">
-                        {investation.name_group}
-                      </td>
-                      <td className="border py-2 px-4">
-                        Rp. {investation.total_group}
-                      </td>
-                    </tr>
-                    {investation.accounts.map((account, index) => {
+                    {transaction.detail_output.map((detail, index) => {
                       return (
                         <tr key={index}>
-                          <td className="border py-2 px-4">
-                            {account.name_account}
+                          <td className="border py-2">{transaction.date}</td>
+                          <td className="border py-2">
+                            {detail.account.name_account}
                           </td>
-                          <td className="border py-2 px-4">
-                            Rp. {account.total_account}
+                          <td className="border py-2">
+                            {detail.output_information}
                           </td>
+                          <td className="border py-2">
+                            {detail.output.no_output}
+                          </td>
+                          <td className="border py-2">-</td>
+                          <td className="border py-2">{detail.total_price}</td>
                         </tr>
                       );
                     })}
+                    {/* <tr>
+                    <td className="border py-2">Total</td>
+                    <td className="border py-2">-</td>
+                    <td className="border py-2">{transaction.total_debit}</td>
+                    <td className="border py-2">{transaction.total_credit}</td>
+                  </tr> */}
                   </>
                 );
               })}
-            </tr>
-            <tr>
-              <th className="border py-2 px-4" colSpan={2}>
-                C. Arus Kas Dari Kegiatan Pendanaan
-              </th>
-            </tr>
-            <tr>
-              {Financing.map((financing, index) => {
-                return (
-                  <>
-                    <tr key={index}>
-                      <td className="border py-2 px-4">
-                        {financing.name_group}
-                      </td>
-                      <td className="border py-2 px-4">
-                        Rp. {financing.total_group}
-                      </td>
-                    </tr>
-                    {financing.accounts.map((account, index) => {
-                      return (
-                        <tr key={index}>
-                          <td className="border py-2 px-4">
-                            {account.name_account}
-                          </td>
-                          <td className="border py-2 px-4">
-                            Rp. {account.total_account}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </>
-                );
-              })}
-            </tr>
-            <tr>
-              <th className="border py-2 px-4">
-                PERGERAKAN BERSIH KAS (A+B+C)
-              </th>
-              <th className="border py-2 px-4">Rp. {CashFlow?.totals}</th>
-            </tr>
-            <tr>
-              <th className="border py-2 px-4">SALDO AKHIR KAS</th>
-              <th className="border py-2 px-4">Rp. 0</th>
-            </tr>
+            </tbody>
           </table>
         </div>
         <div className="h-2" />

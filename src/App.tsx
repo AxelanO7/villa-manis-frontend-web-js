@@ -23,15 +23,15 @@ import UpdateExpenditurePage from "./pages/expenditure/update_expenditure_page";
 
 import CashFlowPage from "./pages/report/cash_flow_page";
 import ReportJournalPage from "./pages/report/report_journal_page";
-import TrialBalancePage from "./pages/report/trial balance_page";
-import IncomeStatementPage from "./pages/report/income_statement";
-import StatementOfOwnerEquityPage from "./pages/report/statement_of_owner_equity";
+import BalanceSheetPage from "./pages/report/balance_sheet_page";
+import ProfitLossPage from "./pages/report/profit_loss_page";
+import CapitalChangePage from "./pages/report/capital_change_page";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<IncomePage />} />
+        <Route path="/" element={<LoginPage />} />
         {/* <Route path="/" element={<LoginPage />} /> */}
         <Route path="main-page" element={<MainPage />} />
         <Route path="login" element={<LoginPage />} />
@@ -61,11 +61,11 @@ function App() {
         {/* laporan jurnal umum */}
         <Route path="report-journal" element={<ReportJournalPage />} />
         {/* laporan neraca saldo */}
-        <Route path="balance-sheet" element={<TrialBalancePage />} />
+        <Route path="balance-sheet" element={<BalanceSheetPage />} />
         {/* laporan laba rugi */}
-        <Route path="profit-loss" element={<IncomeStatementPage />} />
+        <Route path="profit-loss" element={<ProfitLossPage />} />
         {/* laporan perubahan modal */}
-        <Route path="capital-change" element={<StatementOfOwnerEquityPage />} />
+        <Route path="capital-change" element={<CapitalChangePage />} />
       </Routes>
     </BrowserRouter>
   );
