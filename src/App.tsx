@@ -43,7 +43,7 @@ function App() {
         <Route path="income" element={<IncomePage />} />
         <Route path="add-income" element={<CreateIncomePage />} />
         <Route path="edit-income/:id" element={<UpdateIncomePage />} />
-
+ 
         <Route path="expenditure" element={<ExpenditurePage />} />
         <Route path="add-expenditure" element={<CreateExpenditurePage />} />
         <Route
