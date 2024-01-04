@@ -59,6 +59,14 @@ export default function BaseLayout({
     window.location.href = "/capital-change";
   };
 
+  const handleCOA = () => {
+    window.location.href = "/account";
+  };
+
+  const handleCategory = () => {
+    window.location.href = "/category";
+  };
+
   return (
     <div className="min-h-screen bg-slate-100">
       <div className="flex w-full">
@@ -297,7 +305,7 @@ export default function BaseLayout({
 
                   <div
                     tabIndex={0}
-                    className="collapse collapse-arrow border border-base-300 bg-base-200"
+                    className="collapse collapse-arrow border border-base-300 bg-base-200 hover:bg-gray-50"
                   >
                     <div className="collapse-title text-base font-medium flex align-center">
                       <svg
@@ -324,7 +332,7 @@ export default function BaseLayout({
 
                   <div
                     tabIndex={0}
-                    className="collapse collapse-arrow border border-base-300 bg-base-200"
+                    className="collapse collapse-arrow border border-base-300 bg-base-200 hover:bg-gray-50"
                   >
                     <div className="collapse-title base font-medium flex">
                       <svg
@@ -344,38 +352,38 @@ export default function BaseLayout({
                         className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
                         onClick={handleCashFlowPage}
                       >
-                        <p>Arus Kas</p>
+                        <p className="text-gray-500">Arus Kas</p>
                       </div>
                       <div
                         className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
                         onClick={handleReportJournalPage}
                       >
-                        <p>Jurnal Umum</p>
+                        <p className="text-gray-500">Jurnal Umum</p>
                       </div>
                       <div
                         className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
                         onClick={handleBalanceSheetPage}
                       >
-                        <p>Neraca Saldo</p>
+                        <p className="text-gray-500">Neraca Saldo</p>
                       </div>
                       <div
                         className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
                         onClick={handleIncomeStatementPage}
                       >
-                        <p>Laba Rugi</p>
+                        <p className="text-gray-500">Laba Rugi</p>
                       </div>
                       <div
                         className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
                         onClick={handleStatementOfOwnerEquityPage}
                       >
-                        <p>Perubahan Modal</p>
+                        <p className="text-gray-500">Perubahan Modal</p>
                       </div>
                     </div>
                   </div>
 
                   <div
                     tabIndex={1}
-                    className="collapse collapse-arrow border border-base-300 bg-base-200"
+                    className="collapse collapse-arrow border border-base-300 bg-base-200 hover:bg-gray-50"
                   >
                     <div className="collapse-title base font-medium flex">
                       <svg
@@ -399,14 +407,14 @@ export default function BaseLayout({
                         className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
                         onClick={handleIncomePage}
                       >
-                        <p>Pemasukan</p>
+                        <p className="text-gray-500">Pemasukan</p>
                       </div>
                     </div>
                   </div>
 
                   <div
                     tabIndex={2}
-                    className="collapse collapse-arrow border border-base-300 bg-base-200"
+                    className="collapse collapse-arrow border border-base-300 bg-base-200 hover:bg-gray-50"
                   >
                     <div className="collapse-title base font-medium flex">
                       <svg
@@ -430,12 +438,45 @@ export default function BaseLayout({
                         className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
                         onClick={handleExpenditurePage}
                       >
-                        <p>Pengeluaran</p>
+                        <p className="text-gray-500">Pengeluaran</p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="border border-base-300 bg-base-200 rounded-2xl">
+                  <div
+                    tabIndex={0}
+                    className="collapse collapse-arrow border border-base-300 bg-base-200 hover:bg-gray-50"
+                  >
+                    <div className="collapse-title base font-medium flex">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="gray"
+                        className="w-6 h-6"
+                      >
+                        <path d="M7.5 3.375c0-1.036.84-1.875 1.875-1.875h.375a3.75 3.75 0 013.75 3.75v1.875C13.5 8.161 14.34 9 15.375 9h1.875A3.75 3.75 0 0121 12.75v3.375C21 17.16 20.16 18 19.125 18h-9.75A1.875 1.875 0 017.5 16.125V3.375z" />
+                        <path d="M15 5.25a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963A5.23 5.23 0 0017.25 7.5h-1.875A.375.375 0 0115 7.125V5.25zM4.875 6H6v10.125A3.375 3.375 0 009.375 19.5H16.5v1.125c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V7.875C3 6.839 3.84 6 4.875 6z" />
+                      </svg>
+                      <div className="w-6" />
+                      <p className="text-gray-500">Account</p>
+                    </div>
+                    <div className="collapse-content">
+                      <div
+                        className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
+                        onClick={handleCategory}
+                      >
+                        <p className="text-gray-500">Category</p>
+                      </div>
+                      <div
+                        className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
+                        onClick={handleCOA}
+                      >
+                        <p className="text-gray-500">COA</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border border-base-300 bg-base-200 rounded-2xl hover:bg-gray-50">
                     <div className="collapse-title base font-medium flex">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -519,6 +560,26 @@ export default function BaseLayout({
                       clipRule="evenodd"
                     />
                     <path d="M14.25 5.25a5.23 5.23 0 0 0-1.279-3.434 9.768 9.768 0 0 1 6.963 6.963A5.23 5.23 0 0 0 16.5 7.5h-1.875a.375.375 0 0 1-.375-.375V5.25Z" />
+                  </svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="gray"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="gray"
+                    className="w-6 h-6 cursor-pointer"
+                    onClick={handleCOA}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 6h.008v.008H6V6Z"
+                    />
                   </svg>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
