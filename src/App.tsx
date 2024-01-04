@@ -63,7 +63,7 @@ function App() {
         <Route path="balance-sheet" element={<BalanceSheetPage />} />
         {/* laporan laba rugi */}
         <Route path="profit-loss" element={<ProfitLossPage />} />
-        {/* arus kas */}
+        {/* laporan arus kas */}
         <Route path="report-journal" element={<ReportJournalPage />} />
         {/* laporan perubahan modal */}
         <Route path="capital-change" element={<CapitalChangePage />} />

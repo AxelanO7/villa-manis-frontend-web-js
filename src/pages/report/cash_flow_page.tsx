@@ -81,9 +81,9 @@ interface Category {
 
 export default function CashFlowPage() {
   const [CashFlow, setCashFlow] = useState<CashFlow>();
-  const [Operational, setOperational] = useState<Groups[]>([]);
-  const [Investation, setInvestation] = useState<Groups[]>([]);
-  const [Financing, setFinancing] = useState<Groups[]>([]);
+  const [Operational, setOperational] = useState<Groups>();
+  const [Investation, setInvestation] = useState<Groups>();
+  const [Financing, setFinancing] = useState<Groups>();
   const itemsBreadcrumb = ["Home", "Laporan Arus Kas"];
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
@@ -103,9 +103,9 @@ export default function CashFlowPage() {
       if (response.status === 200) {
         const data = response.data.data;
         setCashFlow(data);
-        setOperational(data[0].groups);
-        setInvestation(data[1].groups);
-        setFinancing(data[2].groups);
+        setOperational(data.groups[0]);
+        setInvestation(data.groups[1]);
+        setFinancing(data.groups[2]);
       }
     } catch (error) {
       console.log(error);
@@ -199,8 +199,29 @@ export default function CashFlowPage() {
                 A. Arus Kas Dari Kegiatan Operasional
               </th>
             </tr>
-            <tr>
-              {Operational.map((operational, index) => {
+            {Operational?.accounts.map((account, index) => {
+              return (
+                <>
+                  <tr key={index}>
+                    <td className="border py-2 px-4">{account.name_account}</td>
+                    <td className="border py-2 px-4">
+                      Rp. {account.total_account}
+                    </td>
+                  </tr>
+                  {index === Operational.accounts.length - 1 && (
+                    <tr>
+                      <th className="border py-2 px-4">
+                        Jumlah {Operational.name_group}
+                      </th>
+                      <th className="border py-2 px-4">
+                        Rp. {Operational.total_group}
+                      </th>
+                    </tr>
+                  )}
+                </>
+              );
+            })}
+            {/* {Operational.map((operational, index) => {
                 return (
                   <>
                     <tr key={index}></tr>
@@ -228,15 +249,35 @@ export default function CashFlowPage() {
                     })}
                   </>
                 );
-              })}
-            </tr>
+              })} */}
             <tr>
               <th className="border py-2 px-4" colSpan={2}>
                 B. Arus Kas Dari Kegiatan Investasi
               </th>
             </tr>
-            <tr>
-              {Investation.map((investation, index) => {
+            {Investation?.accounts.map((account, index) => {
+              return (
+                <>
+                  <tr key={index}>
+                    <td className="border py-2 px-4">{account.name_account}</td>
+                    <td className="border py-2 px-4">
+                      Rp. {account.total_account}
+                    </td>
+                  </tr>
+                  {index === Investation.accounts.length - 1 && (
+                    <tr>
+                      <th className="border py-2 px-4">
+                        Jumlah {Investation.name_group}
+                      </th>
+                      <th className="border py-2 px-4">
+                        Rp. {Investation.total_group}
+                      </th>
+                    </tr>
+                  )}
+                </>
+              );
+            })}
+            {/* {Investation.map((investation, index) => {
                 return (
                   <>
                     <tr key={index}>
@@ -261,15 +302,35 @@ export default function CashFlowPage() {
                     })}
                   </>
                 );
-              })}
-            </tr>
+              })} */}
             <tr>
               <th className="border py-2 px-4" colSpan={2}>
                 C. Arus Kas Dari Kegiatan Pendanaan
               </th>
             </tr>
-            <tr>
-              {Financing.map((financing, index) => {
+            {Financing?.accounts.map((account, index) => {
+              return (
+                <>
+                  <tr key={index}>
+                    <td className="border py-2 px-4">{account.name_account}</td>
+                    <td className="border py-2 px-4">
+                      Rp. {account.total_account}
+                    </td>
+                  </tr>
+                  {index === Financing.accounts.length - 1 && (
+                    <tr>
+                      <th className="border py-2 px-4">
+                        Jumlah {Financing.name_group}
+                      </th>
+                      <th className="border py-2 px-4">
+                        Rp. {Financing.total_group}
+                      </th>
+                    </tr>
+                  )}
+                </>
+              );
+            })}
+            {/* {Financing.map((financing, index) => {
                 return (
                   <>
                     <tr key={index}>
@@ -294,8 +355,7 @@ export default function CashFlowPage() {
                     })}
                   </>
                 );
-              })}
-            </tr>
+              })} */}
             <tr>
               <th className="border py-2 px-4">
                 PERGERAKAN BERSIH KAS (A+B+C)
