@@ -4,33 +4,30 @@ import { Breadcrumb } from "../../components/breadcrumb";
 import axios from "axios";
 import { useReactToPrint } from "react-to-print";
 
-interface Journal {
-  ID: number;
-  no_journal: string;
-  date_journal: string;
-  status_journal: number;
+interface CapitalChange {
+  beginning_capital: number;
+  net_income: number;
+  prive: number;
+  additional_capital: number;
+  ending_capital: number;
 }
 
-const handleCreateJournal = () => {
-  window.location.href = "/add-journal";
-};
-
 export default function CapitalChangePage() {
-  const [incomes, setIncomes] = useState<Journal[]>([]);
+  const [capitalChange, setCapitalChange] = useState<CapitalChange>();
 
   const itemsBreadcrumb = ["Home", "Laporan Perubahan Modal"];
   const conponentPDF = React.useRef<HTMLTableElement>(null);
 
   useEffect(() => {
-    fetchJournals();
+    fetchCapitalChange();
   }, []);
 
-  const fetchJournals = async () => {
+  const fetchCapitalChange = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/general-journal"
+        "http://localhost:8080/api/transaction/capital-change"
       );
-      setIncomes(response.data.data);
+      setCapitalChange(response.data.data);
     } catch (error) {
       console.log(error);
       // alert("Data gagal diambil");
@@ -97,21 +94,27 @@ export default function CapitalChangePage() {
             <div className="flex">
               <p className="border py-1 w-full px-4">Modal Awal</p>
               <div className="flex w-full">
-                <p className="border py-1 w-full px-4">Rp.1.020.000</p>
+                <p className="border py-1 w-full px-4">
+                  Rp. {capitalChange?.beginning_capital || 0}
+                </p>
                 <p className="border py-1 w-full px-4"></p>
               </div>
             </div>
             <div className="flex">
               <p className="border py-1 w-full px-4">Laba Bersih</p>
               <div className="flex w-full">
-                <p className="border py-1 w-full px-4">Rp.9.200.000</p>
+                <p className="border py-1 w-full px-4">
+                  Rp. {capitalChange?.net_income || 0}
+                </p>
                 <p className="border py-1 w-full px-4"></p>
               </div>
             </div>
             <div className="flex">
               <p className="border py-1 w-full px-4">Pengambilan Prive</p>
               <div className="flex w-full">
-                <p className="border py-1 w-full px-4">Rp.1.500.000</p>
+                <p className="border py-1 w-full px-4">
+                  Rp. {capitalChange?.prive || 0}
+                </p>
                 <p className="border py-1 w-full px-4"></p>
               </div>
             </div>
@@ -119,14 +122,19 @@ export default function CapitalChangePage() {
               <p className="border py-1 w-full px-4">Penambahan Modal</p>
               <div className="flex w-full">
                 <p className="border py-1 w-full px-4"></p>
-                <p className="border py-1 w-full px-4">Rp.0</p>
+                <p className="border py-1 w-full px-4">
+                  Rp.{capitalChange?.additional_capital || 0}
+                </p>
               </div>
             </div>
             <div className="flex">
               <p className="border py-1 w-full px-4">Modal Akhir</p>
               <div className="flex w-full">
                 <p className="border py-1 w-full px-4"></p>
-                <p className="border py-1 w-full px-4">Rp.1.027.700.000</p>
+                <p className="border py-1 w-full px-4">
+                  Rp.
+                  {capitalChange?.ending_capital || 0}
+                </p>
               </div>
             </div>
             <div className="h-4" />
