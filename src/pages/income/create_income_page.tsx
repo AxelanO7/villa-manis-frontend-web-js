@@ -182,8 +182,6 @@ export default function CreateIncomePage() {
       alert("Terjadi kesalahan saat menyimpan master data pemasukan");
     }
 
-    const newAccount: Account = accounts[0];
-
     const detailIncomes: DetailIncome[] = detailIncomesTemp.map(
       (detailIncome) => {
         return {
@@ -195,10 +193,16 @@ export default function CreateIncomePage() {
           input_date: masterIncome.date_input,
           id_input: masterIncome.ID!,
           input: masterIncome,
-          id_account: newAccount.ID!,
-          account: newAccount,
-          id_category: newAccount.id_category,
-          category: newAccount.category,
+          id_account: detailIncome.id_account || accounts[0].ID!,
+          account:
+            detailIncome.account.ID === null
+              ? accounts[0]
+              : detailIncome.account,
+          id_category: detailIncome.id_category || accounts[0].id_category!,
+          category:
+            detailIncome.category.ID === null
+              ? accounts[0].category
+              : detailIncome.category,
         };
       }
     );
@@ -254,6 +258,7 @@ export default function CreateIncomePage() {
               <tr>
                 <th className="w-12 border py-2">No</th>
                 <th className="border py-2">Keterangan</th>
+                <th className="border py-2 w-48">COA</th>
                 <th className="border py-2 w-24">Qty</th>
                 <th className="border py-2 w-72">Total</th>
                 <th className="w-36 border py-2">Aksi</th>
@@ -262,7 +267,7 @@ export default function CreateIncomePage() {
             <tbody>
               {detailIncomesTemp.length === 0 && (
                 <tr>
-                  <td className="border py-2" colSpan={5}>
+                  <td className="border py-2" colSpan={6}>
                     Data tidak ditemukan, silahkan tambah data baru
                   </td>
                 </tr>
@@ -281,6 +286,26 @@ export default function CreateIncomePage() {
                       />
                     </td>
                     <td className="border py-2 px-4">
+                      <select
+                        className="border rounded px-2 py-1 grow bg-slate-100 w-full text-center"
+                        onChange={(e) => {
+                          const account = accounts.find(
+                            (account) => account.ID === parseInt(e.target.value)
+                          );
+                          detailIncome.account = account!;
+                          detailIncome.category = account!.category;
+                          detailIncome.id_account = account!.ID!;
+                          detailIncome.id_category = account!.id_category;
+                        }}
+                      >
+                        {accounts.map((account) => (
+                          <option value={account.ID || 0}>
+                            {account.name_account}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td className="border py-2 px-4">
                       <input
                         type="number"
                         className="border rounded px-2 py-1 grow bg-slate-100 w-full text-center"
@@ -290,6 +315,7 @@ export default function CreateIncomePage() {
                         }}
                       />
                     </td>
+
                     <td className="border py-2 px-4">
                       <input
                         type="number"
@@ -325,7 +351,7 @@ export default function CreateIncomePage() {
                 )
               )}
               <tr>
-                <td className="border py-2" colSpan={4}>
+                <td className="border py-2" colSpan={5}>
                   Subtotal
                 </td>
                 <td className="border py-2">Rp. {subTotal || 0}</td>

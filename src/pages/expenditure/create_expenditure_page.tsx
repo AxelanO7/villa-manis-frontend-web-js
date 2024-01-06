@@ -185,8 +185,6 @@ export default function CreateExpenditurePage() {
       alert("Terjadi kesalahan saat menyimpan master data pengeluaran");
     }
 
-    const newAccount = accounts[0];
-
     const detailExpenditures: DetalExpenditure[] = detailExpendituresTemp.map(
       (detailExpenditure) => {
         return {
@@ -199,10 +197,15 @@ export default function CreateExpenditurePage() {
           output_date: detailExpenditure.output_date,
           id_output: masterExpanditure.ID!,
           output: masterExpanditure,
-          id_account: newAccount.ID!,
-          account: newAccount,
-          id_category: newAccount.id_category,
-          category: newAccount.category,
+          id_account: detailExpenditure.id_account,
+          account:
+            detailExpenditure.account.ID === null
+              ? accounts[0]
+              : detailExpenditure.account,
+          id_category: detailExpenditure.id_category,
+          category: detailExpenditure.category.ID
+            ? detailExpenditure.category
+            : accounts[0].category,
         };
       }
     );
@@ -258,6 +261,7 @@ export default function CreateExpenditurePage() {
               <tr>
                 <th className="w-12 border py-2">No</th>
                 <th className="border py-2">Keterangan</th>
+                <th className="border py-2 w-48">COA</th>
                 <th className="border py-2 w-24">Qty</th>
                 <th className="border py-2 w-72">Total</th>
                 <th className="w-36 border py-2">Aksi</th>
@@ -266,7 +270,7 @@ export default function CreateExpenditurePage() {
             <tbody>
               {detailExpendituresTemp.length === 0 && (
                 <tr>
-                  <td className="border py-2" colSpan={5}>
+                  <td className="border py-2" colSpan={6}>
                     Data tidak ditemukan, silahkan tambah data baru
                   </td>
                 </tr>
@@ -283,6 +287,26 @@ export default function CreateExpenditurePage() {
                           detailExpenditure.output_information = e.target.value;
                         }}
                       />
+                    </td>
+                    <td className="border py-2 px-4">
+                      <select
+                        className="border rounded px-2 py-1 grow bg-slate-100 w-full text-center"
+                        onChange={(e) => {
+                          const account = accounts.find(
+                            (account) => account.ID === parseInt(e.target.value)
+                          );
+                          detailExpenditure.account = account!;
+                          detailExpenditure.id_account = account!.ID!;
+                          detailExpenditure.id_category = account!.id_category;
+                          detailExpenditure.category = account!.category;
+                        }}
+                      >
+                        {accounts.map((account) => (
+                          <option value={account.ID || 0}>
+                            {account.name_account}
+                          </option>
+                        ))}
+                      </select>
                     </td>
                     <td className="border py-2 px-4">
                       <input
@@ -331,7 +355,7 @@ export default function CreateExpenditurePage() {
                 )
               )}
               <tr>
-                <td className="border py-2" colSpan={4}>
+                <td className="border py-2" colSpan={5}>
                   Subtotal
                 </td>
                 <td className="border py-2">Rp. {subTotal || 0}</td>
