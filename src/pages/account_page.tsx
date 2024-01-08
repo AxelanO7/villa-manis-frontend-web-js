@@ -291,8 +291,8 @@ export default function AccountPage() {
                 <tr>
                   <th className="w-12 border py-2">No</th>
                   <th className="border py-2">Akun</th>
-                  <th className="border py-2">Kategori</th>
                   <th className="border py-2">Sifat</th>
+                  <th className="border py-2">Kategori</th>
                   <th className="w-60 border py-2">Aksi</th>
                 </tr>
               </thead>
