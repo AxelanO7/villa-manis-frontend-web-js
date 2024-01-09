@@ -169,18 +169,18 @@ export default function CreateIncomePage() {
       status_input: "Draft",
     };
 
-    try {
-      const res = await axios.post(
-        "http://localhost:8080/api/input",
-        masterIncome
-      );
-      if (res.data) {
-        masterIncome.ID = res.data.data.ID;
-      }
-    } catch (error) {
-      console.log(error);
-      alert("Terjadi kesalahan saat menyimpan master data pemasukan");
-    }
+    // try {
+    //   const res = await axios.post(
+    //     "http://localhost:8080/api/input",
+    //     masterIncome
+    //   );
+    //   if (res.data) {
+    //     masterIncome.ID = res.data.data.ID;
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    //   alert("Terjadi kesalahan saat menyimpan master data pemasukan");
+    // }
 
     const detailIncomes: DetailIncome[] = detailIncomesTemp.map(
       (detailIncome) => {
@@ -194,16 +194,16 @@ export default function CreateIncomePage() {
           id_input: masterIncome.ID!,
           input: masterIncome,
           id_account:
-            detailIncome.id_account || accounts[0].ID! === 0
-              ? 0
+            detailIncome.id_account === 0
+              ? accounts[0].ID || 0
               : detailIncome.id_account,
           account:
             detailIncome.account.ID === null
               ? accounts[0]
               : detailIncome.account,
           id_category:
-            detailIncome.id_category || accounts[0].id_category! === 0
-              ? 0
+            detailIncome.id_category === 0
+              ? accounts[0].id_category || 0
               : detailIncome.id_category,
           category:
             detailIncome.category.ID === null
@@ -212,6 +212,9 @@ export default function CreateIncomePage() {
         };
       }
     );
+
+    console.log(detailIncomes);
+    return;
 
     try {
       const res = await axios.post(

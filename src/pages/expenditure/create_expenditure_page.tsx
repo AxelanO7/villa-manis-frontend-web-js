@@ -199,14 +199,16 @@ export default function CreateExpenditurePage() {
           output: masterExpanditure,
           id_account:
             detailExpenditure.id_account === 0
-              ? 0
+              ? accounts[0].ID || 0
               : detailExpenditure.id_account,
           account:
             detailExpenditure.account.ID === null
               ? accounts[0]
               : detailExpenditure.account,
           id_category:
-            detailExpenditure.id_category === 0 ? 0 : accounts[0].id_category,
+            detailExpenditure.id_category === 0
+              ? accounts[0].id_category || 0
+              : detailExpenditure.id_category,
           category: detailExpenditure.category.ID
             ? detailExpenditure.category
             : accounts[0].category,
