@@ -169,18 +169,18 @@ export default function CreateIncomePage() {
       status_input: "Draft",
     };
 
-    // try {
-    //   const res = await axios.post(
-    //     "http://localhost:8080/api/input",
-    //     masterIncome
-    //   );
-    //   if (res.data) {
-    //     masterIncome.ID = res.data.data.ID;
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    //   alert("Terjadi kesalahan saat menyimpan master data pemasukan");
-    // }
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/api/input",
+        masterIncome
+      );
+      if (res.data) {
+        masterIncome.ID = res.data.data.ID;
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Terjadi kesalahan saat menyimpan master data pemasukan");
+    }
 
     const detailIncomes: DetailIncome[] = detailIncomesTemp.map(
       (detailIncome) => {
