@@ -213,9 +213,6 @@ export default function CreateIncomePage() {
       }
     );
 
-    console.log(detailIncomes);
-    return;
-
     try {
       const res = await axios.post(
         `http://localhost:8080/api/detail-inputs`,
