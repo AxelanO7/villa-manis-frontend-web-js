@@ -2,6 +2,28 @@ import React, { useEffect, useState } from "react";
 import BaseLayout from "../layouts/base";
 import { Breadcrumb } from "../components/breadcrumb";
 import axios from "axios";
+import { Line, Chart } from "react-chartjs-2";
+
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export default function MainPage() {
   const itemsBreadcrumb = ["Home", "Beranda"];
@@ -23,6 +45,19 @@ export default function MainPage() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const lineChartData = {
+    labels: ["January", "February", "March", "April", "May", "June"],
+    datasets: [
+      {
+        label: "Sales",
+        data: [100, 200, 150, 300, 250, 400],
+        fill: false,
+        borderColor: "blue",
+        tension: 0.4,
+      },
+    ],
   };
 
   return (
@@ -111,6 +146,8 @@ export default function MainPage() {
             </h6>
           </div>
         </div>
+        <div></div>
+        <Line data={lineChartData} />
       </div>
     </BaseLayout>
   );

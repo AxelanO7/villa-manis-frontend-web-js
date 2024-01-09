@@ -193,12 +193,18 @@ export default function CreateIncomePage() {
           input_date: masterIncome.date_input,
           id_input: masterIncome.ID!,
           input: masterIncome,
-          id_account: detailIncome.id_account || accounts[0].ID!,
+          id_account:
+            detailIncome.id_account || accounts[0].ID! === 0
+              ? 0
+              : detailIncome.id_account,
           account:
             detailIncome.account.ID === null
               ? accounts[0]
               : detailIncome.account,
-          id_category: detailIncome.id_category || accounts[0].id_category!,
+          id_category:
+            detailIncome.id_category || accounts[0].id_category! === 0
+              ? 0
+              : detailIncome.id_category,
           category:
             detailIncome.category.ID === null
               ? accounts[0].category
