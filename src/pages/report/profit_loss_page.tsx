@@ -36,10 +36,10 @@ export default function ProfitLossPage() {
   const conponentPDF = React.useRef<HTMLTableElement>(null);
 
   useEffect(() => {
-    fetchJournals();
+    fetchProfitLoss();
   }, []);
 
-  const fetchJournals = async () => {
+  const fetchProfitLoss = async () => {
     try {
       const response = await axios.get(
         `http://localhost:8080/api/transaction/profit-loss${
@@ -55,8 +55,14 @@ export default function ProfitLossPage() {
         setBurden(burden);
         setTotal(total);
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      if (
+        error.response.data.message === "Detail Input \u0026 Output not found"
+      ) {
+        setIncome([]);
+        setBurden([]);
+        setTotal({ income: 0, burden: 0, balance: 0 });
+      }
     }
   };
 
@@ -78,6 +84,12 @@ export default function ProfitLossPage() {
     onAfterPrint: () => alert("Data tersimpan"),
   });
 
+  const handleFilterByDate = () => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+    fetchProfitLoss();
+  };
+
   return (
     <BaseLayout>
       <Breadcrumb
@@ -90,15 +102,28 @@ export default function ProfitLossPage() {
           <div>
             <label>Dari Tanggal</label>
             <div className="h-1" />
-            <input type="date" className="border bg-white px-4" />
+            <input
+              type="date"
+              className="border bg-white px-4"
+              onChange={(e) => setStartDate(e.target.value)}
+            />
           </div>
 
           <div>
             <label>Ke Tanggal</label>
             <div className="h-1" />
-            <input type="date" className="border bg-white px-4" />
+            <input
+              type="date"
+              className="border bg-white px-4"
+              onChange={(e) => setEndDate(e.target.value)}
+            />
           </div>
-          <button className="bg-red-400 text-white px-4 h-min">Cari</button>
+          <button
+            className="bg-red-400 text-white px-4 h-min"
+            onClick={handleFilterByDate}
+          >
+            Cari
+          </button>
           <button
             className="bg-success text-white px-4 h-min"
             onClick={() => handlePrint()}

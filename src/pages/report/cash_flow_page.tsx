@@ -107,7 +107,30 @@ export default function CashFlowPage() {
         setInvestation(data.groups[1]);
         setFinancing(data.groups[2]);
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (
+        error.response.data.message === "Detail Input \u0026 Output not found"
+      ) {
+        setCashFlow({
+          groups: [],
+          totals: 0,
+        });
+        setOperational({
+          name_group: "",
+          accounts: [],
+          total_group: 0,
+        });
+        setInvestation({
+          name_group: "",
+          accounts: [],
+          total_group: 0,
+        });
+        setFinancing({
+          name_group: "",
+          accounts: [],
+          total_group: 0,
+        });
+      }
       console.log(error);
     }
   };
@@ -199,6 +222,13 @@ export default function CashFlowPage() {
                 A. Arus Kas Dari Kegiatan Operasional
               </th>
             </tr>
+            {Operational?.accounts.length === 0 && (
+              <tr>
+                <td className="border py-2 px-4" colSpan={2}>
+                  Data tidak ditemukan
+                </td>
+              </tr>
+            )}
             {Operational?.accounts.map((account, index) => {
               return (
                 <>
@@ -255,6 +285,13 @@ export default function CashFlowPage() {
                 B. Arus Kas Dari Kegiatan Investasi
               </th>
             </tr>
+            {Investation?.accounts.length === 0 && (
+              <tr>
+                <td className="border py-2 px-4" colSpan={2}>
+                  Data tidak ditemukan
+                </td>
+              </tr>
+            )}
             {Investation?.accounts.map((account, index) => {
               return (
                 <>
@@ -308,6 +345,13 @@ export default function CashFlowPage() {
                 C. Arus Kas Dari Kegiatan Pendanaan
               </th>
             </tr>
+            {Financing?.accounts.length === 0 && (
+              <tr>
+                <td className="border py-2 px-4" colSpan={2}>
+                  Data tidak ditemukan
+                </td>
+              </tr>
+            )}
             {Financing?.accounts.map((account, index) => {
               return (
                 <>
