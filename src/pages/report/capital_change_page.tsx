@@ -18,6 +18,9 @@ export default function CapitalChangePage() {
   const itemsBreadcrumb = ["Home", "Laporan Perubahan Modal"];
   const conponentPDF = React.useRef<HTMLTableElement>(null);
 
+  const [startDate, setStartDate] = useState<string>();
+  const [endDate, setEndDate] = useState<string>();
+
   useEffect(() => {
     fetchCapitalChange();
   }, []);
@@ -25,13 +28,21 @@ export default function CapitalChangePage() {
   const fetchCapitalChange = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/transaction/capital-change"
+        `http://localhost:8080/api/transaction/capital-change${
+          startDate ? `?start_date=${startDate}` : ""
+        }${endDate ? `&end_date=${endDate}` : ""}`
       );
       setCapitalChange(response.data.data);
     } catch (error) {
       console.log(error);
       // alert("Data gagal diambil");
     }
+  };
+
+  const handleFilterByDate = () => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+    fetchCapitalChange();
   };
 
   const handlePrint = useReactToPrint({
@@ -64,15 +75,28 @@ export default function CapitalChangePage() {
           <div>
             <label>Dari Tanggal</label>
             <div className="h-1" />
-            <input type="date" className="border bg-white px-4" />
+            <input
+              type="date"
+              className="border bg-white px-4"
+              onChange={(e) => setStartDate(e.target.value)}
+            />
           </div>
 
           <div>
             <label>Ke Tanggal</label>
             <div className="h-1" />
-            <input type="date" className="border bg-white px-4" />
+            <input
+              type="date"
+              className="border bg-white px-4"
+              onChange={(e) => setEndDate(e.target.value)}
+            />
           </div>
-          <button className="bg-red-400 text-white px-4 h-min">Cari</button>
+          <button
+            className="bg-red-400 text-white px-4 h-min"
+            onClick={handleFilterByDate}
+          >
+            Cari
+          </button>
           <button
             className="bg-success text-white px-4 h-min"
             onClick={() => handlePrint()}

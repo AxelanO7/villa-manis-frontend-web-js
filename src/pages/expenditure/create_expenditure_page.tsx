@@ -47,7 +47,7 @@ export default function CreateExpenditurePage() {
   >([]);
 
   const [noOutput, setNoOutput] = useState<string>();
-  const [dateOutput, setDateInput] = useState<string>();
+  const [dateOutput, setDateOutput] = useState<string>();
 
   const [subTotal, setSubTotal] = useState<number>(0);
 
@@ -194,7 +194,7 @@ export default function CreateExpenditurePage() {
           quantity: detailExpenditure.quantity,
           total_price: detailExpenditure.total_price,
           status_cart: 0,
-          output_date: detailExpenditure.output_date,
+          output_date: masterExpanditure.date_output,
           id_output: masterExpanditure.ID!,
           output: masterExpanditure,
           id_account:
@@ -386,7 +386,7 @@ export default function CreateExpenditurePage() {
             <input
               type="date"
               className="border rounded px-2 py-1 grow bg-slate-100"
-              onChange={(e) => setDateInput(e.target.value)}
+              onChange={(e) => setDateOutput(e.target.value)}
             />
           </div>
           <div className="h-12" />

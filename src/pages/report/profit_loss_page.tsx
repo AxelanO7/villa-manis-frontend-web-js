@@ -147,16 +147,17 @@ export default function ProfitLossPage() {
               <div className="flex" key={index}>
                 <p className="border py-1 w-full px-4">{item.name}</p>
                 <div className="flex w-full">
-                  <p className="border py-1 w-full px-4"></p>
-                  <p className="border py-1 w-full px-4">Rp.{item.credit}</p>
+                  <p className="border py-1 w-full px-4">Rp. {item.debit}</p>
+                  <p className="border py-1 w-full px-4">Rp. {item.credit}</p>
                 </div>
               </div>
             ))}
             <div className="flex">
               <p className="border py-1 w-full px-4">Jumlah Pendapatan</p>
               <div className="flex w-full">
-                <p className="border py-1 w-full px-4"></p>
-                <p className="border py-1 w-full px-4">Rp. {total?.income}</p>
+                <p className="border py-1 w-full px-4 text-center">
+                  Rp. {total?.income}
+                </p>
               </div>
             </div>
             <p className="border py-1 w-full px-4">Beban</p>
@@ -164,23 +165,25 @@ export default function ProfitLossPage() {
               <div className="flex" key={index}>
                 <p className="border py-1 w-full px-4">{item.name}</p>
                 <div className="flex w-full">
-                  <p className="border py-1 w-full px-4">Rp.{item.debit}</p>
-                  <p className="border py-1 w-full px-4"></p>
+                  <p className="border py-1 w-full px-4">Rp. {item.debit}</p>
+                  <p className="border py-1 w-full px-4">Rp. {item.credit}</p>
                 </div>
               </div>
             ))}
             <div className="flex">
               <p className="border py-1 w-full px-4">Jumlah Beban</p>
               <div className="flex w-full">
-                <p className="border py-1 w-full px-4">Rp. {total?.burden}</p>
-                <p className="border py-1 w-full px-4"></p>
+                <p className="border py-1 w-full px-4 text-center">
+                  Rp. {total?.burden}
+                </p>
               </div>
             </div>
             <div className="flex">
               <p className="border py-1 w-full px-4">Laba Bersih</p>
               <div className="flex w-full">
-                <p className="border py-1 w-full px-4"></p>
-                <p className="border py-1 w-full px-4">Rp. {total?.balance}</p>
+                <p className="border py-1 w-full px-4 text-center">
+                  Rp. {total?.balance}
+                </p>
               </div>
             </div>
             <div className="h-4" />
