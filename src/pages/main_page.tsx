@@ -64,7 +64,7 @@ export default function MainPage() {
     <BaseLayout>
       <Breadcrumb
         items={itemsBreadcrumb}
-        title="Transaksi Pemasukan"
+        title="Beranda"
         paddingHorizontal={32}
       />
       <div className="h-8" />
