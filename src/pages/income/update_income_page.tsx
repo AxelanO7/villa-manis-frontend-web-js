@@ -48,6 +48,7 @@ export default function UpdateIncomePage() {
 
   const [noInput, setNoInput] = useState<string>();
   const [dateInput, setDateInput] = useState<string>();
+  const [statusInput, setStatusInput] = useState<string>();
 
   const [subTotal, setSubTotal] = useState<number>(0);
 
@@ -177,7 +178,8 @@ export default function UpdateIncomePage() {
       ID: parseInt(idd) || null,
       no_input: noInput!,
       date_input: dateInput!,
-      status_input: "Draft",
+      status_input:
+        statusInput! === undefined ? "Draft" : statusInput! || "Draft",
     };
 
     try {
@@ -369,6 +371,20 @@ export default function UpdateIncomePage() {
               className="border rounded px-2 py-1 grow bg-slate-100"
               onChange={(e) => setDateInput(e.target.value)}
             />
+          </div>
+          <div className="h-8" />
+          <div className="flex items-center">
+            <p className="w-40">Status Transaksi</p>
+            <div className="w-12" />
+            <select
+              className="border rounded px-2 py-1 grow bg-slate-100"
+              onChange={(e) => {
+                setStatusInput(e.target.value);
+              }}
+            >
+              <option value="Draft">Draft</option>
+              <option value="Submited">Submited</option>
+            </select>
           </div>
           <div className="h-12" />
           <div className="flex">

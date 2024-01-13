@@ -51,6 +51,7 @@ export default function UpdateExpenditurePage() {
 
   const [noOutput, setNoOutput] = useState<string>();
   const [dateOutput, setDateOutput] = useState<string>();
+  const [statusOutput, setStatusOutput] = useState<string>();
 
   const [subTotal, setSubTotal] = useState<number>(0);
 
@@ -184,7 +185,8 @@ export default function UpdateExpenditurePage() {
       ID: parseInt(idd) || null,
       no_output: noOutput!,
       date_output: dateOutput!,
-      status_output: "Draft",
+      status_output:
+        statusOutput! === undefined ? "Draft" : statusOutput! || "Draft",
     };
 
     try {
@@ -381,6 +383,19 @@ export default function UpdateExpenditurePage() {
               className="border rounded px-2 py-1 grow bg-slate-100"
               onChange={(e) => setDateOutput(e.target.value)}
             />
+          </div>
+          <div className="h-8" />
+          <div className="flex items-center">
+            <p className="w-40">Status Transaksi</p>
+            <div className="w-12" />
+            <select
+              className="border rounded px-2 py-1 grow bg-slate-100"
+              value={statusOutput}
+              onChange={(e) => setStatusOutput(e.target.value)}
+            >
+              <option value="Draft">Draft</option>
+              <option value="Submited">Submited</option>
+            </select>
           </div>
           <div className="h-12" />
           <div className="flex">
