@@ -482,10 +482,10 @@ export default function BalanceSheetPage() {
                           </p>
                           <div className="flex w-full">
                             <p className="border py-1 w-full px-4">
-                              {account.debit}
+                              Rp. {account.debit}
                             </p>
                             <p className="border py-1 w-full px-4">
-                              {account.credit}
+                              Rp. {account.credit}
                             </p>
                           </div>
                         </div>
@@ -497,16 +497,34 @@ export default function BalanceSheetPage() {
                     </p>
                     <div className="flex w-full">
                       <p className="border py-1 w-full px-4">
-                        {item.total_debit}
+                        Rp. {item.total_debit}
                       </p>
                       <p className="border py-1 w-full px-4">
-                        {item.total_credit}
+                        Rp. {item.total_credit}
                       </p>
                     </div>
                   </div>
                 </div>
               );
             })}
+            {/* add total debit and credit */}
+            <div className="flex">
+              <p className="border py-1 w-full px-4">Total</p>
+              <div className="flex w-full">
+                <p className="border py-1 w-full px-4">
+                  Rp.{" "}
+                  {groupByCategory.reduce((acc, curr) => {
+                    return acc + curr.total_debit;
+                  }, 0)}
+                </p>
+                <p className="border py-1 w-full px-4">
+                  Rp.{" "}
+                  {groupByCategory.reduce((acc, curr) => {
+                    return acc + curr.total_credit;
+                  }, 0)}
+                </p>
+              </div>
+            </div>
 
             {/* <div className="h-20"></div>
           <h6 className="border py-1 font-medium px-4">Akitivia Lancar</h6>

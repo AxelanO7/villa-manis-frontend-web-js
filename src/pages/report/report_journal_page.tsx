@@ -935,6 +935,18 @@ export default function CashFlowPage() {
                   </>
                 );
               })}
+              <tr>
+                <td className="border py-2" colSpan={4}>
+                  Total
+                </td>
+                <td className="border py-2">
+                  Rp. {transactions.reduce((a, b) => a + b.total_debit, 0)}
+                </td>
+                <td className="border py-2">
+                  Rp.
+                  {transactions.reduce((a, b) => a + b.total_credit, 0)}
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
