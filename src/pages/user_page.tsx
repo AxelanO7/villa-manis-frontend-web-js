@@ -15,7 +15,7 @@ interface UserProps {
   name_user: string;
   username: string;
   password: string;
-  photo: string;
+  role: string;
   level: number;
 }
 
@@ -26,7 +26,7 @@ export default function UserPage() {
   const [name, setName] = useState<any>();
   const [username, setUsername] = useState<any>();
   const [password, setPassword] = useState<any>();
-  const [photo, setPhoto] = useState<any>();
+  const [role, setRole] = useState<any>();
   const [level, setLevel] = useState<any>();
 
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -55,7 +55,7 @@ export default function UserPage() {
         name_user: name,
         username: username,
         password: password,
-        photo: photo,
+        role: role,
         level: level,
       });
       alert("Data berhasil ditambahkan");
@@ -73,7 +73,7 @@ export default function UserPage() {
         name_user: name,
         username: username,
         password: password,
-        photo: photo,
+        role: role,
         level: level,
       });
       alert("Data berhasil diubah");
@@ -113,7 +113,7 @@ export default function UserPage() {
       setName(user?.name_user);
       setUsername(user?.username);
       setPassword(user?.password);
-      setPhoto(user?.photo);
+      setRole(user?.role);
       setLevel(user?.level);
     }
   };
@@ -122,7 +122,7 @@ export default function UserPage() {
     setName(null);
     setUsername(null);
     setPassword(null);
-    setPhoto(null);
+    setRole(null);
     setLevel(null);
   };
 
@@ -158,12 +158,19 @@ export default function UserPage() {
               type="password"
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Input
-              label="Photo"
-              value={photo}
+            <select
+              className="border rounded px-4 py-1 bg-white"
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <option value="admin">Admin</option>
+              <option value="director">Director</option>
+            </select>
+            {/* <Input
+              label="Role"
+              value={role}
               type="text"
-              onChange={(e) => setPhoto(e.target.value)}
-            />
+              onChange={(e) => setRole(e.target.value)}
+            /> */}
             <Input
               label="Level"
               value={level}
@@ -246,7 +253,7 @@ export default function UserPage() {
                   <th className="border py-2">Nama</th>
                   <th className="border py-2">Username</th>
                   <th className="border py-2">Password</th>
-                  <th className="border py-2">Photo</th>
+                  <th className="border py-2">Role</th>
                   <th className="border py-2">Level</th>
                   <th className="w-60 border py-2">Aksi</th>
                 </tr>
@@ -265,7 +272,7 @@ export default function UserPage() {
                     <td className="border py-2">{user.name_user}</td>
                     <td className="border py-2">{user.username}</td>
                     <td className="border py-2">{user.password}</td>
-                    <td className="border py-2">{user.photo}</td>
+                    <td className="border py-2">{user.role}</td>
                     <td className="border py-2">{user.level}</td>
                     <td className="flex text-white justify-center border py-2 px-4">
                       <button

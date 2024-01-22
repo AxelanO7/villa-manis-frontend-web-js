@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import BaseLayout from "../layouts/base";
 import { Breadcrumb } from "../components/breadcrumb";
 import axios from "axios";
-import { Line, Chart } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 
 import {
   Chart as ChartJS,
@@ -25,10 +25,27 @@ ChartJS.register(
   Legend
 );
 
+interface Month {
+  january: number;
+  february: number;
+  march: number;
+  april: number;
+  may: number;
+  june: number;
+  july: number;
+  august: number;
+  september: number;
+  october: number;
+  november: number;
+  december: number;
+}
+
 export default function MainPage() {
   const itemsBreadcrumb = ["Home", "Beranda"];
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpense, setTotalExpense] = useState(0);
+  const [totalCreditByMonth, setTotalCreditByMonth] = useState<Month>();
+  const [totalDebitByMonth, setTotalDebitByMonth] = useState<Month>();
 
   useEffect(() => {
     fetchTotalTransaction();
@@ -42,19 +59,66 @@ export default function MainPage() {
       const data = res.data.data;
       setTotalIncome(data.total_debit);
       setTotalExpense(data.total_credit);
+      setTotalCreditByMonth(data.total_credit_month);
+      setTotalDebitByMonth(data.total_debit_month);
     } catch (error) {
       console.log(error);
     }
   };
 
   const lineChartData = {
-    labels: ["January", "February", "March", "April", "May", "June"],
+    labels: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "November",
+      "Desember",
+    ],
     datasets: [
       {
-        label: "Sales",
-        data: [100, 200, 150, 300, 250, 400],
+        label: "Pemasukan",
+        data: [
+          totalDebitByMonth?.january,
+          totalDebitByMonth?.february,
+          totalDebitByMonth?.march,
+          totalDebitByMonth?.april,
+          totalDebitByMonth?.may,
+          totalDebitByMonth?.june,
+          totalDebitByMonth?.july,
+          totalDebitByMonth?.august,
+          totalDebitByMonth?.september,
+          totalDebitByMonth?.october,
+          totalDebitByMonth?.november,
+          totalDebitByMonth?.december,
+        ],
         fill: false,
-        borderColor: "blue",
+        borderColor: "green",
+        tension: 0.4,
+      },
+      {
+        label: "Pengeluaran",
+        data: [
+          totalCreditByMonth?.january,
+          totalCreditByMonth?.february,
+          totalCreditByMonth?.march,
+          totalCreditByMonth?.april,
+          totalCreditByMonth?.may,
+          totalCreditByMonth?.june,
+          totalCreditByMonth?.july,
+          totalCreditByMonth?.august,
+          totalCreditByMonth?.september,
+          totalCreditByMonth?.october,
+          totalCreditByMonth?.november,
+          totalCreditByMonth?.december,
+        ],
+        fill: false,
+        borderColor: "red",
         tension: 0.4,
       },
     ],
@@ -146,9 +210,22 @@ export default function MainPage() {
             </h6>
           </div>
         </div>
-        <div></div>
-        <Line data={lineChartData} />
       </div>
+      <div className="h-4" />
+      <div className="w-full px-8">
+        <Line
+          data={lineChartData}
+          options={{
+            animation: {
+              duration: 0,
+            },
+          }}
+          className="mx-auto border border-gray-200 rounded shadow-sm bg-white w-full p-8"
+          width={600}
+          height={400}
+        />
+      </div>
+      <div className="h-8" />
     </BaseLayout>
   );
 }
