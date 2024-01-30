@@ -28,8 +28,8 @@ export default function ProfitLossPage() {
   const [burden, setBurden] = useState<Item[]>([]);
   const [total, setTotal] = useState<Total>();
 
-  const [startDate, setStartDate] = useState<string>();
-  const [endDate, setEndDate] = useState<string>();
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
 
   const itemsBreadcrumb = ["Home", "Laporan Laba Rugi"];
 
@@ -90,6 +90,35 @@ export default function ProfitLossPage() {
     fetchProfitLoss();
   };
 
+  const getPeriod = () => {
+    const startDatePeriod =
+      startDate === ""
+        ? ""
+        : new Date(startDate).toLocaleDateString("id-ID", {
+            year: "numeric",
+            month: "long",
+          });
+    const endDatePeriod =
+      endDate === ""
+        ? ""
+        : new Date(endDate).toLocaleDateString("id-ID", {
+            year: "numeric",
+            month: "long",
+          });
+    if (startDatePeriod === "" && endDatePeriod === "") {
+      return "Semua Waktu";
+    }
+    if (startDatePeriod !== "" || endDatePeriod !== "") {
+      if (startDatePeriod === endDatePeriod) return startDatePeriod;
+      if (startDatePeriod !== endDatePeriod) {
+        return `${startDatePeriod}  ${
+          startDatePeriod === "" || endDatePeriod === "" ? "" : " - "
+        }
+            ${endDatePeriod}`;
+      }
+    }
+  };
+
   return (
     <BaseLayout>
       <Breadcrumb
@@ -139,7 +168,7 @@ export default function ProfitLossPage() {
             Laporan Laba Rugi
           </p>
           <p className="border py-1 bg-slate-100 font-semibold">
-            Periode Juni 2023
+            Periode {getPeriod()}
           </p>
           <div className="text-start">
             <h6 className="border py-1 px-4">Pendapatan</h6>
@@ -147,8 +176,12 @@ export default function ProfitLossPage() {
               <div className="flex" key={index}>
                 <p className="border py-1 w-full px-4">{item.name}</p>
                 <div className="flex w-full">
-                  <p className="border py-1 w-full px-4">Rp. {item.debit}</p>
-                  <p className="border py-1 w-full px-4">Rp. {item.credit}</p>
+                  <p className="border py-1 w-full px-4">
+                    Rp. {item.debit.toLocaleString("id-ID") + ",00"}
+                  </p>
+                  <p className="border py-1 w-full px-4">
+                    Rp. {item.credit.toLocaleString("id-ID") + ",00"}
+                  </p>
                 </div>
               </div>
             ))}
@@ -156,7 +189,7 @@ export default function ProfitLossPage() {
               <p className="border py-1 w-full px-4">Jumlah Pendapatan</p>
               <div className="flex w-full">
                 <p className="border py-1 w-full px-4 text-center">
-                  Rp. {total?.income}
+                  Rp. {total?.income.toLocaleString("id-ID") + ",00"}
                 </p>
               </div>
             </div>
@@ -165,8 +198,12 @@ export default function ProfitLossPage() {
               <div className="flex" key={index}>
                 <p className="border py-1 w-full px-4">{item.name}</p>
                 <div className="flex w-full">
-                  <p className="border py-1 w-full px-4">Rp. {item.debit}</p>
-                  <p className="border py-1 w-full px-4">Rp. {item.credit}</p>
+                  <p className="border py-1 w-full px-4">
+                    Rp. {item.debit.toLocaleString("id-ID") + ",00"}
+                  </p>
+                  <p className="border py-1 w-full px-4">
+                    Rp. {item.credit.toLocaleString("id-ID") + ",00"}
+                  </p>
                 </div>
               </div>
             ))}
@@ -174,7 +211,7 @@ export default function ProfitLossPage() {
               <p className="border py-1 w-full px-4">Jumlah Beban</p>
               <div className="flex w-full">
                 <p className="border py-1 w-full px-4 text-center">
-                  Rp. {total?.burden}
+                  Rp. {total?.burden.toLocaleString("id-ID") + ",00"}
                 </p>
               </div>
             </div>
@@ -182,7 +219,7 @@ export default function ProfitLossPage() {
               <p className="border py-1 w-full px-4">Laba Bersih</p>
               <div className="flex w-full">
                 <p className="border py-1 w-full px-4 text-center">
-                  Rp. {total?.balance}
+                  Rp. {total?.balance.toLocaleString("id-ID") + ",00"}
                 </p>
               </div>
             </div>

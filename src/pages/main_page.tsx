@@ -47,6 +47,9 @@ export default function MainPage() {
   const [totalCreditByMonth, setTotalCreditByMonth] = useState<Month>();
   const [totalDebitByMonth, setTotalDebitByMonth] = useState<Month>();
 
+  const [startDate, setStartDate] = useState<String>("");
+  const [endDate, setEndDate] = useState<String>("");
+
   useEffect(() => {
     fetchTotalTransaction();
   }, []);
@@ -54,7 +57,7 @@ export default function MainPage() {
   const fetchTotalTransaction = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8080/api/transaction/total-transaction"
+        `http://localhost:8080/api/transaction/total-transaction?start_date=${startDate}&end_date=${endDate}`
       );
       const data = res.data.data;
       setTotalIncome(data.total_debit);
@@ -124,6 +127,10 @@ export default function MainPage() {
     ],
   };
 
+  const handleFilterDate = () => {
+    fetchTotalTransaction();
+  };
+
   return (
     <BaseLayout>
       <Breadcrumb
@@ -160,6 +167,26 @@ export default function MainPage() {
             Ubah Password
           </button>
         </div>
+      </div>
+      <div className="h-4" />
+      <div className="flex px-8 text-gray-700 items-center space-x-4">
+        <p>Filter Berdasarkan Tanggal</p>
+        <input
+          type="date"
+          className="border p-2"
+          onChange={(e) => setStartDate(e.target.value)}
+        />
+        <input
+          type="date"
+          className="border p-2"
+          onChange={(e) => setEndDate(e.target.value)}
+        />
+        <button
+          onClick={handleFilterDate}
+          className="bg-cyan-500 text-white rounded px-4 py-2"
+        >
+          Cari
+        </button>
       </div>
       <div className="h-4" />
       <div className="flex grow px-8">

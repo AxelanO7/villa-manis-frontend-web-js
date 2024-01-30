@@ -462,14 +462,14 @@ export default function BaseLayout({
                         <path d="M15 5.25a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963A5.23 5.23 0 0017.25 7.5h-1.875A.375.375 0 0115 7.125V5.25zM4.875 6H6v10.125A3.375 3.375 0 009.375 19.5H16.5v1.125c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V7.875C3 6.839 3.84 6 4.875 6z" />
                       </svg>
                       <div className="w-6" />
-                      <p className="text-gray-500">Account</p>
+                      <p className="text-gray-500">Akun</p>
                     </div>
                     <div className="collapse-content">
                       <div
                         className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"
                         onClick={handleCategory}
                       >
-                        <p className="text-gray-500">Category</p>
+                        <p className="text-gray-500">Kategori</p>
                       </div>
                       <div
                         className="hover:bg-gray-200 rounded p-2 cursor-pointer flex items-center"

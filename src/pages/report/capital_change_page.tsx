@@ -18,8 +18,8 @@ export default function CapitalChangePage() {
   const itemsBreadcrumb = ["Home", "Laporan Perubahan Modal"];
   const conponentPDF = React.useRef<HTMLTableElement>(null);
 
-  const [startDate, setStartDate] = useState<string>();
-  const [endDate, setEndDate] = useState<string>();
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
 
   useEffect(() => {
     fetchCapitalChange();
@@ -62,6 +62,35 @@ export default function CapitalChangePage() {
     documentTitle: "Laporan Perubahan Modal",
     onAfterPrint: () => alert("Data tersimpan"),
   });
+
+  const getPeriod = () => {
+    const startDatePeriod =
+      startDate === ""
+        ? ""
+        : new Date(startDate).toLocaleDateString("id-ID", {
+            year: "numeric",
+            month: "long",
+          });
+    const endDatePeriod =
+      endDate === ""
+        ? ""
+        : new Date(endDate).toLocaleDateString("id-ID", {
+            year: "numeric",
+            month: "long",
+          });
+    if (startDatePeriod === "" && endDatePeriod === "") {
+      return "Semua Waktu";
+    }
+    if (startDatePeriod !== "" || endDatePeriod !== "") {
+      if (startDatePeriod === endDatePeriod) return startDatePeriod;
+      if (startDatePeriod !== endDatePeriod) {
+        return `${startDatePeriod}  ${
+          startDatePeriod === "" || endDatePeriod === "" ? "" : " - "
+        }
+            ${endDatePeriod}`;
+      }
+    }
+  };
 
   return (
     <BaseLayout>
@@ -112,14 +141,17 @@ export default function CapitalChangePage() {
             Laporan Perubahan Modal
           </p>
           <p className="border py-1 bg-slate-100 font-semibold">
-            Periode Juni 2023
+            Periode {getPeriod()}
           </p>
           <div className="text-start">
             <div className="flex">
               <p className="border py-1 w-full px-4">Modal Awal</p>
               <div className="flex w-full">
                 <p className="border py-1 w-full px-4">
-                  Rp. {capitalChange?.beginning_capital || 0}
+                  Rp.{" "}
+                  {(capitalChange?.beginning_capital || 0).toLocaleString(
+                    "id-ID"
+                  ) + ",00"}
                 </p>
                 <p className="border py-1 w-full px-4"></p>
               </div>
@@ -128,7 +160,9 @@ export default function CapitalChangePage() {
               <p className="border py-1 w-full px-4">Laba Bersih</p>
               <div className="flex w-full">
                 <p className="border py-1 w-full px-4">
-                  Rp. {capitalChange?.net_income || 0}
+                  Rp.{" "}
+                  {(capitalChange?.net_income || 0).toLocaleString("id-ID") +
+                    ",00"}
                 </p>
                 <p className="border py-1 w-full px-4"></p>
               </div>
@@ -137,7 +171,8 @@ export default function CapitalChangePage() {
               <p className="border py-1 w-full px-4">Pengambilan Prive</p>
               <div className="flex w-full">
                 <p className="border py-1 w-full px-4">
-                  Rp. {capitalChange?.prive || 0}
+                  Rp.{" "}
+                  {(capitalChange?.prive || 0).toLocaleString("id-ID") + ",00"}
                 </p>
                 <p className="border py-1 w-full px-4"></p>
               </div>
@@ -147,7 +182,10 @@ export default function CapitalChangePage() {
               <div className="flex w-full">
                 <p className="border py-1 w-full px-4"></p>
                 <p className="border py-1 w-full px-4">
-                  Rp.{capitalChange?.additional_capital || 0}
+                  Rp.
+                  {(capitalChange?.additional_capital || 0).toLocaleString(
+                    "id-ID"
+                  ) + ",00"}
                 </p>
               </div>
             </div>
@@ -157,7 +195,9 @@ export default function CapitalChangePage() {
                 <p className="border py-1 w-full px-4"></p>
                 <p className="border py-1 w-full px-4">
                   Rp.
-                  {capitalChange?.ending_capital || 0}
+                  {(capitalChange?.ending_capital || 0).toLocaleString(
+                    "id-ID"
+                  ) + ",00"}
                 </p>
               </div>
             </div>

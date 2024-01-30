@@ -58,7 +58,14 @@ export default function CreateExpenditurePage() {
   useEffect(() => {
     fetchAccounts();
     fetchExpanditures();
+    setDateNow();
   }, []);
+
+  const setDateNow = () => {
+    const date = new Date();
+    const dateNow = date.toISOString().slice(0, 10).toString();
+    setDateOutput(dateNow);
+  };
 
   const fetchAccounts = async () => {
     try {
@@ -386,7 +393,11 @@ export default function CreateExpenditurePage() {
             <input
               type="date"
               className="border rounded px-2 py-1 grow bg-slate-100"
+              value={
+                dateOutput || new Date().toISOString().slice(0, 10).toString()
+              }
               onChange={(e) => setDateOutput(e.target.value)}
+              disabled
             />
           </div>
           <div className="h-12" />

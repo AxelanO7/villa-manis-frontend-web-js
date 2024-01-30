@@ -355,8 +355,8 @@ interface GroupAccount {
 export default function BalanceSheetPage() {
   const itemsBreadcrumb = ["Home", "Laporan Neraca Saldo"];
 
-  const [startDate, setStartDate] = useState<string>();
-  const [endDate, setEndDate] = useState<string>();
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
 
   const [groupByCategory, setGroupByCategory] = useState<GroupCategory[]>([]);
 
@@ -405,6 +405,37 @@ export default function BalanceSheetPage() {
     documentTitle: "Laporan Neraca Saldo",
     onAfterPrint: () => alert("Data tersimpan"),
   });
+
+  const getPeriod = () => {
+    const startDatePeriod =
+      startDate === ""
+        ? ""
+        : new Date(startDate).toLocaleDateString("id-ID", {
+            year: "numeric",
+            month: "long",
+          });
+    const endDatePeriod =
+      endDate === ""
+        ? ""
+        : new Date(endDate).toLocaleDateString("id-ID", {
+            year: "numeric",
+            month: "long",
+          });
+
+    if (startDatePeriod === "" && endDatePeriod === "") {
+      return "Semua Waktu";
+    }
+
+    if (startDatePeriod !== "" || endDatePeriod !== "") {
+      if (startDatePeriod === endDatePeriod) return startDatePeriod;
+      if (startDatePeriod !== endDatePeriod) {
+        return `${startDatePeriod}  ${
+          startDatePeriod === "" || endDatePeriod === "" ? "" : " - "
+        }
+            ${endDatePeriod}`;
+      }
+    }
+  };
 
   return (
     <BaseLayout>
@@ -457,7 +488,7 @@ export default function BalanceSheetPage() {
           <p className="border py-1 bg-slate-100 font-semibold">Villa Manis</p>
           <p className="border py-1 bg-slate-100 font-semibold">Neraca Saldo</p>
           <p className="border py-1 bg-slate-100 font-semibold">
-            Periode Juni 2023
+            Periode {getPeriod()}
           </p>
           <div className="text-start">
             {/* {groupByCategory.length === 0 && (
@@ -482,10 +513,12 @@ export default function BalanceSheetPage() {
                           </p>
                           <div className="flex w-full">
                             <p className="border py-1 w-full px-4">
-                              Rp. {account.debit}
+                              Rp.{" "}
+                              {account.debit.toLocaleString("id-ID") + ",00"}
                             </p>
                             <p className="border py-1 w-full px-4">
-                              Rp. {account.credit}
+                              Rp.{" "}
+                              {account.credit.toLocaleString("id-ID") + ",00"}
                             </p>
                           </div>
                         </div>
@@ -497,10 +530,10 @@ export default function BalanceSheetPage() {
                     </p>
                     <div className="flex w-full">
                       <p className="border py-1 w-full px-4">
-                        Rp. {item.total_debit}
+                        Rp. {item.total_debit.toLocaleString("id-ID") + ",00"}
                       </p>
                       <p className="border py-1 w-full px-4">
-                        Rp. {item.total_credit}
+                        Rp. {item.total_credit.toLocaleString("id-ID") + ",00"}
                       </p>
                     </div>
                   </div>
@@ -513,15 +546,19 @@ export default function BalanceSheetPage() {
               <div className="flex w-full">
                 <p className="border py-1 w-full px-4">
                   Rp.{" "}
-                  {groupByCategory.reduce((acc, curr) => {
-                    return acc + curr.total_debit;
-                  }, 0)}
+                  {groupByCategory
+                    .reduce((acc, curr) => {
+                      return acc + curr.total_debit;
+                    }, 0)
+                    .toLocaleString("id-ID") + ",00"}
                 </p>
                 <p className="border py-1 w-full px-4">
                   Rp.{" "}
-                  {groupByCategory.reduce((acc, curr) => {
-                    return acc + curr.total_credit;
-                  }, 0)}
+                  {groupByCategory
+                    .reduce((acc, curr) => {
+                      return acc + curr.total_credit;
+                    }, 0)
+                    .toLocaleString("id-ID") + ",00"}
                 </p>
               </div>
             </div>

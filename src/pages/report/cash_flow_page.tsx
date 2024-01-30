@@ -159,6 +159,35 @@ export default function CashFlowPage() {
     onAfterPrint: () => alert("Data tersimpan"),
   });
 
+  const getPeriod = () => {
+    const startDatePeriod =
+      startDate === ""
+        ? ""
+        : new Date(startDate).toLocaleDateString("id-ID", {
+            year: "numeric",
+            month: "long",
+          });
+    const endDatePeriod =
+      endDate === ""
+        ? ""
+        : new Date(endDate).toLocaleDateString("id-ID", {
+            year: "numeric",
+            month: "long",
+          });
+    if (startDatePeriod === "" && endDatePeriod === "") {
+      return "Semua Waktu";
+    }
+    if (startDatePeriod !== "" || endDatePeriod !== "") {
+      if (startDatePeriod === endDatePeriod) return startDatePeriod;
+      if (startDatePeriod !== endDatePeriod) {
+        return `${startDatePeriod}  ${
+          startDatePeriod === "" || endDatePeriod === "" ? "" : " - "
+        }
+            ${endDatePeriod}`;
+      }
+    }
+  };
+
   return (
     <BaseLayout>
       <Breadcrumb
@@ -206,7 +235,7 @@ export default function CashFlowPage() {
           <p className="border py-1 bg-slate-100 font-semibold">Villa Manis</p>
           <p className="border py-1 bg-slate-100 font-semibold">ARUS KAS</p>
           <p className="border py-1 bg-slate-100 font-semibold">
-            Periode Juni 2023
+            Periode {getPeriod()}
           </p>
           <table className="table-fixed w-full text-left">
             <tr>
@@ -235,7 +264,8 @@ export default function CashFlowPage() {
                   <tr key={index}>
                     <td className="border py-2 px-4">{account.name_account}</td>
                     <td className="border py-2 px-4">
-                      Rp. {account.total_account}
+                      Rp.{" "}
+                      {account.total_account.toLocaleString("id-ID") + ",00"}
                     </td>
                   </tr>
                   {index === Operational.accounts.length - 1 && (
@@ -244,7 +274,9 @@ export default function CashFlowPage() {
                         Jumlah {Operational.name_group}
                       </th>
                       <th className="border py-2 px-4">
-                        Rp. {Operational.total_group}
+                        Rp.{" "}
+                        {Operational.total_group.toLocaleString("id-ID") +
+                          ",00"}
                       </th>
                     </tr>
                   )}
@@ -298,7 +330,8 @@ export default function CashFlowPage() {
                   <tr key={index}>
                     <td className="border py-2 px-4">{account.name_account}</td>
                     <td className="border py-2 px-4">
-                      Rp. {account.total_account}
+                      Rp.{" "}
+                      {account.total_account.toLocaleString("id-ID") + ",00"}
                     </td>
                   </tr>
                   {index === Investation.accounts.length - 1 && (
@@ -307,7 +340,9 @@ export default function CashFlowPage() {
                         Jumlah {Investation.name_group}
                       </th>
                       <th className="border py-2 px-4">
-                        Rp. {Investation.total_group}
+                        Rp.{" "}
+                        {Investation.total_group.toLocaleString("id-ID") +
+                          ",00"}
                       </th>
                     </tr>
                   )}
@@ -358,7 +393,8 @@ export default function CashFlowPage() {
                   <tr key={index}>
                     <td className="border py-2 px-4">{account.name_account}</td>
                     <td className="border py-2 px-4">
-                      Rp. {account.total_account}
+                      Rp.{" "}
+                      {account.total_account.toLocaleString("id-ID") + ",00"}
                     </td>
                   </tr>
                   {index === Financing.accounts.length - 1 && (
@@ -367,7 +403,8 @@ export default function CashFlowPage() {
                         Jumlah {Financing.name_group}
                       </th>
                       <th className="border py-2 px-4">
-                        Rp. {Financing.total_group}
+                        Rp.{" "}
+                        {Financing.total_group.toLocaleString("id-ID") + ",00"}
                       </th>
                     </tr>
                   )}
@@ -404,7 +441,9 @@ export default function CashFlowPage() {
               <th className="border py-2 px-4">
                 PERGERAKAN BERSIH KAS (A+B+C)
               </th>
-              <th className="border py-2 px-4">Rp. {CashFlow?.totals}</th>
+              <th className="border py-2 px-4">
+                Rp. {CashFlow?.totals.toLocaleString("id-ID") + ",00"}
+              </th>
             </tr>
             <tr>
               <th className="border py-2 px-4">SALDO AKHIR KAS</th>

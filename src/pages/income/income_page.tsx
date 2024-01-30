@@ -195,7 +195,7 @@ export default function IncomePage() {
         <div className="flex flex-col bg-white rounded m-8 shadow">
           <div className="pt-8 px-6">
             <button
-              className="bg-success text-white rounded px-4 py-2 w-48 flex items-center w-max"
+              className="bg-success text-white rounded px-4 py-2 flex items-center w-max"
               // onClick={() => handleShowModal({ show: true })}
               onClick={handleCreateIncome}
             >
@@ -242,6 +242,7 @@ export default function IncomePage() {
                 <tr>
                   <th className="w-12 border py-2">No</th>
                   <th className="border py-2">Bulan Transaksi</th>
+                  {/* <th className="border py-2">Keterangan</th> */}
                   <th className="border py-2">Status</th>
                   <th className="w-64 border py-2">Aksi</th>
                 </tr>
@@ -258,6 +259,7 @@ export default function IncomePage() {
                   <tr>
                     <td className="border py-2">{index + 1}</td>
                     <td className="border py-2">{income.date_input}</td>
+                    {/* <td className="border py-2">{income.no_input}</td> */}
                     <td className="border py-2">{income.status_input}</td>
                     <td className="flex text-white justify-center border py-2 px-4">
                       <button

@@ -807,6 +807,35 @@ export default function CashFlowPage() {
     onAfterPrint: () => alert("Data tersimpan"),
   });
 
+  const getPeriod = () => {
+    const startDatePeriod =
+      startDate === ""
+        ? ""
+        : new Date(startDate).toLocaleDateString("id-ID", {
+            year: "numeric",
+            month: "long",
+          });
+    const endDatePeriod =
+      endDate === ""
+        ? ""
+        : new Date(endDate).toLocaleDateString("id-ID", {
+            year: "numeric",
+            month: "long",
+          });
+    if (startDatePeriod === "" && endDatePeriod === "") {
+      return "Semua Waktu";
+    }
+    if (startDatePeriod !== "" || endDatePeriod !== "") {
+      if (startDatePeriod === endDatePeriod) return startDatePeriod;
+      if (startDatePeriod !== endDatePeriod) {
+        return `${startDatePeriod}  ${
+          startDatePeriod === "" || endDatePeriod === "" ? "" : " - "
+        }
+            ${endDatePeriod}`;
+      }
+    }
+  };
+
   return (
     <BaseLayout>
       <Breadcrumb
@@ -854,7 +883,7 @@ export default function CashFlowPage() {
           <p className="border py-1 bg-slate-100 font-semibold">Villa Manis</p>
           <p className="border py-1 bg-slate-100 font-semibold">Jurnal Umum</p>
           <p className="border py-1 bg-slate-100 font-semibold">
-            Periode Juni 2023
+            Periode {getPeriod()}
           </p>
           <table className="table-fixed text-center w-full">
             <thead>
@@ -903,7 +932,10 @@ export default function CashFlowPage() {
                           <td className="border py-2">
                             {detail.input.no_input}
                           </td>
-                          <td className="border py-2">{detail.total_price}</td>
+                          <td className="border py-2">
+                            Rp.{" "}
+                            {detail.total_price.toLocaleString("id-ID") + ",00"}
+                          </td>
                           <td className="border py-2">-</td>
                         </tr>
                       );
@@ -922,7 +954,10 @@ export default function CashFlowPage() {
                             {detail.output.no_output}
                           </td>
                           <td className="border py-2">-</td>
-                          <td className="border py-2">{detail.total_price}</td>
+                          <td className="border py-2">
+                            Rp.{" "}
+                            {detail.total_price.toLocaleString("id-ID") + ",00"}
+                          </td>
                         </tr>
                       );
                     })}
@@ -940,11 +975,16 @@ export default function CashFlowPage() {
                   Total
                 </td>
                 <td className="border py-2">
-                  Rp. {transactions.reduce((a, b) => a + b.total_debit, 0)}
+                  Rp.{" "}
+                  {transactions
+                    .reduce((a, b) => a + b.total_debit, 0)
+                    .toLocaleString("id-ID") + ",00"}
                 </td>
                 <td className="border py-2">
                   Rp.
-                  {transactions.reduce((a, b) => a + b.total_credit, 0)}
+                  {transactions
+                    .reduce((a, b) => a + b.total_credit, 0)
+                    .toLocaleString("id-ID") + ",00"}
                 </td>
               </tr>
             </tbody>
