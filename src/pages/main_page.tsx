@@ -14,6 +14,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { User } from "../interfaces/interface";
 
 ChartJS.register(
   CategoryScale,
@@ -50,9 +51,27 @@ export default function MainPage() {
   const [startDate, setStartDate] = useState<String>("");
   const [endDate, setEndDate] = useState<String>("");
 
+  const [user, setUser] = useState<User>();
+
   useEffect(() => {
+    fetchUser();
     fetchTotalTransaction();
   }, []);
+
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/user-login");
+      const data: User = res.data.data;
+      if (data.role !== "director") {
+        alert("Anda Bukan Direktur");
+        window.location.href = "/income";
+      }
+    } catch (error) {
+      alert("Silahkan Login Terlebih Dahulu");
+      window.location.href = "/";
+      console.log(error);
+    }
+  };
 
   const fetchTotalTransaction = async () => {
     try {

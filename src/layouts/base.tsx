@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "./footer";
+import { User } from "../interfaces/interface";
+import axios from "axios";
 
 interface BaseLayoutProps {
   children: React.ReactNode;
@@ -13,12 +15,40 @@ export default function BaseLayout({
   withSidebar = true,
 }: BaseLayoutProps) {
   const [navSidebar, setNavSidebar] = useState(false);
+  const [user, setUser] = useState<User>();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
+  useEffect(() => {
+    // const token = localStorage.getItem("token");
+    // if (!token) {
+    //   window.location.href = "/login";
+    // }
+    fetchUser();
+  }, []);
+
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/user-login");
+      if (res.status === 200) setUser(res.data.data);
+    } catch (error) {
+      alert("Silahkan Login Terlebih Dahulu");
+      window.location.href = "/";
+      console.log(error);
+    }
   };
 
+  const handleLogout = async () => {
+    localStorage.removeItem("token");
+    try {
+      const res = await axios.post("http://localhost:8080/api/logout");
+      if (res.status === 200) {
+        alert("Berhasil Logout");
+        window.location.href = "/login";
+      }
+    } catch (error) {
+      alert("Gagal Logout");
+      console.log(error);
+    }
+  };
   const handleNavSidebar = () => {
     setNavSidebar(!navSidebar);
   };

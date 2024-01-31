@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { User } from "../interfaces/interface";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -13,8 +14,13 @@ export default function LoginPage() {
       })
       .then((response) => {
         if (response.status === 200) {
+          const user: User = response.data.data;
           alert("Login berhasil");
-          window.location.href = "/main-page";
+          if (user.role.toLowerCase() === "director") {
+            window.location.href = "/main-page";
+          } else {
+            window.location.href = "/income";
+          }
         }
       })
       .catch(() => {
@@ -24,7 +30,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 justify-center items-center">
-      <div className="bg-white bg-white rounded-xl shadow-md text-center p-8 w-96">
+      <div className="bg-white rounded-xl shadow-md text-center p-8 w-96">
         <h2 className="text-lg font-medium text-gray-500">Welcome to</h2>
         <div className="h-6" />
         <h3 className="text-2xl font-medium	text-gray-500">Villa Manis</h3>

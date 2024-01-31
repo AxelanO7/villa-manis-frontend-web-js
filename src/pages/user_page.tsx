@@ -9,6 +9,7 @@ import {
   ModalFooter,
 } from "../components/modal";
 import { Input } from "../components/input";
+import { User } from "../interfaces/interface";
 
 interface UserProps {
   ID: number;
@@ -37,7 +38,23 @@ export default function UserPage() {
 
   useEffect(() => {
     fetchUsers();
+    fetchUserLogged();
   }, []);
+
+  const fetchUserLogged = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/user-login");
+      const data: User = res.data.data;
+      if (data.role !== "director") {
+        alert("Anda Bukan Direktur");
+        window.location.href = "/income";
+      }
+    } catch (error) {
+      alert("Silahkan Login Terlebih Dahulu");
+      window.location.href = "/";
+      console.log(error);
+    }
+  };
 
   const fetchUsers = async () => {
     try {
@@ -162,7 +179,7 @@ export default function UserPage() {
               className="border rounded px-4 py-1 bg-white"
               onChange={(e) => setRole(e.target.value)}
             >
-              <option value="admin">Admin</option>
+              <option value="accounting">Accounting</option>
               <option value="director">Director</option>
             </select>
             {/* <Input
