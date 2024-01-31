@@ -15,6 +15,7 @@ interface Expenditure {
   no_output: string;
   date_output: string;
   status_output: number;
+  output_information: string[];
 }
 
 export default function IncomePage() {
@@ -36,7 +37,7 @@ export default function IncomePage() {
 
   const fetchExpenditure = async () => {
     await axios
-      .get("http://localhost:8080/api/output")
+      .get("http://localhost:8080/api/master/output")
       .then((response) => {
         setExpenditure(response.data.data);
       })
@@ -274,7 +275,7 @@ export default function IncomePage() {
                 <tr>
                   <th className="w-12 border py-2">No</th>
                   <th className="border py-2">Bulan Transaksi</th>
-                  {/* <th className="border py-2">Keterangan</th> */}
+                  <th className="border py-2">Keterangan</th>
                   <th className="border py-2">Status</th>
                   <th className="w-64 border py-2">Aksi</th>
                 </tr>
@@ -291,7 +292,18 @@ export default function IncomePage() {
                   <tr>
                     <td className="border py-2">{index + 1}</td>
                     <td className="border py-2">{output.date_output}</td>
-                    {/* <td className="border py-2">{income.no_output}</td> */}
+                    <td className="border py-2">
+                      {output.output_information.map(
+                        (_, index, information) => (
+                          <p>
+                            {information}
+                            {index === output.output_information.length - 1
+                              ? ""
+                              : ", "}
+                          </p>
+                        )
+                      )}
+                    </td>
                     <td className="border py-2">{output.status_output}</td>
                     <td className="flex text-white justify-center border py-2 px-4">
                       <button

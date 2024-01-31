@@ -15,6 +15,7 @@ interface Income {
   no_input: string;
   date_input: string;
   status_input: string;
+  input_information: string[];
 }
 
 export default function IncomePage() {
@@ -36,7 +37,7 @@ export default function IncomePage() {
 
   const fetchIncomes = async () => {
     await axios
-      .get("http://localhost:8080/api/input")
+      .get("http://localhost:8080/api/master/input")
       .then((response) => {
         setIncomes(response.data.data);
       })
@@ -242,7 +243,7 @@ export default function IncomePage() {
                 <tr>
                   <th className="w-12 border py-2">No</th>
                   <th className="border py-2">Bulan Transaksi</th>
-                  {/* <th className="border py-2">Keterangan</th> */}
+                  <th className="border py-2">Keterangan</th>
                   <th className="border py-2">Status</th>
                   <th className="w-64 border py-2">Aksi</th>
                 </tr>
@@ -259,7 +260,16 @@ export default function IncomePage() {
                   <tr>
                     <td className="border py-2">{index + 1}</td>
                     <td className="border py-2">{income.date_input}</td>
-                    {/* <td className="border py-2">{income.no_input}</td> */}
+                    <td className="border py-2">
+                      {income.input_information.map((_, index, information) => (
+                        <p>
+                          {information}
+                          {index === income.input_information.length - 1
+                            ? ""
+                            : ", "}
+                        </p>
+                      ))}
+                    </td>
                     <td className="border py-2">{income.status_input}</td>
                     <td className="flex text-white justify-center border py-2 px-4">
                       <button
