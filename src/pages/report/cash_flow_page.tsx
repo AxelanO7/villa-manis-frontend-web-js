@@ -447,7 +447,10 @@ export default function CashFlowPage() {
             </tr>
             <tr>
               <th className="border py-2 px-4">SALDO AKHIR KAS</th>
-              <th className="border py-2 px-4">Rp. 0</th>
+              <th className="border py-2 px-4">
+                Rp.
+                {CashFlow?.totals.toLocaleString("id-ID") + ",00"}
+              </th>
             </tr>
           </table>
         </div>
