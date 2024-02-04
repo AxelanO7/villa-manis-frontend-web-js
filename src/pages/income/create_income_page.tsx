@@ -46,7 +46,9 @@ export default function CreateIncomePage() {
   );
 
   const [noInput, setNoInput] = useState<string>();
-  const [dateInput, setDateInput] = useState<string>();
+  const [dateInput, setDateInput] = useState<string>(
+    new Date().toISOString().slice(0, 10).replace(/-/g, "-")
+  );
 
   const [subTotal, setSubTotal] = useState<number>(0);
 
@@ -57,7 +59,7 @@ export default function CreateIncomePage() {
   useEffect(() => {
     fetchAccounts();
     fetchIncomes();
-    setDateNow();
+    // setDateNow();
   }, []);
 
   const fetchAccounts = async () => {
@@ -389,12 +391,16 @@ export default function CreateIncomePage() {
             <input
               type="date"
               className="border rounded px-2 py-1 grow bg-slate-100"
-              value={
+              defaultValue={
                 dateInput ||
                 new Date().toISOString().slice(0, 10).replace(/-/g, "-")
               }
+              // value={
+              //   dateInput ||
+              //   new Date().toISOString().slice(0, 10).replace(/-/g, "-")
+              // }
               onChange={(e) => setDateInput(e.target.value)}
-              disabled
+              // disabled
             />
           </div>
           <div className="h-12" />

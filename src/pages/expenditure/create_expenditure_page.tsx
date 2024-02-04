@@ -47,7 +47,9 @@ export default function CreateExpenditurePage() {
   >([]);
 
   const [noOutput, setNoOutput] = useState<string>();
-  const [dateOutput, setDateOutput] = useState<string>();
+  const [dateOutput, setDateOutput] = useState<string>(
+    new Date().toISOString().slice(0, 10).replace(/-/g, "-")
+  );
 
   const [subTotal, setSubTotal] = useState<number>(0);
 
@@ -58,7 +60,7 @@ export default function CreateExpenditurePage() {
   useEffect(() => {
     fetchAccounts();
     fetchExpanditures();
-    setDateNow();
+    // setDateNow();
   }, []);
 
   const setDateNow = () => {
@@ -393,9 +395,13 @@ export default function CreateExpenditurePage() {
             <input
               type="date"
               className="border rounded px-2 py-1 grow bg-slate-100"
-              value={
-                dateOutput || new Date().toISOString().slice(0, 10).toString()
+              defaultValue={
+                dateOutput ||
+                new Date().toISOString().slice(0, 10).replace(/-/g, "-")
               }
+              // value={
+              //   dateOutput || new Date().toISOString().slice(0, 10).toString()
+              // }
               onChange={(e) => setDateOutput(e.target.value)}
               disabled
             />
