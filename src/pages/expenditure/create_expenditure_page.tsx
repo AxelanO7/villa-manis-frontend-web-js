@@ -405,7 +405,7 @@ export default function CreateExpenditurePage() {
               //   dateOutput || new Date().toISOString().slice(0, 10).toString()
               // }
               onChange={(e) => setDateOutput(e.target.value)}
-              disabled
+              // disabled
             />
           </div>
           <div className="h-12" />
