@@ -5,6 +5,7 @@ import axios from "axios";
 import { useReactToPrint } from "react-to-print";
 
 interface CashFlow {
+  begining: number;
   groups: Groups[];
   totals: number;
 }
@@ -112,6 +113,7 @@ export default function CashFlowPage() {
         error.response.data.message === "Detail Input \u0026 Output not found"
       ) {
         setCashFlow({
+          begining: 0,
           groups: [],
           totals: 0,
         });
@@ -244,7 +246,9 @@ export default function CashFlowPage() {
             </tr>
             <tr>
               <th className="border py-2 px-4">SALDO AWAL KAS</th>
-              <th className="border py-2 px-4">Rp. 0</th>
+              <th className="border py-2 px-4">
+                Rp. {CashFlow?.begining.toLocaleString("id-ID") + ",00"}
+              </th>
             </tr>
             <tr>
               <th className="border py-2 px-4" colSpan={2}>
