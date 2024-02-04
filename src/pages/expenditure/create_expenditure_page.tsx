@@ -373,7 +373,9 @@ export default function CreateExpenditurePage() {
                 <td className="border py-2" colSpan={5}>
                   Subtotal
                 </td>
-                <td className="border py-2">Rp. {subTotal || 0}</td>
+                <td className="border py-2">
+                  Rp. {(subTotal || 0).toLocaleString("id-ID")}
+                </td>
               </tr>
             </tbody>
           </table>

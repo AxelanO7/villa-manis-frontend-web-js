@@ -76,7 +76,10 @@ export default function MainPage() {
   const fetchTotalTransaction = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8080/api/transaction/total-transaction?start_date=${startDate}&end_date=${endDate}`
+        `http://localhost:8080/api/transaction/total-transaction
+        ${startDate ? `?start_date=${startDate}` : ""}${
+          endDate ? `&end_date=${endDate}` : ""
+        }`
       );
       const data = res.data.data;
       setTotalIncome(data.total_debit);
