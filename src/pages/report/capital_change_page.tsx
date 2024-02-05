@@ -9,7 +9,7 @@ interface CapitalChange {
   net_income: number;
   prive: number;
   additional_capital: number;
-  ending_capital: number;
+  end_capital: number;
 }
 
 export default function CapitalChangePage() {
@@ -195,7 +195,7 @@ export default function CapitalChangePage() {
                 <p className="border py-1 w-full px-4"></p>
                 <p className="border py-1 w-full px-4">
                   Rp.
-                  {(capitalChange?.ending_capital || 0).toLocaleString(
+                  {(capitalChange?.end_capital || 0).toLocaleString(
                     "id-ID"
                   ) + ",00"}
                 </p>
