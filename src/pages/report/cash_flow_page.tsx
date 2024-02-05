@@ -442,9 +442,7 @@ export default function CashFlowPage() {
                 );
               })} */}
             <tr>
-              <th className="border py-2 px-4">
-                PERGERAKAN BERSIH KAS (A+B+C)
-              </th>
+              <th className="border py-2 px-4">PERGERAKAN BERSIH KAS</th>
               <th className="border py-2 px-4">
                 Rp. {CashFlow?.totals.toLocaleString("id-ID") + ",00"}
               </th>
