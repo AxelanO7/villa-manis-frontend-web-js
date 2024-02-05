@@ -9,6 +9,7 @@ import {
   ModalFooter,
 } from "../../components/modal";
 import { Input } from "../../components/input";
+import { fileURLToPath } from "url";
 
 interface Income {
   ID: number;
@@ -28,6 +29,8 @@ export default function IncomePage() {
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [manage, setManage] = useState<any>(null);
+
+  const [file, setFile] = useState<File>();
 
   const itemsBreadcrumb = ["Home", "Transaksi Pemasukan"];
 
@@ -122,58 +125,32 @@ export default function IncomePage() {
     window.location.href = "/add-income";
   };
 
+  const handleAddPhoto = (idProp: number) => {
+    handleShowModal({ show: true });
+  };
+
+  const savePhoto = () => {
+    console.log("file ", file);
+    if (file) {
+    }
+    // handleShowModal({ show: false });
+  };
+
   return (
     <>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <ModalHeader>Tambah Pemasukan</ModalHeader>
+        <ModalHeader>Tambah Bukti Pemasukan</ModalHeader>
         <ModalBody>
-          <div className="flex flex-col space-y-4">
-            {/* {manage === "update" && (
-              <Input
-                label="ID"
-                value={idCategory}
-                type="number"
-                onChange={(e) => setIdCategory(parseInt(e.target.value))}
-              />
-            )} */}
-            <Input
-              label="Bulan Transaksi"
-              value={dateInput!}
-              type="text"
-              onChange={(e) => setDateInput(e.target.value)}
-            />
-            <Input
-              label="Status"
-              value={statusInput!}
-              type="string"
-              onChange={(e) => setStatusInput(e.target.value)}
-            />
-            {/* <div className="flex flex-col">
-              <label className="text-gray-600 text-sm font-medium">Sifat</label>
-              <div className="h-1" />
-              <select
-                className="border rounded px-4 py-1 bg-white"
-                onChange={(e) => setIdCategory(parseInt(e.target.value))}
-                value={idCategory!}
-              >
-                {categorys.map((category: Category) => (
-                  <option value={category.ID}>{category.name_category}</option>
-                ))}
-              </select>
-            </div> */}
-          </div>
+          <input
+            type="file"
+            onChange={(e) => setFile(e.target.files![0])}
+            className="border rounded px-4  bg-white w-full py-4"
+          />
         </ModalBody>
         <ModalFooter>
           <button
             className="bg-success rounded px-4 py-1 text-white"
-            onClick={() => {
-              handleUpdateIncome(idInput!);
-            }}
-            // onClick={
-            //   manage === "update"
-            //     ? () => updateIncome(idInput!)
-            //     : () => createIncome()
-            // }
+            onClick={() => savePhoto()}
           >
             Simpan
           </button>
@@ -186,6 +163,68 @@ export default function IncomePage() {
           </button>
         </ModalFooter>
       </Modal>
+      {/* <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <ModalHeader>Tambah Pemasukan</ModalHeader>
+        <ModalBody>
+          <div className="flex flex-col space-y-4">
+            {manage === "update" && (
+              <Input
+                label="ID"
+                value={idCategory}
+                type="number"
+                onChange={(e) => setIdCategory(parseInt(e.target.value))}
+              />
+            )}
+            <Input
+              label="Bulan Transaksi"
+              value={dateInput!}
+              type="text"
+              onChange={(e) => setDateInput(e.target.value)}
+            />
+            <Input
+              label="Status"
+              value={statusInput!}
+              type="string"
+              onChange={(e) => setStatusInput(e.target.value)}
+            />
+            <div className="flex flex-col">
+              <label className="text-gray-600 text-sm font-medium">Sifat</label>
+              <div className="h-1" />
+              <select
+                className="border rounded px-4 py-1 bg-white"
+                onChange={(e) => setIdCategory(parseInt(e.target.value))}
+                value={idCategory!}
+              >
+                {categorys.map((category: Category) => (
+                  <option value={category.ID}>{category.name_category}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <button
+            className="bg-success rounded px-4 py-1 text-white"
+            onClick={() => {
+              handleUpdateIncome(idInput!);
+            }}
+            onClick={
+              manage === "update"
+                ? () => updateIncome(idInput!)
+                : () => createIncome()
+            }
+          >
+            Simpan
+          </button>
+          <div className="w-4" />
+          <button
+            className="bg-red-500 rounded px-4 py-1 text-white"
+            onClick={() => handleShowModal({ show: false })}
+          >
+            Batal
+          </button>
+        </ModalFooter>
+      </Modal> */}
 
       <BaseLayout>
         <Breadcrumb
@@ -294,26 +333,6 @@ export default function IncomePage() {
                         </svg>
                         <div className="w-1" />
                         Edit
-                      </button>
-                      <div className="w-4" />
-                      <button
-                        className="bg-red-500 rounded px-2 py-1 flex-1 flex items-center justify-center"
-                        onClick={() => deleteAccount(income.ID)}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          className="w-4 h-4"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        <div className="w-1" />
-                        Delete
                       </button>
                     </td>
                   </tr>
