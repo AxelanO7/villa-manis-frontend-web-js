@@ -177,7 +177,7 @@ export default function CapitalChangePage() {
                 <p className="border py-1 w-full px-4"></p>
               </div>
             </div>
-            <div className="flex">
+            {/* <div className="flex">
               <p className="border py-1 w-full px-4">Penambahan Modal</p>
               <div className="flex w-full">
                 <p className="border py-1 w-full px-4"></p>
@@ -188,7 +188,7 @@ export default function CapitalChangePage() {
                   ) + ",00"}
                 </p>
               </div>
-            </div>
+            </div> */}
             <div className="flex">
               <p className="border py-1 w-full px-4">Modal Akhir</p>
               <div className="flex w-full">
